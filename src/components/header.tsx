@@ -1,14 +1,17 @@
-import { MenuIcon } from "lucide-react";
+import { CalendarDays, CircleUserRound } from "lucide-react";
 import { Button } from "./ui/button";
 import { Card, CardContent } from "./ui/card";
 
 const header = () => {
   return (
     <Card>
-      <CardContent>
+      <CardContent className="p-9 py-8 justify-between items-center flex flex-row">
         <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
-        <Button variant="outline" size="icon">
-          <MenuIcon />
+        <Button variant={"outline"}>
+          <CalendarDays size={16}/> Agendamentos
+        </Button>
+        <Button>
+          <CircleUserRound size={16} /> Perfil
         </Button>
       </CardContent>
     </Card>
