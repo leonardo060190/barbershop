@@ -1,6 +1,6 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import Header from "../../components/header/header";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -11,18 +11,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-
+import CarouselMaisVisitados from "@/components/carousel/CarouselMaisVisitados";
+import CarouselPopular from "@/components/carousel/CarouselPopular";
+import Footer from "@/components/footer/footer";
 const home = () => {
   return (
     <div>
+
       <Header />
 
-      <div className="px-16 py-12 content-between flex flex-col md:flex-row">
+      <div className="px-12 py-12 justify-between flex flex-col md:flex-row">
         <div className="border-2 ring-1 rounded-md">
           <CardHeader>
             <CardTitle className="text-xl">
               Olá, <span className="font-bold">Faça seu Login</span>!
             </CardTitle>
+
             {/* exibe o horario atual*/}
             <HoraFormat />
             <div className="py-8 flex w-full max-w-sm items-center space-x-2 ">
@@ -37,24 +41,27 @@ const home = () => {
             </div>
           </CardHeader>
         </div>
+
         {/* carocel de recomendados */}
-        <div className="px-16">
+        <div className="px-*">
           <h3 className="pb-2">Recomendados</h3>
           <Carousel
             opts={{
               align: "start",
             }}
-            className="w-full"
+            className="w-full max-w-4xl"
           >
             <CarouselContent className="flex">
-              {Array.from({ length: 4 }).map((_, index) => (
-                <CarouselItem
-                  key={index}
-                  className="md:basis-1/2 lg:basis-full"
-                >
-                  <div>
+              {Array.from({ length: 6 }).map((_, index) => (
+                <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/3">
+                  <div className="justify-end flex-auto">
                     <Card>
-                      <CardContent className="flex aspect-square"></CardContent>
+                    <CardContent className="text-center">
+                    <p>olá</p>
+                  </CardContent>
+                  <CardFooter className="flex justify-center">
+                    <Button>Agendar</Button>
+                  </CardFooter>
                     </Card>
                   </div>
                 </CarouselItem>
@@ -65,58 +72,16 @@ const home = () => {
           </Carousel>
         </div>
       </div>
+
       {/* carocel de populares */}
-      <div className=" px-16 py-12 justify-between item-center">
-        <h3 className="pb-2">Populares</h3>
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full"
-        >
-          <CarouselContent className="-ml-4">
-            {Array.from({ length: 10 }).map((_, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/6">
-                <div>
-                  <Card>
-                    <CardContent>
-                      <Button>Agendar</Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
+      <CarouselPopular />
+
       {/* carocel de mais visitados */}
-      <div className=" px-16 pb-12 justify-between item-center">
-        <h3 className="pb-2">Mais Visitados</h3>
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full "
-        >
-          <CarouselContent>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/6">
-                <div>
-                  <Card>
-                    <CardContent className="flex">
-                    <Button>Agendar</Button>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-      </div>
+      <CarouselMaisVisitados />
+
+      {/* footer */}
+      <Footer />
+
     </div>
   );
 };
