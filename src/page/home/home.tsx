@@ -1,6 +1,12 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import Header from "../../components/header/header";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -10,14 +16,13 @@ import {
 } from "@/components/ui/carousel";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+import { Search} from "lucide-react";
 import CarouselMaisVisitados from "@/components/carousel/CarouselMaisVisitados";
 import CarouselPopular from "@/components/carousel/CarouselPopular";
 import Footer from "@/components/footer/footer";
 const home = () => {
   return (
     <div>
-
       <Header />
 
       <div className="px-12 py-12 justify-between flex flex-col md:flex-row">
@@ -56,12 +61,12 @@ const home = () => {
                 <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/3">
                   <div className="justify-end flex-auto">
                     <Card>
-                    <CardContent className="text-center">
-                    <p>olá</p>
-                  </CardContent>
-                  <CardFooter className="flex justify-center">
-                    <Button>Agendar</Button>
-                  </CardFooter>
+                      <CardContent className="text-center">
+                        <p>olá</p>
+                      </CardContent>
+                      <CardFooter className="flex justify-center">
+                        <Button>Agendar</Button>
+                      </CardFooter>
                     </Card>
                   </div>
                 </CarouselItem>
@@ -78,10 +83,9 @@ const home = () => {
 
       {/* carocel de mais visitados */}
       <CarouselMaisVisitados />
-
+     
       {/* footer */}
       <Footer />
-
     </div>
   );
 };

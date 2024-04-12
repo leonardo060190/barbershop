@@ -7,7 +7,7 @@ import { Input } from "../ui/input";
 const headerUser = () => {
   return (
     <Card>
-      <CardContent className="p-9 py-8 items-center flex flex-row">
+      <CardContent className="p-9 ms-1  items-center flex ">
         <img
           src="/Logo.png"
           alt="FSW Barber"

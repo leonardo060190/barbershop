@@ -1,12 +1,6 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import HeaderUser from "../../components/header/headerUser";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
@@ -14,14 +8,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Input } from "@/components/ui/input";
+
 import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
+
 import CarouselMaisVisitados from "@/components/carousel/CarouselMaisVisitados";
 import CarouselPopular from "@/components/carousel/CarouselPopular";
 import Footer from "@/components/footer/footer";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-
+import Search from "@/page/home/_ComponentsHome/search";
+import BookingItem from "@/components/bookingItem/bookingItem";
 const splintUser = () => {
   return (
     <div>
@@ -29,47 +23,21 @@ const splintUser = () => {
 
       <div className="px-12 py-12 justify-between flex flex-col md:flex-row">
         <div>
-          <CardHeader>
-            <CardTitle className="text-xll">
-              Olá, <span className="font-bold">Leonardo Domingos</span> !
-            </CardTitle>
+          <h2 className="text-xll">
+            Olá,<span className="font-bold">Leonardo Domingos</span> !
+          </h2>
 
-            {/* exibe o horario atual*/}
-            <HoraFormat />
-            <div className="py-8 flex w-full max-w-sm items-center space-x-2 ">
-              <Input
-                className="outline-0"
-                type="text"
-                placeholder="Buscar Barbearias"
-              />
-              <Button type="submit">
-                <Search />
-              </Button>
-            </div>
-          </CardHeader>
+          {/* exibe o horario atual*/}
+          <HoraFormat />
 
-          <Card>
-            <CardHeader>
-              <span>confirmado</span>
-              <CardTitle>
-                <h5>Corte de cabelo</h5>
-              </CardTitle>
-              <CardContent>
-              <div className="flex flex-row">
-                <Avatar className="me-3">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="LD"
-                    width={30}
-                    className="rounded-full"
-                  />
-                  <AvatarFallback>LD</AvatarFallback>
-                  Leonardo Domingos
-                </Avatar>
-                </div>
-              </CardContent>
-            </CardHeader>
-          </Card>
+          <div className=" mt-6">
+            <Search />
+          </div>
+
+          <div className="mt-6">
+            <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">Agendamentos</h2>
+            <BookingItem />
+          </div>
         </div>
 
         {/* carocel de recomendados */}
