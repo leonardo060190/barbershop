@@ -9,7 +9,7 @@ const header = () => {
         <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
        <div className="space-x-6">
         <Button variant={"outline"}>
-          <CalendarDays size={16}/> Agendamentos
+          <CalendarDays size={16} className="me-3"/> Agendamentos
         </Button>
         <Button >
           <CircleUserRound size={16} /> Perfil

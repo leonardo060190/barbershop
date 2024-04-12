@@ -1,16 +1,15 @@
-import { Card, CardFooter } from "../ui/card"
-
+import { CardFooter } from "../ui/card";
 
 const footer = () => {
   return (
     <div>
-        <Card>
-            <CardFooter className="flex justify-center">
-                <p><span>Controle de Tarefas</span> &copy; 2023</p>
-            </CardFooter>
-        </Card>
+      <CardFooter className="flex justify-center">
+        <p>
+          <span>Barbershop</span> &copy; 2023
+        </p>
+      </CardFooter>
     </div>
-  )
-}
+  );
+};
 
-export default footer
+export default footer;
