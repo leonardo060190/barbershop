@@ -7,7 +7,7 @@ const bookingItem = () => {
     <Card>
       <CardContent className="p-5 flex justify-between py-0">
         <div className="flex flex-col gap-2 py-5">
-          <Badge className=" bg-[#221c3d] text-primary hover:bg-[#221c3d]">
+          <Badge className=" bg-[#221c3d] text-primary hover:bg-[#221c3d] justify-center">
             Confirmado
           </Badge>
           <h2 className="font-bold">Corte de cabelo</h2>

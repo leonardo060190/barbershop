@@ -1,0 +1,41 @@
+import { StarIcon } from "lucide-react";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Card, CardContent } from "../ui/card";
+
+const barbershopItem = () => {
+  return (
+    <div>
+      <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
+        <CardContent className="p-0 pt-1 ">
+          <div className="px-1 relative">
+            <Badge variant="secondary" className=" opacity-90 gap-1 absolute top-1 left-2">
+              <StarIcon size={12} className="fill-primary text-primary"/>
+              <span>5,0</span>
+            </Badge>
+            <img
+              src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
+              alt="barber"
+              height={0}
+              width={0}
+              sizes="100vw"
+              className="h-[159px] w-full rounded-2xl"
+            />
+          </div>
+
+          <div className="px-3 pb-3">
+            <h2 className="font-bold mt-2">barberShopName</h2>
+            <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
+              barberShopAdddress
+            </p>
+            <Button className=" w-full mt-3 rounded-2xl" variant="secondary">
+              Reservar
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+export default barbershopItem;

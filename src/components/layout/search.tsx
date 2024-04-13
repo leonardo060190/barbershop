@@ -12,7 +12,7 @@ const search = () => {
         type="text"
         placeholder="Buscar Barbearias"
       />
-      <Button variant="default" >
+      <Button variant="default">
         <Search />
       </Button>
     </div>
