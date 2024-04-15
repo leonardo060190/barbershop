@@ -1,17 +1,25 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import HeaderUser from "../../components/header/headerUser";
 
-import Footer from "@/components/footer/footer";
 import Search from "@/components/layout/search";
 import BookingItem from "@/components/bookingItem/bookingItem";
 import BarbershopItem from "@/components/barbershopItem/barbershopItem";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
 const splintUser = () => {
+  
   return (
     <div>
       <HeaderUser />
 
-      <div className="px-12 py-12 justify-between flex flex-col md:flex-row">
-        <div className="flex gap-20 items-center  justify-between flex-col md:flex-row">
+      <div className=" justify-between flex flex-col md:flex-row">
+        <div className="ps-12  py-12 flex items-center justify-between flex-col md:flex-row">
           <div className="w-80 justify-center">
             <h2 className="text-xll">
               Olá,<span className="font-bold">Leonardo Domingos</span> !
@@ -24,7 +32,7 @@ const splintUser = () => {
               <Search />
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 pb-4">
               <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">
                 Agendamentos
               </h2>
@@ -32,27 +40,59 @@ const splintUser = () => {
             </div>
           </div>
 
-          <div>
+        </div>
+        
+        <div className="px-12 py-12">
             <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
               Recomendados
             </h2>
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="max-w-[54rem]"
+            >
+              <CarouselContent className="flex">
+                {Array.from({ length: 7 }).map((_, index) => (
+                  <CarouselItem key={index} style={{ width: '180px' }} className="basis-48">
+                    {/* {barbershop.map((barbershop) => ( */}
+                    <BarbershopItem />
 
-            <div className="flex gap-4 ">
-              {/* {barbershop.map((barbershop) => ( */}
-              <BarbershopItem />
-              <BarbershopItem />
-              <BarbershopItem />
-              <BarbershopItem />
-              <BarbershopItem />
-
-              {/* ))} */}
-            </div>
+                    {/* ))} */}
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
           </div>
-        </div>
       </div>
-      {/* footer */}
-      <div className=" mt-12">
-        <Footer />
+
+
+      {/* populares */}
+      <div className="px-12 mb-[4.5rem]">
+        <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
+          Populares
+        </h2>
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full max-w-full"
+        >
+          <CarouselContent>
+            {Array.from({ length: 10 }).map((_, index) => (
+              <CarouselItem key={index} style={{ width: '180px' }} className="basis-50">
+                {/* {barbershop.map((barbershop) => ( */}
+                <BarbershopItem />
+
+                {/* ))} */}
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
       </div>
     </div>
   );

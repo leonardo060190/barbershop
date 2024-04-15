@@ -2,7 +2,7 @@ import { CalendarDays } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-// import Search from "@/components/layout/search";
+import Search from "@/components/layout/search";
 
 const headerUser = () => {
   return (
@@ -17,9 +17,9 @@ const headerUser = () => {
             className="me-5"
           />
 
-          {/* <div className="w-96">
+          <div className="w-96">
             <Search />
-          </div> */}
+          </div>
         </div>
 
         <div className="flex gap-4">
