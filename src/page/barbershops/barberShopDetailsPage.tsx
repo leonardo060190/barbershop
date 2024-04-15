@@ -13,7 +13,6 @@ const barberShopDetailsPage = () => {
             src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
             alt="barbershop"
             className="w-full h-full object-cover"
-            style={{ imageRendering: "auto", objectFit: "cover" }}
           />
         </div>
         <div className="flex justify-between pb-6 border-b border-solid border-secondary">
@@ -37,7 +36,18 @@ const barberShopDetailsPage = () => {
             </Card>
           </div>
         </div>
-        <ServiceItem />
+      </div>
+      <div className="px-12 pb-6 flex justify-between">
+        <div className="px5 gap-4 flex w-96 flex-col">
+          <ServiceItem />
+          <ServiceItem />
+          <ServiceItem />
+          <ServiceItem />
+          <ServiceItem />
+          <ServiceItem />
+          <ServiceItem />
+          <ServiceItem />
+        </div>
       </div>
     </div>
   );
