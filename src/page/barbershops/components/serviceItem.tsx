@@ -1,7 +1,19 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../../../components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Calendar } from "@/components/ui/calendar";
+import { useState } from "react";
+import { ptBR } from "date-fns/locale";
 
-const serviceItem = () => {
+const ServiceItem = () => {
+  const [date, setDate] = useState<Date | undefined>(new Date());
+
   return (
     <div>
       <Card>
@@ -29,9 +41,49 @@ const serviceItem = () => {
                     currency: "BRL",
                   }).format(Number(55.4))}
                 </p>
-                <Button variant="secondary" className="text-primary">
-                  Reservar
-                </Button>
+
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="secondary" className="text-primary">
+                      Reservar
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent className="p-0">
+                    <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
+                      <SheetTitle>Fazer Reserva</SheetTitle>
+                    </SheetHeader>
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      locale={ptBR}
+                      fromDate={new Date()}
+                      styles={{
+                        head_cell: {
+                          width: "100%",
+                          textTransform: "capitalize",
+                        },
+                        cell: {
+                          width: "100%",
+                        },
+                        button: {
+                          width: "100%",
+                        },
+                        nav_button_previous: {
+                          width: "32",
+                          height: "32",
+                        },
+                        nav_button_next: {
+                          width: "32",
+                          height: "32",
+                        },
+                        caption: {
+                          textTransform: "capitalize",
+                        },
+                      }}
+                    />
+                  </SheetContent>
+                </Sheet>
               </div>
             </div>
           </div>
@@ -41,4 +93,4 @@ const serviceItem = () => {
   );
 };
 
-export default serviceItem;
+export default ServiceItem;
