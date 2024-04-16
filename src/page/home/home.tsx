@@ -1,7 +1,6 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import Header from "../../components/header/header";
 import Search from "@/components/layout/search";
-import BarbershopItem from "@/components/barbershopItem/barbershopItem";
 import {
   Carousel,
   CarouselContent,
@@ -9,6 +8,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import BarbershopItemRecomendados from "@/components/barbershopItem/barbershopItemRecomendados";
+import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemPopulares";
 const home = () => {
   return (
     <div>
@@ -29,7 +30,7 @@ const home = () => {
             </div>
           </div>
         </div>
-
+        {/* Recomendados */}
         <div className="px-12 py-12">
           <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
             Recomendados
@@ -48,7 +49,7 @@ const home = () => {
                   className="basis-48"
                 >
                   {/* {barbershop.map((barbershop) => ( */}
-                  <BarbershopItem />
+                  <BarbershopItemRecomendados />
 
                   {/* ))} */}
                 </CarouselItem>
@@ -72,10 +73,10 @@ const home = () => {
           className="w-full max-w-full	"
         >
           <CarouselContent>
-            {Array.from({ length: 7 }).map((_, index) => (
+            {Array.from({ length: 10 }).map((_, index) => (
               <CarouselItem key={index} className="basis-48">
                 {/* {barbershop.map((barbershop) => ( */}
-                <BarbershopItem />
+                <BarbershopItemPopulares />
 
                 {/* ))} */}
               </CarouselItem>

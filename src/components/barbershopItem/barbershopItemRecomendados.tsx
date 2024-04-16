@@ -4,7 +4,7 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { useNavigate } from "react-router-dom";
 
-const barbershopItem = () => {
+const barbershopItemRecomendados = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
@@ -53,4 +53,4 @@ const barbershopItem = () => {
   );
 };
 
-export default barbershopItem;
+export default barbershopItemRecomendados;

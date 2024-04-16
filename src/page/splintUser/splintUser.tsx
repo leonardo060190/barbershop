@@ -3,7 +3,6 @@ import HeaderUser from "../../components/header/headerUser";
 
 import Search from "@/components/layout/search";
 import BookingItem from "@/components/bookingItem/bookingItem";
-import BarbershopItem from "@/components/barbershopItem/barbershopItem";
 import {
   Carousel,
   CarouselContent,
@@ -11,9 +10,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import BarbershopItemRecomendados from "@/components/barbershopItem/barbershopItemRecomendados";
+import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemPopulares";
 
 const splintUser = () => {
-  
   return (
     <div>
       <HeaderUser />
@@ -39,35 +39,37 @@ const splintUser = () => {
               <BookingItem />
             </div>
           </div>
-
         </div>
-        
+
         <div className="px-12 py-12">
-            <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
-              Recomendados
-            </h2>
-            <Carousel
-              opts={{
-                align: "start",
-              }}
-              className="max-w-[54rem]"
-            >
-              <CarouselContent className="flex">
-                {Array.from({ length: 7 }).map((_, index) => (
-                  <CarouselItem key={index} style={{ width: '180px' }} className="basis-48">
-                    {/* {barbershop.map((barbershop) => ( */}
-                    <BarbershopItem />
+          <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
+            Recomendados
+          </h2>
+          <Carousel
+            opts={{
+              align: "start",
+            }}
+            className="max-w-[54rem]"
+          >
+            <CarouselContent className="flex">
+              {Array.from({ length: 7 }).map((_, index) => (
+                <CarouselItem
+                  key={index}
+                  style={{ width: "180px" }}
+                  className="basis-48"
+                >
+                  {/* {barbershop.map((barbershop) => ( */}
+                  <BarbershopItemRecomendados />
 
-                    {/* ))} */}
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
+                  {/* ))} */}
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious />
+            <CarouselNext />
+          </Carousel>
+        </div>
       </div>
-
 
       {/* populares */}
       <div className="px-12 mb-[4.5rem]">
@@ -82,9 +84,13 @@ const splintUser = () => {
         >
           <CarouselContent>
             {Array.from({ length: 10 }).map((_, index) => (
-              <CarouselItem key={index} style={{ width: '180px' }} className="basis-50">
+              <CarouselItem
+                key={index}
+                style={{ width: "180px" }}
+                className="basis-50"
+              >
                 {/* {barbershop.map((barbershop) => ( */}
-                <BarbershopItem />
+                <BarbershopItemPopulares />
 
                 {/* ))} */}
               </CarouselItem>
