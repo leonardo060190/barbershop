@@ -1,4 +1,4 @@
-import HeaderUser from "@/components/header/headerUser";
+import Header from "@/components/header/header";
 import ServiceItem from "./components/serviceItem";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPinIcon, StarIcon } from "lucide-react";
@@ -6,7 +6,7 @@ import { MapPinIcon, StarIcon } from "lucide-react";
 const barberShopDetailsPage = () => {
   return (
     <div>
-      <HeaderUser />
+      <Header />
       <div className="px-12 pb-6">
         <div className=" pt-10 w-758 h-485.9 relative">
           <img
