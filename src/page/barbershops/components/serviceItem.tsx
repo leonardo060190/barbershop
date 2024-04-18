@@ -9,10 +9,10 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Calendar } from "@/components/ui/calendar";
-import {  useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "./hours";
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
 import { Loader2 } from "lucide-react";
 
 import { saveBooking } from "./saveBooking";
@@ -22,7 +22,7 @@ import { getDayBookings } from "./getBookings";
 
 const ServiceItem = () => {
   // const {data} = useSession()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [submitIsLoading, SetSubmitIsLoading] = useState(false);
   const [sheetIsOpen, setSheetISOpen] = useState(false);
@@ -31,14 +31,14 @@ const ServiceItem = () => {
   const [hour, setHour] = useState<string | undefined>();
   const [dayBookings, setDayBookings] = useState([]);
 
-  useEffect(() =>{
-    if(!date){
-      return
+  useEffect(() => {
+    if (!date) {
+      return;
     }
-    const refreshAvailableHours = async () =>{
-      const dayBookings = await getDayBookings(date)
-    }
-  }, [date])
+    const refreshAvailableHours = async () => {
+      const dayBookings = await getDayBookings(date);
+    };
+  }, [date]);
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -72,7 +72,7 @@ const ServiceItem = () => {
       setDate(undefined);
       toast("Reserva realizada com sucesso!", {
         description: format(newDate, "'Para' dd 'de' MMMM 'as' HH':'mm'.'", {
-          locale: ptBR
+          locale: ptBR,
         }),
         action: {
           label: "Visualizar",
@@ -87,10 +87,27 @@ const ServiceItem = () => {
   };
 
   const timeList = useMemo(() => {
-    return date ? generateDayTimeList(date) : [];
-  }, [date]);
+    if (!date) {
+      return [];
+    }
+    return generateDayTimeList(date).filter((time) => {
+      const timeHour = Number(time.split(":")[0]);
+      const timeMinutes = Number(time.split(":")[1]);
 
-  
+      const booking = dayBookings.find((booking) => {
+        const bookingHour = booking.date.getHours();
+        const bookingMinutes = booking.date.getMinutes();
+
+        return bookingHour === timeHour && bookingMinutes === timeMinutes;
+      });
+
+      if (!booking) {
+        return true;
+      }
+      return false;
+    });
+  }, [date, dayBookings]);
+
   console.log(timeList);
 
   return (
