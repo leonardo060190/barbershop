@@ -19,7 +19,7 @@ const header = () => {
         <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
         <div className="flex gap-3 ">
 
-          <Link className="flex items-center border px-2 rounded-md border-solid border-secondary " to={"/agendamentos"}>
+          <Link className="flex items-center border px-2 rounded-md border-solid border-secondary " to={"/bookings"}>
             <CalendarDays size={16} className="me-2" /> Agendamentos
           </Link>
 

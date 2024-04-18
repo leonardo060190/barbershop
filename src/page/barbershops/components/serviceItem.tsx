@@ -115,14 +115,14 @@ const ServiceItem = () => {
       <Card>
         <CardContent className="p-3">
           <div className="flex gap-6 items-center">
-            <div className="relative">
+            <div className="relative ">
               <img
                 src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
                 alt="barber"
                 height={0}
                 width={0}
                 sizes="100vw"
-                className="min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px] rounded-2xl"
+                className=" rounded-2xl min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px]"
               />
             </div>
 
@@ -148,7 +148,7 @@ const ServiceItem = () => {
                     <SheetHeader className="text-left px-5 py-4 border-b border-solid border-secondary">
                       <SheetTitle>Fazer Reserva</SheetTitle>
                     </SheetHeader>
-                    <div className="py-4 px-5">
+                    <div className="py-3 px-5">
                       <Calendar
                         mode="single"
                         selected={date}
@@ -195,7 +195,7 @@ const ServiceItem = () => {
                         ))}
                       </div>
                     )}
-                    <div className="py-6 px-5 border-solid border-seconndary">
+                    <div className="py-5 px-5 border-solid border-seconndary">
                       <Card>
                         <CardContent className="px-0 py-0">
                           <div className="px-6 py-5 flex flex-col gap-3">

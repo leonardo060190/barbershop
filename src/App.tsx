@@ -7,9 +7,9 @@ import User from "./page/splintUser/splintUser";
 import BarberShops from "./page/barbershops/barberShopDetailsPage";
 import RegistrationPage from "./page/registrationPage/registrationPage";
 import RegistrationBarbershop from "./page/registrationPage/registrationBarbershop";
-import Agendamento from "./components/agendamentos/agendamentos";
+import Bookings from "./page/bookings/bookins";
 import Footer from "./components/layout/footer/footer";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
           path="/registrationBarbershop"
           element={<RegistrationBarbershop />}
         />
-        <Route path="/agendamento" element={<Agendamento />} />
+        <Route path="/bookings" element={<Bookings />} />
       </Routes>
       <Toaster />
       <Footer />
