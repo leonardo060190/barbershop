@@ -3,19 +3,42 @@ import { Button } from "../../../components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Calendar } from "@/components/ui/calendar";
-import { useMemo, useState } from "react";
+import {  useEffect, useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "./hours";
 import { format } from "date-fns";
+import { Loader2 } from "lucide-react";
+
+import { saveBooking } from "./saveBooking";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { getDayBookings } from "./getBookings";
 
 const ServiceItem = () => {
+  // const {data} = useSession()
+  const navigate = useNavigate()
+
+  const [submitIsLoading, SetSubmitIsLoading] = useState(false);
+  const [sheetIsOpen, setSheetISOpen] = useState(false);
+
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
+  const [dayBookings, setDayBookings] = useState([]);
+
+  useEffect(() =>{
+    if(!date){
+      return
+    }
+    const refreshAvailableHours = async () =>{
+      const dayBookings = await getDayBookings(date)
+    }
+  }, [date])
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -26,10 +49,48 @@ const ServiceItem = () => {
     setHour(time);
   };
 
+  const handleBookingSubmit = async () => {
+    SetSubmitIsLoading(true);
+    try {
+      if (!hour || !date || !data?.user) {
+        return;
+      }
+
+      const dateHour = Number(hour.split(":")[0]);
+      const dateMinutes = Number(hour.split(":")[0]);
+      const newDate = setMinutes(setHours(date, dateHour), dateMinutes);
+
+      await saveBooking({
+        serviceId: service.id,
+        barbershopId: barbershopItemPopulares.id,
+        date: newDate,
+        userId: (data.user as any).id,
+      });
+
+      setSheetISOpen(false);
+      setHour(undefined);
+      setDate(undefined);
+      toast("Reserva realizada com sucesso!", {
+        description: format(newDate, "'Para' dd 'de' MMMM 'as' HH':'mm'.'", {
+          locale: ptBR
+        }),
+        action: {
+          label: "Visualizar",
+          onClick: () => navigate("/agendamento"),
+        },
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      SetSubmitIsLoading(false);
+    }
+  };
+
   const timeList = useMemo(() => {
     return date ? generateDayTimeList(date) : [];
   }, [date]);
 
+  
   console.log(timeList);
 
   return (
@@ -60,17 +121,17 @@ const ServiceItem = () => {
                   }).format(Number(55.4))}
                 </p>
 
-                <Sheet>
+                <Sheet open={sheetIsOpen} onOpenChange={setSheetISOpen}>
                   <SheetTrigger asChild>
                     <Button variant="secondary" className="text-primary">
                       Reservar
                     </Button>
                   </SheetTrigger>
                   <SheetContent className="p-0">
-                    <SheetHeader className="text-left px-5 py-6 border-b border-solid border-secondary">
+                    <SheetHeader className="text-left px-5 py-4 border-b border-solid border-secondary">
                       <SheetTitle>Fazer Reserva</SheetTitle>
                     </SheetHeader>
-                    <div className="py-6 px-5">
+                    <div className="py-4 px-5">
                       <Calendar
                         mode="single"
                         selected={date}
@@ -117,41 +178,61 @@ const ServiceItem = () => {
                         ))}
                       </div>
                     )}
-                    <div className="py-6 px-5 border-t border-solid border-seconndary">
+                    <div className="py-6 px-5 border-solid border-seconndary">
                       <Card>
-                        <CardContent>
-                          <div className="flex justify-between">
-                            <h2 className="font-bold">Nome Serviço</h2>
-                            <h3 className="font-bold text-sm">
-                              {Intl.NumberFormat("pt-BR", {
-                                style: "currency",
-                                currency: "BRL",
-                              }).format(Number(55.4))}
-                            </h3>
-                          </div>
-                          {date && (
-                            <div className="flex justifu-between">
-                              <h3 className="text-gray-400 text-sm">Data</h3>
-                              <h4 className="text-sm ">
-                                {format(date, "dd 'de' MMMM", { locale: ptBR })}
-                              </h4>
+                        <CardContent className="px-0 py-0">
+                          <div className="px-6 py-5 flex flex-col gap-3">
+                            <div className="flex justify-between ">
+                              <h2 className="font-bold">Nome Serviço</h2>
+                              <h3 className="font-bold text-sm">
+                                {Intl.NumberFormat("pt-BR", {
+                                  style: "currency",
+                                  currency: "BRL",
+                                }).format(Number(55.4))}
+                              </h3>
                             </div>
-                          )}
-                          {hour && (
-                            <div className="flex justifu-between">
-                              <h3 className="text-gray-400 text-sm">Horário</h3>
-                              <h4 className="text-sm ">{hour}</h4>
-                            </div>
-                          )}
-                          
-                            <div className="flex justifu-between">
-                              <h3 className="text-gray-400 text-sm">Barbearia</h3>
+                            {date && (
+                              <div className="flex justify-between">
+                                <h3 className="text-gray-400 text-sm">Data</h3>
+                                <h4 className="text-sm ">
+                                  {format(date, "dd 'de' MMMM", {
+                                    locale: ptBR,
+                                  })}
+                                </h4>
+                              </div>
+                            )}
+                            {hour && (
+                              <div className="flex justify-between">
+                                <h3 className="text-gray-400 text-sm">
+                                  Horário
+                                </h3>
+                                <h4 className="text-sm ">{hour}</h4>
+                              </div>
+                            )}
+
+                            <div className="flex justify-between">
+                              <h3 className="text-gray-400 text-sm">
+                                Barbearia
+                              </h3>
                               <h4 className="text-sm ">{"Nome barbearia"}</h4>
                             </div>
-                          
+                          </div>
                         </CardContent>
                       </Card>
                     </div>
+
+                    <SheetFooter className="px-5 justify-center ">
+                      <Button
+                        onClick={handleBookingSubmit}
+                        className="w-full"
+                        disabled={!hour || !date || submitIsLoading}
+                      >
+                        {submitIsLoading && (
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        )}
+                        Confirmar Reserva
+                      </Button>
+                    </SheetFooter>
                   </SheetContent>
                 </Sheet>
               </div>
