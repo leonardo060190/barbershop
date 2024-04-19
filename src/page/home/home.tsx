@@ -28,6 +28,7 @@ const home = () => {
             <div className=" mt-6">
               <Search />
             </div>
+            
           </div>
         </div>
         {/* Recomendados */}

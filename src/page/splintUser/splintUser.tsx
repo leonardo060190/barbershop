@@ -12,8 +12,11 @@ import {
 } from "@/components/ui/carousel";
 import BarbershopItemRecomendados from "@/components/barbershopItem/barbershopItemRecomendados";
 import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemPopulares";
+import bookings from "../bookings/bookins";
+
 
 const splintUser = () => {
+
   return (
     <div>
       <HeaderUser />
@@ -36,7 +39,10 @@ const splintUser = () => {
               <h2 className="text-xs mb-3 uppercase text-gray-400 font-bold">
                 Agendamentos
               </h2>
-              <BookingItem />
+              {/* {bookings.map((booking.id) =>(
+                <BookingItem key={booking.id} booking={booking}/>
+              ))} */}
+              
             </div>
           </div>
         </div>
