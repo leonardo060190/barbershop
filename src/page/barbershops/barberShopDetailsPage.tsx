@@ -8,9 +8,9 @@ const barberShopDetailsPage = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col md:flex-row">
-        <div className="">
-          <div className="px-12 pb-6 ">
+      <div className="px-12 flex flex-col md:flex-row">
+        <div>
+          <div className="pb-6">
             <div className=" pt-10 ">
               <img
                 src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
@@ -21,7 +21,7 @@ const barberShopDetailsPage = () => {
               />
             </div>
             <div className="flex justify-between pb-6 border-b border-solid border-secondary">
-              <div className="px-5 pt-3">
+              <div className="px-5 pt-6">
                 <h1 className="text-xl font-bold">BarberShop</h1>
 
                 <div className="flex gap-1 mt-3">
@@ -46,8 +46,8 @@ const barberShopDetailsPage = () => {
             </div>
           </div>
         
-        <div className="px-12 pb-6 flex justify-between">
-          <div className="px5 gap-4 flex w-96 flex-col ">
+        <div className=" pb-6 flex-wrap justify-center">
+          <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
             <ServiceItem />
             <ServiceItem />
             <ServiceItem />
@@ -59,7 +59,7 @@ const barberShopDetailsPage = () => {
           </div>
         </div>
         </div>
-        <div className="px-12 py-10 w-96">
+        <div className="pl-12 py-10 flex w-auto">
           <Information />
         </div>
       </div>

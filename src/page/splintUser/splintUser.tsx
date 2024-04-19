@@ -1,7 +1,7 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import HeaderUser from "../../components/header/headerUser";
 
-import Search from "@/components/layout/search";
+import Search from "@/components/layout/search/search";
 import BookingItem from "@/components/bookingItem/bookingItem";
 import {
   Carousel,

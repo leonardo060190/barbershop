@@ -7,30 +7,36 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Smartphone } from "lucide-react";
 
 const information = () => {
   return (
     <div>
-      <Card className="px-3 py-3">
+      <Card className="px-3 py-3 w-auto">
         <div className="relative ">
           <img
-            className="w-full h-[180px]"
+            className="w-full h-full"
             src="/BarberShopCard.png"
             alt="barber"
           />
 
           <CardHeader>
             Sobre nós
-            <CardDescription className="border-b border-solid border-secondary">
+            <CardDescription className="py-3 border-b border-solid border-secondary">
               informações...
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <div>
-              <p className="text-sm">485555555</p>
-            </div>
-            <div className=" border-b border-solid border-secondary">
-              <p className="text-sm">485555555</p>
+            <div className="py-5 pt-0 flex flex-col gap-4  border-b border-solid border-secondary">
+              <p className="text-sm flex gap-3 items-center">
+                <Smartphone size={16} className="text-primary" />
+                485555555
+              </p>
+
+              <p className="text-sm flex gap-3 items-center">
+                <Smartphone size={16} className="text-primary" />
+                485555555
+              </p>
             </div>
 
             <div className="mt-5 flex flex-col gap-3">

@@ -111,8 +111,8 @@ const ServiceItem = () => {
   console.log(timeList);
 
   return (
-    <div>
-      <Card>
+    <div >
+      <Card className="w-full">
         <CardContent className="p-3">
           <div className="flex gap-6 items-center">
             <div className="relative ">
