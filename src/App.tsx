@@ -5,7 +5,7 @@ import "./index.css";
 import Home from "./page/home/home";
 import User from "./page/splintUser/splintUser";
 import BarberShops from "./page/barbershops/barberShopDetailsPage";
-import RegistrationPage from "./page/registrationPage/registrationPage";
+import RegistrationPage from "./page/registrationPage/registrationUserPage";
 import RegistrationBarbershop from "./page/registrationPage/registrationBarbershop";
 import Bookings from "./page/bookings/bookins";
 import Footer from "./components/layout/footer/footer";

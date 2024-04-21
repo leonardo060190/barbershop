@@ -7,7 +7,8 @@ type FormValues = {
   name: string;
   email: string;
   cpf: string;
-  lastname: string;
+  socialreason: string;
+  cnpj: string;
   password: string;
 };
 
@@ -24,55 +25,55 @@ const FormCadastroUser = () => {
     console.log(data); // Aqui você pode acessar os dados do formulário
   };
 
-  // Função para validar o CPF
-  function validateCPF(cpf: string) {
-    // Remover caracteres não numéricos
-    const cleanedCPF = cpf.replace(/\D/g, "");
+  // Função para validar o CNPJ
+  function validateCNPJ(cnpj: string) {
+    const cleanedCNPJ = cnpj.replace(/\D/g, ""); // Remover caracteres não numéricos
 
-    // Verificar se o CPF possui 11 dígitos
-    if (cleanedCPF.length !== 11) {
-      return "CPF must have 11 digits";
+    // Verificar se o CNPJ possui 14 dígitos
+    if (cleanedCNPJ.length !== 14) {
+      return "CNPJ must have 14 digits";
     }
 
-    // Verificar se todos os dígitos são iguais
-    if (/^(\d)\1{10}$/.test(cleanedCPF)) {
-      return "Invalid CPF";
-    }
-
-    // Calcular dígito verificador
+    // Calcular os dígitos verificadores
     let sum = 0;
-    let remainder;
+    let position = 5;
 
-    for (let i = 1; i <= 9; i++) {
-      sum += parseInt(cleanedCPF.substring(i - 1, i)) * (11 - i);
+    for (let i = 0; i < 12; i++) {
+      sum += parseInt(cleanedCNPJ.charAt(i)) * position;
+      position--;
+
+      if (position < 2) {
+        position = 9;
+      }
     }
 
-    remainder = (sum * 10) % 11;
-
-    if (remainder === 10 || remainder === 11) {
-      remainder = 0;
-    }
-
-    if (remainder !== parseInt(cleanedCPF.substring(9, 10))) {
-      return "Invalid CPF";
-    }
+    let remainder = sum % 11;
+    const firstDigit = remainder < 2 ? 0 : 11 - remainder;
 
     sum = 0;
-    for (let i = 1; i <= 10; i++) {
-      sum += parseInt(cleanedCPF.substring(i - 1, i)) * (12 - i);
+    position = 6;
+
+    for (let i = 0; i < 13; i++) {
+      sum += parseInt(cleanedCNPJ.charAt(i)) * position;
+      position--;
+
+      if (position < 2) {
+        position = 9;
+      }
     }
 
-    remainder = (sum * 10) % 11;
+    remainder = sum % 11;
+    const secondDigit = remainder < 2 ? 0 : 11 - remainder;
 
-    if (remainder === 10 || remainder === 11) {
-      remainder = 0;
+    // Verificar se os dígitos verificadores estão corretos
+    if (
+      parseInt(cleanedCNPJ.charAt(12)) !== firstDigit ||
+      parseInt(cleanedCNPJ.charAt(13)) !== secondDigit
+    ) {
+      return "Invalid CNPJ";
     }
 
-    if (remainder !== parseInt(cleanedCPF.substring(10, 11))) {
-      return "Invalid CPF";
-    }
-
-    return;
+    return; // Retorna uma string vazia se o CNPJ for válido
   }
 
   return (
@@ -89,20 +90,6 @@ const FormCadastroUser = () => {
             </FormControl>
             {errors.name && (
               <p className="text-red-500">{errors.name.message}</p>
-            )}
-          </FormItem>
-          <FormItem>
-            <FormLabel>Last Name</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter your username"
-                {...register("lastname", {
-                  required: "last name is required",
-                })}
-              />
-            </FormControl>
-            {errors.lastname && (
-              <p className="text-red-500">{errors.lastname.message}</p>
             )}
           </FormItem>
 
@@ -126,17 +113,34 @@ const FormCadastroUser = () => {
           </FormItem>
 
           <FormItem>
-            <FormLabel>CPF</FormLabel>
+            <FormLabel>CNPJ</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter your CPF"
-                {...register("cpf", {
-                  required: "CPF is required",
-                  validate: validateCPF,
+                placeholder="Enter your CNPJ"
+                {...register("cnpj", {
+                  required: "CNPJ is required",
+                  validate: validateCNPJ,
                 })}
               />
             </FormControl>
-            {errors.cpf && <p className="text-red-500">{errors.cpf.message}</p>}
+            {errors.cnpj && (
+              <p className="text-red-500">{errors.cnpj.message}</p>
+            )}
+          </FormItem>
+
+          <FormItem>
+            <FormLabel>Razão social</FormLabel>
+            <FormControl>
+              <Input
+                placeholder="Enter your social reason"
+                {...register("socialreason", {
+                  required: "social reason is required",
+                })}
+              />
+            </FormControl>
+            {errors.socialreason && (
+              <p className="text-red-500">{errors.socialreason.message}</p>
+            )}
           </FormItem>
 
           <FormItem>
@@ -144,7 +148,7 @@ const FormCadastroUser = () => {
             <FormControl>
               <Input
                 type="password"
-                placeholder="Enter your password"
+                placeholder="create one password"
                 {...register("password", {
                   required: "Password is required",
                   minLength: {

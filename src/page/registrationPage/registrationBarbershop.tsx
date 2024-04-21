@@ -1,9 +1,16 @@
-
+import FormCadastroBarbershop from "@/components/form/FormCadastroBarbershop";
+import Header from "@/components/header/headerRegistration";
 
 const registrationBarbershop = () => {
   return (
-    <div>registrationBarbershop</div>
-  )
-}
+    <>
+      
+      <Header />
+      <div className="px-12 py-12">
+        <FormCadastroBarbershop />
+      </div>
+    </>
+  );
+};
 
-export default registrationBarbershop
+export default registrationBarbershop;

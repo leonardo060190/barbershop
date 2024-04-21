@@ -1,5 +1,5 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
-import HeaderUser from "../../components/header/headerUser";
+import HeaderUser from "../../components/header/header";
 
 import Search from "@/components/layout/search/search";
 import BookingItem from "@/components/bookingItem/bookingItem";
