@@ -12,7 +12,7 @@ import { Smartphone } from "lucide-react";
 const information = () => {
   return (
     <div>
-      <Card className="px-3 py-3 w-auto">
+      <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">
         <div className="relative ">
           <img
             className="w-full h-full"
@@ -22,8 +22,8 @@ const information = () => {
 
           <CardHeader>
             Sobre nós
-            <CardDescription className="py-3 border-b border-solid border-secondary">
-              informações...
+            <CardDescription className="py-3 break-all border-b border-solid border-secondary">
+              <p>informações...</p>
             </CardDescription>
           </CardHeader>
           <CardContent>

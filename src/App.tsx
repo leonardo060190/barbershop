@@ -8,6 +8,7 @@ import BarberShops from "./page/barbershops/barberShopDetailsPage";
 import CustomerRegistration from "./page/registrationPage/registrationUserPage";
 import RegistrationBarbershop from "./page/registrationPage/registrationBarbershop";
 import Bookings from "./page/bookings/bookins";
+import Splintbarbershop from "./page/splintBarbershop/SplintBarbershop"
 import Footer from "./components/layout/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -20,10 +21,8 @@ function App() {
         <Route path="/user" element={<User />} />
         <Route path="/barberShops" element={<BarberShops />} />
         <Route path="/customerRegistration" element={<CustomerRegistration />} />
-        <Route
-          path="/registrationBarbershop"
-          element={<RegistrationBarbershop />}
-        />
+        <Route path="/registrationBarbershop" element={<RegistrationBarbershop />}/>
+        <Route path="/splintbarbershop" element={<Splintbarbershop />}/>  
         <Route path="/bookings" element={<Bookings />} />
       </Routes>
       <Toaster />

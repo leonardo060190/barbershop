@@ -1,12 +1,11 @@
 import Header from "@/components/header/header";
-import ServiceItem from "./components/ServiceItem";
-import Information from "./components/information";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPinIcon, StarIcon } from "lucide-react";
+import {StarIcon } from "lucide-react";
+import ServiceItem from "../barbershops/components/ServiceItem";
 
-const barberShopDetailsPage = () => {
+const SplintBarbershop = () => {
   return (
-    <div>
+    <>
       <Header />
       <div className="px-12 max-w-[100rem] min-w-[32rem] flex flex-col md:flex-row">
         <div>
@@ -24,10 +23,7 @@ const barberShopDetailsPage = () => {
               <div className="px-5 pt-6">
                 <h1 className="text-xl font-bold">BarberShop</h1>
 
-                <div className="flex gap-1 mt-3">
-                  <MapPinIcon className="text-primary" size={18} />
-                  <p className="text-sm">Endereço</p>
-                </div>
+                
               </div>
               <div className="mt-5">
                 <Card>
@@ -45,26 +41,23 @@ const barberShopDetailsPage = () => {
               </div>
             </div>
           </div>
-        
-        <div className=" pb-6 flex-wrap justify-center">
-          <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
-            <ServiceItem />
-            <ServiceItem />
-            <ServiceItem />
-            <ServiceItem />
-            <ServiceItem />
-            <ServiceItem />
-            <ServiceItem />
-            <ServiceItem />
+
+          <div className=" pb-6 flex-wrap justify-center">
+            <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
+              <ServiceItem />
+              <ServiceItem />
+              <ServiceItem />
+              <ServiceItem />
+              <ServiceItem />
+              <ServiceItem />
+              <ServiceItem />
+              <ServiceItem />
+            </div>
           </div>
         </div>
-        </div>
-        <div className="pl-12 py-10">
-          <Information />
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default barberShopDetailsPage;
+export default SplintBarbershop;
