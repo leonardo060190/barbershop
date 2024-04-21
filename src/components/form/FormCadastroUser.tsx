@@ -9,6 +9,7 @@ type FormValues = {
   cpf: string;
   lastname: string;
   password: string;
+  birthDate: string;
 };
 
 const FormCadastroUser = () => {
@@ -76,40 +77,49 @@ const FormCadastroUser = () => {
   }
 
   return (
-    <div>
+    <div className="">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <FormItem>
-            <FormLabel>Name</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter your user name"
-                {...register("name", { required: "Name is required" })}
-              />
-            </FormControl>
-            {errors.name && (
-              <p className="text-red-500">{errors.name.message}</p>
-            )}
-          </FormItem>
-          <FormItem>
-            <FormLabel>Last Name</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter your username"
-                {...register("lastname", {
-                  required: "last name is required",
-                })}
-              />
-            </FormControl>
-            {errors.lastname && (
-              <p className="text-red-500">{errors.lastname.message}</p>
-            )}
-          </FormItem>
-
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-3  grid gap-3 sm:grid-cols-1"
+        >
+          
+          <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full "
+                  placeholder="Enter your user name"
+                  {...register("name", { required: "Name is required" })}
+                />
+              </FormControl>
+              {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+              )}
+            </FormItem>
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full"
+                  placeholder="Enter your last name"
+                  {...register("lastname", {
+                    required: "last name is required",
+                  })}
+                />
+              </FormControl>
+              {errors.lastname && (
+                <p className="text-red-500">{errors.lastname.message}</p>
+              )}
+            </FormItem>
+          </div>
+          
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
+                className="w-full"
                 placeholder="Enter your email"
                 {...register("email", {
                   required: "Email is required",
@@ -124,25 +134,46 @@ const FormCadastroUser = () => {
               <p className="text-red-500">{errors.email.message}</p>
             )}
           </FormItem>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>CPF</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full"
+                  placeholder="Enter your CPF"
+                  {...register("cpf", {
+                    required: "CPF is required",
+                    validate: validateCPF,
+                  })}
+                />
+              </FormControl>
+              {errors.cpf && (
+                <p className="text-red-500">{errors.cpf.message}</p>
+              )}
+            </FormItem>
 
-          <FormItem>
-            <FormLabel>CPF</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter your CPF"
-                {...register("cpf", {
-                  required: "CPF is required",
-                  validate: validateCPF,
-                })}
-              />
-            </FormControl>
-            {errors.cpf && <p className="text-red-500">{errors.cpf.message}</p>}
-          </FormItem>
-
+            <FormItem>
+              <FormLabel> Birth date</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full"
+                  placeholder="Enter your birth date"
+                  {...register("birthDate", {
+                    required: "Birth date is required",
+                  })}
+                />
+              </FormControl>
+              {errors.birthDate && (
+                <p className="text-red-500">{errors.birthDate.message}</p>
+              )}
+            </FormItem>
+          </div>
           <FormItem>
             <FormLabel>Password</FormLabel>
             <FormControl>
               <Input
+                className="w-full"
                 type="password"
                 placeholder="Enter your password"
                 {...register("password", {

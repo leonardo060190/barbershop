@@ -6,7 +6,7 @@ const registrationBarbershop = () => {
     <>
       
       <Header />
-      <div className="px-12 py-12">
+      <div className="px-16 py-12 mb-10">
         <FormCadastroBarbershop />
       </div>
     </>

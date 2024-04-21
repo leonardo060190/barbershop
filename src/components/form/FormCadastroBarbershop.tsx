@@ -77,22 +77,42 @@ const FormCadastroUser = () => {
   }
 
   return (
-    <div>
+    <div className="items-center">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <FormItem>
-            <FormLabel>Name</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter your user name"
-                {...register("name", { required: "Name is required" })}
-              />
-            </FormControl>
-            {errors.name && (
-              <p className="text-red-500">{errors.name.message}</p>
-            )}
-          </FormItem>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-3 grid gap-3 sm:grid-cols-1"
+        >
+          <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your user name"
+                  {...register("name", { required: "Name is required" })}
+                />
+              </FormControl>
+              {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+              )}
+            </FormItem>
 
+            <FormItem>
+              <FormLabel>CNPJ</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Enter your CNPJ"
+                  {...register("cnpj", {
+                    required: "CNPJ is required",
+                    validate: validateCNPJ,
+                  })}
+                />
+              </FormControl>
+              {errors.cnpj && (
+                <p className="text-red-500">{errors.cnpj.message}</p>
+              )}
+            </FormItem>
+          </div>
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
@@ -109,22 +129,6 @@ const FormCadastroUser = () => {
             </FormControl>
             {errors.email && (
               <p className="text-red-500">{errors.email.message}</p>
-            )}
-          </FormItem>
-
-          <FormItem>
-            <FormLabel>CNPJ</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Enter your CNPJ"
-                {...register("cnpj", {
-                  required: "CNPJ is required",
-                  validate: validateCNPJ,
-                })}
-              />
-            </FormControl>
-            {errors.cnpj && (
-              <p className="text-red-500">{errors.cnpj.message}</p>
             )}
           </FormItem>
 
