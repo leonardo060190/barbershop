@@ -5,6 +5,7 @@ import EditServices from "./components/renderForms/EditServices";
 import EditProfile from "./components/renderForms/EditProfile";
 import AddressRegistration from "./components/renderForms/AddressRegistration";
 import RegisterServices from "./components/renderForms/RegisterServices";
+import RegisterOpeningHours from "./components/renderForms/RegisterOpeningHours";
 
 const SplintBarbershop = () => {
   return (
@@ -26,10 +27,11 @@ const SplintBarbershop = () => {
               <div className=" pt-6 flex flex-col gap-4">
                 <h1 className="text-xl font-bold">BarberShop</h1>
                 <div className="flex gap-4">
-                  <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
+                  <div className="grid gap-4 grid-cols-2 md-grid-cols-3 xl:grid-cols-4">
                     <EditProfile />
                     <AddressRegistration />
                     <RegisterServices />
+                    <RegisterOpeningHours/>
                   </div>
                 </div>
               </div>
