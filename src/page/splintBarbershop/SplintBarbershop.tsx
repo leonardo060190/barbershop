@@ -2,6 +2,8 @@ import Header from "@/components/header/header";
 import { Card, CardContent } from "@/components/ui/card";
 import { StarIcon } from "lucide-react";
 import EditServices from "./components/EditServices";
+import EditProfile from "./components/EditProfile";
+import AddressRegistration from "./components/AddressRegistration";
 
 const SplintBarbershop = () => {
   return (
@@ -20,8 +22,12 @@ const SplintBarbershop = () => {
               />
             </div>
             <div className="flex justify-between pb-6 border-b border-solid border-secondary">
-              <div className=" pt-6">
+              <div className=" pt-6 flex flex-col gap-4">
                 <h1 className="text-xl font-bold">BarberShop</h1>
+                <div className="flex gap-4">
+                  <EditProfile />
+                  <AddressRegistration />
+                </div>
               </div>
               <div className="mt-5">
                 <Card>

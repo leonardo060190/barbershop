@@ -3,10 +3,10 @@ import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+// import { useState } from "react";
 
 type FormValues = {
-  foto: string;
+  Photograph: string;
   name: string;
   price: string;
   description: string;
@@ -14,7 +14,7 @@ type FormValues = {
 
 const FormEdit = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-  const [isFormOpen, setIsFormOpen] = useState(true);
+  // const [isFormOpen, setIsFormOpen] = useState(true);
   const {
     handleSubmit,
     register,
@@ -22,7 +22,7 @@ const FormEdit = () => {
   } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    setIsFormOpen(false);
+    // setIsFormOpen(false);
     console.log(data); // Aqui você pode acessar os dados do formulário
   };
 
@@ -35,9 +35,9 @@ const FormEdit = () => {
     return true;
   };
 
-  if (!isFormOpen) {
-    return <p>Formulário enviado com sucesso! Fechando...</p>;
-  }
+  // if (!isFormOpen) {
+  //   return <p>Formulário enviado com sucesso! Fechando...</p>;
+  // }
 
   return (
     <div className="">
@@ -48,16 +48,16 @@ const FormEdit = () => {
         >
           <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>Foto</FormLabel>
+              <FormLabel>Photograph</FormLabel>
               <FormControl>
                 <Input
                   className="w-full "
                   placeholder="URL da foto"
-                  {...register("foto", { required: "Name is required" })}
+                  {...register("Photograph", { required: "Photograph is required" })}
                 />
               </FormControl>
-              {errors.foto && (
-                <p className="text-red-500">{errors.foto.message}</p>
+              {errors.Photograph && (
+                <p className="text-red-500">{errors.Photograph.message}</p>
               )}
             </FormItem>
           </div>

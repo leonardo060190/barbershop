@@ -1,15 +1,23 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "../../../components/ui/button";
+// import {
+//   Sheet,
+//   SheetContent,
+//   SheetHeader,
+//   SheetTitle,
+//   SheetTrigger,
+// } from "@/components/ui/sheet";
 import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import { Edit, X } from "lucide-react";
-import FormEdit from "./FormEdit";
+import FormEditService from "./FormEditService";
 
 const ServiceItem = () => {
   // const {data} = useSession()
@@ -49,7 +57,7 @@ const ServiceItem = () => {
                 Delete
               </Button>
 
-              <Sheet>
+              {/* <Sheet>
                 <SheetTrigger asChild>
                   <Button variant="secondary" className="gap-3 text-primary">
                     <Edit size={18} />
@@ -66,7 +74,23 @@ const ServiceItem = () => {
                     <FormEdit />
                   </div>
                 </SheetContent>
-              </Sheet>
+              </Sheet> */}
+              
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button variant="secondary" className="gap-3 text-primary">
+                    <Edit size={18} />
+                    To edit
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Edit services</DialogTitle>
+                    <DialogDescription></DialogDescription>
+                  </DialogHeader>
+                  <FormEditService />
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </CardContent>
