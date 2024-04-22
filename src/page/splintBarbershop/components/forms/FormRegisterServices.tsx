@@ -12,7 +12,7 @@ type FormValues = {
   description: string;
 };
 
-const FormEdit = () => {
+const FormRegisterServices = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   // const [isFormOpen, setIsFormOpen] = useState(true);
   const {
@@ -40,7 +40,7 @@ const FormEdit = () => {
   // }
 
   return (
-    <div className="">
+    <div>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -53,7 +53,9 @@ const FormEdit = () => {
                 <Input
                   className="w-full "
                   placeholder="URL da foto"
-                  {...register("Photograph", { required: "Photograph is required" })}
+                  {...register("Photograph", {
+                    required: "Photograph is required",
+                  })}
                 />
               </FormControl>
               {errors.Photograph && (
@@ -117,4 +119,4 @@ const FormEdit = () => {
   );
 };
 
-export default FormEdit;
+export default FormRegisterServices;

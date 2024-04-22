@@ -8,28 +8,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-
+import FormEditProfile from "../forms/FormEditProfile";
 import { Edit } from "lucide-react";
-import FormAddress from "./FormAddress";
 
-const AddressRegistration = () => {
+const EditProfile = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="secondary" className="gap-3 text-primary">
           <Edit size={18} />
-          Address registration
+          Edit profile
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader  className=" border-b border-solid border-secondary ">
-          <DialogTitle  className="pb-3">Register your address</DialogTitle>
+          <DialogTitle  className="pb-3">Profile edit form</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <FormAddress />
+        <FormEditProfile />
       </DialogContent>
     </Dialog>
   );
 };
 
-export default AddressRegistration;
+export default EditProfile;

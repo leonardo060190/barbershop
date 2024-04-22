@@ -1,9 +1,10 @@
 import Header from "@/components/header/header";
-import { Card, CardContent } from "@/components/ui/card";
-import { StarIcon } from "lucide-react";
-import EditServices from "./components/EditServices";
-import EditProfile from "./components/EditProfile";
-import AddressRegistration from "./components/AddressRegistration";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { StarIcon } from "lucide-react";
+import EditServices from "./components/renderForms/EditServices";
+import EditProfile from "./components/renderForms/EditProfile";
+import AddressRegistration from "./components/renderForms/AddressRegistration";
+import RegisterServices from "./components/renderForms/RegisterServices";
 
 const SplintBarbershop = () => {
   return (
@@ -25,11 +26,14 @@ const SplintBarbershop = () => {
               <div className=" pt-6 flex flex-col gap-4">
                 <h1 className="text-xl font-bold">BarberShop</h1>
                 <div className="flex gap-4">
-                  <EditProfile />
-                  <AddressRegistration />
+                  <div className="grid gap-4 grid-cols-2 md:grid-cols-3">
+                    <EditProfile />
+                    <AddressRegistration />
+                    <RegisterServices />
+                  </div>
                 </div>
               </div>
-              <div className="mt-5">
+              {/* <div className="mt-5">
                 <Card>
                   <CardContent className="px-4 py-3">
                     <div className="flex gap-2 px-6 items-center">
@@ -42,7 +46,7 @@ const SplintBarbershop = () => {
                     (899 avaliações)
                   </CardContent>
                 </Card>
-              </div>
+              </div> */}
             </div>
           </div>
 

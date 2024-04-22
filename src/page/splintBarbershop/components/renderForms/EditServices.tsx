@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "../../../components/ui/button";
+import { Button } from "../../../../components/ui/button";
 // import {
 //   Sheet,
 //   SheetContent,
@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/dialog";
 
 import { Edit, X } from "lucide-react";
-import FormEditService from "./FormEditService";
+import FormEditService from "../forms/FormEditService";
 
-const ServiceItem = () => {
+const EditServices = () => {
   // const {data} = useSession()
 
   return (
@@ -47,7 +47,7 @@ const ServiceItem = () => {
                   {Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
-                  }).format(Number(55.4))}
+                  }).format(Number(54.4))}
                 </p>
               </div>
             </div>
@@ -84,8 +84,8 @@ const ServiceItem = () => {
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Edit services</DialogTitle>
+                  <DialogHeader  className=" border-b border-solid border-secondary ">
+                    <DialogTitle className="pb-3">Edit services</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
                   <FormEditService />
@@ -99,4 +99,4 @@ const ServiceItem = () => {
   );
 };
 
-export default ServiceItem;
+export default EditServices;
