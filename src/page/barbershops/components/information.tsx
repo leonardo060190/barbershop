@@ -1,12 +1,11 @@
-import Header from "@/components/header/header";
+
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+ } from "@/components/ui/card";
+// import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Smartphone } from "lucide-react";
 
 const information = () => {

@@ -1,7 +1,7 @@
 import Header from "@/components/header/header";
 import { Card, CardContent } from "@/components/ui/card";
-import {StarIcon } from "lucide-react";
-import ServiceItem from "../barbershops/components/ServiceItem";
+import { StarIcon } from "lucide-react";
+import EditServices from "./components/EditServices";
 
 const SplintBarbershop = () => {
   return (
@@ -20,10 +20,8 @@ const SplintBarbershop = () => {
               />
             </div>
             <div className="flex justify-between pb-6 border-b border-solid border-secondary">
-              <div className="px-5 pt-6">
+              <div className=" pt-6">
                 <h1 className="text-xl font-bold">BarberShop</h1>
-
-                
               </div>
               <div className="mt-5">
                 <Card>
@@ -43,15 +41,13 @@ const SplintBarbershop = () => {
           </div>
 
           <div className=" pb-6 flex-wrap justify-center">
+            <h1 className="text-xl font-bold py-6">Registered services</h1>
             <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
-              <ServiceItem />
-              <ServiceItem />
-              <ServiceItem />
-              <ServiceItem />
-              <ServiceItem />
-              <ServiceItem />
-              <ServiceItem />
-              <ServiceItem />
+              <EditServices />
+              <EditServices />
+              <EditServices />
+              <EditServices />
+              <EditServices />
             </div>
           </div>
         </div>
