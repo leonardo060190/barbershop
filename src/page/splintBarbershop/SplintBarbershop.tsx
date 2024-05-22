@@ -3,9 +3,11 @@ import Header from "@/components/header/header";
 // import { StarIcon } from "lucide-react";
 import EditServices from "./components/renderForms/EditServices";
 import EditProfile from "./components/renderForms/EditProfile";
-import AddressRegistration from "./components/renderForms/AddressRegistration";
+import AddressRegistration from "../../components/form/formsRender/AddressRegistration";
 import RegisterServices from "./components/renderForms/RegisterServices";
 import RegisterOpeningHours from "./components/renderForms/RegisterOpeningHours";
+import TelefoneRender from "@/components/telefone/TelefoneRender";
+import Information from "./components/information/Information";
 
 const SplintBarbershop = () => {
   return (
@@ -23,15 +25,17 @@ const SplintBarbershop = () => {
                 height={687}
               />
             </div>
+
             <div className="flex justify-between pb-6 border-b border-solid border-secondary">
               <div className=" pt-6 flex flex-col gap-4">
                 <h1 className="text-xl font-bold">BarberShop</h1>
-                <div className="flex gap-4">
-                  <div className="grid gap-4 grid-cols-2 md-grid-cols-3 xl:grid-cols-4">
+                <div className="flex gap-3">
+                  <div className="grid gap-2 grid-cols-2 md-grid-cols-3 xl:grid-cols-4">
                     <EditProfile />
                     <AddressRegistration />
                     <RegisterServices />
-                    <RegisterOpeningHours/>
+                    <RegisterOpeningHours />
+                    <TelefoneRender />
                   </div>
                 </div>
               </div>
@@ -62,6 +66,9 @@ const SplintBarbershop = () => {
               <EditServices />
             </div>
           </div>
+        </div>
+        <div className="pl-12 py-10">
+          <Information />
         </div>
       </div>
     </>

@@ -111,7 +111,7 @@ const ServiceItem = () => {
   console.log(timeList);
 
   return (
-    <div >
+    <div>
       <Card className="w-full">
         <CardContent className="p-3">
           <div className="flex gap-6 items-center">
@@ -127,9 +127,10 @@ const ServiceItem = () => {
             </div>
 
             <div className="flex flex-col w-full">
-              <h1 className="font-bold text-sm">Service nome</h1>
-              <p className="text-sm text-gray-400">Descrição...</p>
-
+              <div className="break-all">
+                <h1 className="font-bold text-sm">Service nome</h1>
+                <p className="text-sm text-gray-400">Descrição...</p>
+              </div>
               <div className="flex items-center justify-between mt-2">
                 <p className="text-l text-sm font-bold text-primary">
                   {Intl.NumberFormat("pt-BR", {

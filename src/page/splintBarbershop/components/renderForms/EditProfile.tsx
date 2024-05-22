@@ -15,7 +15,7 @@ const EditProfile = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="gap-3 text-primary">
+        <Button variant="secondary" className="gap-3 text-primary flex justify-start">
           <Edit size={18} />
           Edit profile
         </Button>

@@ -5,11 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 type FormValues = {
-  Photograph: string;
-  name: string;
+  foto: string;
+  nome: string;
   cnpj: string;
   email: string;
-  socialreason: string;
+  razaoSocial: string;
   password: string;
 };
 
@@ -89,18 +89,33 @@ const FormEdit = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3  grid gap-3 sm:grid-cols-1"
         >
+           <div className="grid grid-cols-1 gap-4">
+            <FormItem>
+              <FormLabel>Foto</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full "
+                  placeholder="URL da foto"
+                  {...register("foto", { required: "Foto é requerido" })}
+                />
+              </FormControl>
+              {errors.foto && (
+                <p className="text-red-500">{errors.foto.message}</p>
+              )}
+            </FormItem>
+          </div>
           <div className="grid grid-cols-2  gap-4">
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>nome</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"
-                  placeholder="Enter your Name"
-                  {...register("name", { required: "Name is required" })}
+                  placeholder="Digite o nome"
+                  {...register("nome", { required: "Nome é requerido" })}
                 />
               </FormControl>
-              {errors.name && (
-                <p className="text-red-500">{errors.name.message}</p>
+              {errors.nome && (
+                <p className="text-red-500">{errors.nome.message}</p>
               )}
             </FormItem>
 
@@ -110,9 +125,9 @@ const FormEdit = () => {
                 <Input
                   type="text"
                   className="w-full"
-                  placeholder="Enter your CNPJ"
+                  placeholder="Digite o cnpj"
                   {...register("cnpj", {
-                    required: "cnpj is required",
+                    required: "cnpj é requerido",
                     validate: validateCNPJ,
                   })}
                 />
@@ -128,9 +143,9 @@ const FormEdit = () => {
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter your email"
+                placeholder="Digite o e-mail"
                 {...register("email", {
-                  required: "Email is required",
+                  required: "E-mail é requerido",
                   pattern: {
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     message: "Invalid email address",
@@ -148,14 +163,14 @@ const FormEdit = () => {
             <FormLabel>Razão social</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter your social reason"
-                {...register("socialreason", {
-                  required: "social reason is required",
+                placeholder="Digite a razão social"
+                {...register("razaoSocial", {
+                  required: "Razão social é requerido",
                 })}
               />
             </FormControl>
-            {errors.socialreason && (
-              <p className="text-red-500">{errors.socialreason.message}</p>
+            {errors.razaoSocial && (
+              <p className="text-red-500">{errors.razaoSocial.message}</p>
             )}
           </FormItem>
           </div>
@@ -165,9 +180,9 @@ const FormEdit = () => {
             <FormControl>
               <Input
                 type="password"
-                placeholder="create one password"
+                placeholder="Digite a senha"
                 {...register("password", {
-                  required: "Password is required",
+                  required: "Senha é requerido",
                   minLength: {
                     value: 6,
                     message: "Password must have at least 6 characters",

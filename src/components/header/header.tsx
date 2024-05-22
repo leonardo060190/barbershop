@@ -4,6 +4,7 @@ import { Card, CardContent } from "../ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Link } from "react-router-dom";
 import SideMenu from "@/components/sideMenu/sideMenu";
+import AddressRegistration from "../form/formsRender/AddressRegistration";
 
 const header = () => {
   return (
@@ -21,6 +22,8 @@ const header = () => {
           >
             <CalendarDays size={16} className="me-2" /> Agendamentos
           </Link>
+
+          <AddressRegistration />
 
           <Sheet>
             <SheetTrigger asChild>

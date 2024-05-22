@@ -4,12 +4,13 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
 type FormValues = {
-  name: string;
+  foto: string;
+  nome: string;
   email: string;
   cpf: string;
-  lastname: string;
+  sobrenome: string;
   password: string;
-  birthDate: string;
+  dataNascimento: string;
 };
 
 const FormCadastroUser = () => {
@@ -83,46 +84,61 @@ const FormCadastroUser = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3  grid gap-3 sm:grid-cols-1"
         >
-          
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>foto</FormLabel>
               <FormControl>
                 <Input
                   className="w-full "
-                  placeholder="Enter your user name"
-                  {...register("name", { required: "Name is required" })}
+                  placeholder="URL da foto"
+                  {...register("foto", { required: "Foto é requerido" })}
                 />
               </FormControl>
-              {errors.name && (
-                <p className="text-red-500">{errors.name.message}</p>
-              )}
-            </FormItem>
-            <FormItem>
-              <FormLabel>Last Name</FormLabel>
-              <FormControl>
-                <Input
-                  className="w-full"
-                  placeholder="Enter your last name"
-                  {...register("lastname", {
-                    required: "last name is required",
-                  })}
-                />
-              </FormControl>
-              {errors.lastname && (
-                <p className="text-red-500">{errors.lastname.message}</p>
+              {errors.foto && (
+                <p className="text-red-500">{errors.foto.message}</p>
               )}
             </FormItem>
           </div>
-          
+
+          <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>Nome</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full "
+                  placeholder="Digite o nome"
+                  {...register("nome", { required: "Nome é requerido" })}
+                />
+              </FormControl>
+              {errors.nome && (
+                <p className="text-red-500">{errors.nome.message}</p>
+              )}
+            </FormItem>
+            <FormItem>
+              <FormLabel>Sobrenome</FormLabel>
+              <FormControl>
+                <Input
+                  className="w-full"
+                  placeholder="Digite o sobrenome"
+                  {...register("sobrenome", {
+                    required: "Sobrenome é requerido",
+                  })}
+                />
+              </FormControl>
+              {errors.sobrenome && (
+                <p className="text-red-500">{errors.sobrenome.message}</p>
+              )}
+            </FormItem>
+          </div>
+
           <FormItem>
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
                 className="w-full"
-                placeholder="Enter your email"
+                placeholder="Digite o e-mail"
                 {...register("email", {
-                  required: "Email is required",
+                  required: "Email é requerido",
                   pattern: {
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     message: "Invalid email address",
@@ -134,16 +150,16 @@ const FormCadastroUser = () => {
               <p className="text-red-500">{errors.email.message}</p>
             )}
           </FormItem>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <FormItem>
               <FormLabel>CPF</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"
-                  placeholder="Enter your CPF"
+                  placeholder="Digite o cpf"
                   {...register("cpf", {
-                    required: "CPF is required",
+                    required: "CPF é requerido",
                     validate: validateCPF,
                   })}
                 />
@@ -154,18 +170,18 @@ const FormCadastroUser = () => {
             </FormItem>
 
             <FormItem>
-              <FormLabel> Birth date</FormLabel>
+              <FormLabel>Data de nascimento</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"
-                  placeholder="Enter your birth date"
-                  {...register("birthDate", {
-                    required: "Birth date is required",
+                  placeholder="Digite a data de nascimento"
+                  {...register("dataNascimento", {
+                    required: "Data de nascimento é requerido",
                   })}
                 />
               </FormControl>
-              {errors.birthDate && (
-                <p className="text-red-500">{errors.birthDate.message}</p>
+              {errors.dataNascimento && (
+                <p className="text-red-500">{errors.dataNascimento.message}</p>
               )}
             </FormItem>
           </div>
@@ -175,9 +191,9 @@ const FormCadastroUser = () => {
               <Input
                 className="w-full"
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Digite a senha"
                 {...register("password", {
-                  required: "Password is required",
+                  required: "Senha é requerido",
                   minLength: {
                     value: 6,
                     message: "Password must have at least 6 characters",

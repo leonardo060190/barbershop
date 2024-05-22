@@ -6,10 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 // import { useState } from "react";
 
 type FormValues = {
-  Photograph: string;
-  name: string;
-  price: string;
-  description: string;
+  foto: string;
+  nome: string;
+  preco: string;
+  descricao: string;
 };
 
 const FormEditService = () => {
@@ -48,66 +48,66 @@ const FormEditService = () => {
         >
           <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>Photograph</FormLabel>
+              <FormLabel>foto</FormLabel>
               <FormControl>
                 <Input
                   className="w-full "
                   placeholder="URL da foto"
-                  {...register("Photograph", { required: "Photograph is required" })}
+                  {...register("foto", { required: "Foto é requerido" })}
                 />
               </FormControl>
-              {errors.Photograph && (
-                <p className="text-red-500">{errors.Photograph.message}</p>
+              {errors.foto && (
+                <p className="text-red-500">{errors.foto.message}</p>
               )}
             </FormItem>
           </div>
           <div className="grid grid-cols-2  gap-4">
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Nome</FormLabel>
               <FormControl>
                 <Input
                   className="w-full"
-                  placeholder="Enter your email"
-                  {...register("name", { required: "Name is required" })}
+                  placeholder="Digite o nome"
+                  {...register("nome", { required: "Nome é requerido" })}
                 />
               </FormControl>
-              {errors.name && (
-                <p className="text-red-500">{errors.name.message}</p>
+              {errors.nome && (
+                <p className="text-red-500">{errors.nome.message}</p>
               )}
             </FormItem>
 
             <FormItem>
-              <FormLabel>Price</FormLabel>
+              <FormLabel>Preço</FormLabel>
               <FormControl>
                 <Input
                   type="text"
                   className="w-full"
 
-                  placeholder="Enter your price"
-                  {...register("price", {
-                    required: "Price is required",
+                  placeholder="Digite o preço"
+                  {...register("preco", {
+                    required: "Preço é requerido",
                     validate: validatePrice,
                   })}
                 />
               </FormControl>
-              {errors.price && (
-                <p className="text-red-500">{errors.price.message}</p>
+              {errors.preco && (
+                <p className="text-red-500">{errors.preco.message}</p>
               )}
             </FormItem>
           </div>
           <FormItem>
-            <FormLabel>Description</FormLabel>
+            <FormLabel>Descrição</FormLabel>
             <FormControl>
               <Textarea
                 className="w-full"
-                placeholder="Description"
-                {...register("description", {
-                  required: "Description is required",
+                placeholder="Faça uma descrição"
+                {...register("descricao", {
+                  required: "Descrição é requerido",
                 })}
               />
             </FormControl>
-            {errors.description && (
-              <p className="text-red-500">{errors.description.message}</p>
+            {errors.descricao && (
+              <p className="text-red-500">{errors.descricao.message}</p>
             )}
           </FormItem>
 

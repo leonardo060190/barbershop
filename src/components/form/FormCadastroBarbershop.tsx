@@ -4,10 +4,11 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
 type FormValues = {
-  name: string;
+  foto: string;
+  nome: string;
   email: string;
   cpf: string;
-  socialreason: string;
+  razaoSocial: string;
   cnpj: string;
   password: string;
 };
@@ -83,17 +84,33 @@ const FormCadastroUser = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3 grid gap-3 sm:grid-cols-1"
         >
-          <div className="grid grid-cols-2 gap-4">
+           <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>foto</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your user name"
-                  {...register("name", { required: "Name is required" })}
+                  className="w-full "
+                  placeholder="URL da foto"
+                  {...register("foto", { required: "Foto é requerido" })}
                 />
               </FormControl>
-              {errors.name && (
-                <p className="text-red-500">{errors.name.message}</p>
+              {errors.foto && (
+                <p className="text-red-500">{errors.foto.message}</p>
+              )}
+            </FormItem>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>Nome</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Digite o nome"
+                  {...register("nome", { required: "Nome é requerido" })}
+                />
+              </FormControl>
+              {errors.nome && (
+                <p className="text-red-500">{errors.nome.message}</p>
               )}
             </FormItem>
 
@@ -101,9 +118,9 @@ const FormCadastroUser = () => {
               <FormLabel>CNPJ</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Enter your CNPJ"
+                  placeholder="Digite o CNPJ"
                   {...register("cnpj", {
-                    required: "CNPJ is required",
+                    required: "CNPJ é requerido",
                     validate: validateCNPJ,
                   })}
                 />
@@ -117,9 +134,9 @@ const FormCadastroUser = () => {
             <FormLabel>Email</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter your email"
+                placeholder="Digite o e-mail"
                 {...register("email", {
-                  required: "Email is required",
+                  required: "E-mail é requerido",
                   pattern: {
                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                     message: "Invalid email address",
@@ -136,14 +153,14 @@ const FormCadastroUser = () => {
             <FormLabel>Razão social</FormLabel>
             <FormControl>
               <Input
-                placeholder="Enter your social reason"
-                {...register("socialreason", {
-                  required: "social reason is required",
+                placeholder="Digite a razão social"
+                {...register("razaoSocial", {
+                  required: "Razão social é requerido",
                 })}
               />
             </FormControl>
-            {errors.socialreason && (
-              <p className="text-red-500">{errors.socialreason.message}</p>
+            {errors.razaoSocial && (
+              <p className="text-red-500">{errors.razaoSocial.message}</p>
             )}
           </FormItem>
 
