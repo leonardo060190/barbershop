@@ -2,6 +2,8 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormItem, FormLabel, FormControl } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import {api} from "../../../config/ConfigAxios"
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   foto: string;
@@ -10,19 +12,34 @@ type FormValues = {
   cpf: string;
   razaoSocial: string;
   cnpj: string;
-  password: string;
+  senha: string;
 };
 
 const FormCadastroUser = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> =  async (data) => {
+    if(!window.confirm('Confirma o Casdastro ?')){
+      return;
+    }
+    try {
+      const respose = await api.post("/barbearias",{
+        ...data,
+      })
+      console.log(respose.data);
+      limpaFormulario();
+      navigate('/home')
+
+    } catch (error) {
+      console.error("Erro cadastro", error);
+    }
     console.log(data); // Aqui você pode acessar os dados do formulário
   };
 
@@ -77,6 +94,17 @@ const FormCadastroUser = () => {
     return; // Retorna uma string vazia se o CNPJ for válido
   }
 
+  const limpaFormulario = () => {
+    reset({
+      foto: "",
+      nome: "",
+      email: "",
+      cpf: "",
+      razaoSocial: "",
+      cnpj: "",
+      senha: ""
+    })
+  }
   return (
     <div className="items-center">
       <FormProvider {...methods}>
@@ -170,17 +198,17 @@ const FormCadastroUser = () => {
               <Input
                 type="password"
                 placeholder="create one password"
-                {...register("password", {
-                  required: "Password is required",
+                {...register("senha", {
+                  required: "A senha é requerido",
                   minLength: {
                     value: 6,
-                    message: "Password must have at least 6 characters",
+                    message: "A senha deve conter mais de 6 caracteres",
                   },
                 })}
               />
             </FormControl>
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
+            {errors.senha && (
+              <p className="text-red-500">{errors.senha.message}</p>
             )}
           </FormItem>
 

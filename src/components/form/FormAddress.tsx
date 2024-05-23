@@ -10,22 +10,22 @@ import { useState } from "react";
 //   SelectTrigger,
 //   SelectValue,
 // } from "@/components/ui/select";
-import * as React from "react"
-import { Check, ChevronsUpDown } from "lucide-react"
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command"
+} from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover"
- 
-import { cn } from "@/lib/utils"
+} from "@/components/ui/popover";
+
+import { cn } from "@/lib/utils";
 
 type FormValues = {
   rua: string;
@@ -38,8 +38,8 @@ type FormValues = {
 const FormAddress = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
   const {
     handleSubmit,
     register,
@@ -94,7 +94,7 @@ const FormAddress = () => {
       value: "astro",
       label: "Astro",
     },
-  ]
+  ];
 
   return (
     <div>
@@ -191,7 +191,7 @@ const FormAddress = () => {
               {errors.city && (
                 <p className="text-red-500">{errors.city.message}</p>
               )} */}
-
+              <FormLabel>Cidade</FormLabel>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button

@@ -2,28 +2,44 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormItem, FormLabel, FormControl } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { api } from "../../../config/ConfigAxios";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   foto: string;
   nome: string;
   email: string;
   cpf: string;
-  sobrenome: string;
-  password: string;
+  sobreNome: string;
+  senha: string;
   dataNascimento: string;
 };
 
 const FormCadastroUser = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async(data) => {
     console.log(data); // Aqui você pode acessar os dados do formulário
+    if(!window.confirm('Confirma o Casdastro ?')){
+      return;
+    }
+    try {
+      const response = await api.post("/clientes",{
+        ...data,
+      });
+      console.log(response.data);
+      limparFormulario();
+      navigate('/home')
+    } catch (error) {
+      console.error("Erro cadastro", error);
+    }
   };
 
   // Função para validar o CPF
@@ -77,6 +93,18 @@ const FormCadastroUser = () => {
     return;
   }
 
+  const limparFormulario = () =>{
+    reset({
+      foto: "",
+      nome: "",
+      email: "",
+      cpf: "",
+      sobreNome: "",
+      senha: "",
+      dataNascimento: ""
+    })
+  }
+
   return (
     <div className="">
       <FormProvider {...methods}>
@@ -120,13 +148,13 @@ const FormCadastroUser = () => {
                 <Input
                   className="w-full"
                   placeholder="Digite o sobrenome"
-                  {...register("sobrenome", {
+                  {...register("sobreNome", {
                     required: "Sobrenome é requerido",
                   })}
                 />
               </FormControl>
-              {errors.sobrenome && (
-                <p className="text-red-500">{errors.sobrenome.message}</p>
+              {errors.sobreNome && (
+                <p className="text-red-500">{errors.sobreNome.message}</p>
               )}
             </FormItem>
           </div>
@@ -192,17 +220,17 @@ const FormCadastroUser = () => {
                 className="w-full"
                 type="password"
                 placeholder="Digite a senha"
-                {...register("password", {
+                {...register("senha", {
                   required: "Senha é requerido",
                   minLength: {
                     value: 6,
-                    message: "Password must have at least 6 characters",
+                    message: "A senha deve conter mais de 6 caracteres",
                   },
                 })}
               />
             </FormControl>
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
+            {errors.senha && (
+              <p className="text-red-500">{errors.senha.message}</p>
             )}
           </FormItem>
 
