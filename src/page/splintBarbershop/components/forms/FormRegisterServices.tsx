@@ -3,7 +3,8 @@ import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-// import { useState } from "react";
+import { useState } from "react";
+import { api } from "../../../../../config/ConfigAxios";
 
 type FormValues = {
   foto: string;
@@ -14,16 +15,29 @@ type FormValues = {
 
 const FormRegisterServices = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-  // const [isFormOpen, setIsFormOpen] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(true);
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // setIsFormOpen(false);
-    console.log(data); // Aqui você pode acessar os dados do formulário
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (!window.confirm("Confirma o Casdastro ?")) {
+      return;
+    }
+    try {
+      const response = await api.post("/servicos", {
+        ...data,
+      });
+      console.log(response.data);
+      limparFormulario();
+      setIsFormOpen(false);
+      console.log(data);
+    } catch (error) {
+      console.error("Erro cadastro", error);
+    }
   };
 
   // Função de validação customizada para verificar se é um número válido
@@ -35,9 +49,18 @@ const FormRegisterServices = () => {
     return true;
   };
 
-  // if (!isFormOpen) {
-  //   return <p>Formulário enviado com sucesso! Fechando...</p>;
-  // }
+  if (!isFormOpen) {
+    return <p>Formulário enviado com sucesso!</p>;
+  }
+
+  const limparFormulario = () => {
+    reset({
+      foto: "",
+      nome: "",
+      preco: "",
+      descricao: "",
+    });
+  };
 
   return (
     <div>

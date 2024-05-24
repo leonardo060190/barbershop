@@ -3,6 +3,7 @@ import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { api } from "../../../config/ConfigAxios";
 // import {
 //   Select,
 //   SelectContent,
@@ -10,22 +11,22 @@ import { useState } from "react";
 //   SelectTrigger,
 //   SelectValue,
 // } from "@/components/ui/select";
-import * as React from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+// import * as React from "react";
+// import { Check, ChevronsUpDown } from "lucide-react";
+// import {
+//   Command,
+//   CommandEmpty,
+//   CommandGroup,
+//   CommandInput,
+//   CommandItem,
+// } from "@/components/ui/command";
+// import {
+//   Popover,
+//   PopoverContent,
+//   PopoverTrigger,
+// } from "@/components/ui/popover";
 
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 
 type FormValues = {
   rua: string;
@@ -38,17 +39,32 @@ type FormValues = {
 const FormAddress = () => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  // const [open, setOpen] = React.useState(false);
+  // const [value, setValue] = React.useState("");
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    setIsFormOpen(false);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data); // Aqui você pode acessar os dados do formulário
+    if (!window.confirm("Confirma o Casdastro ?")) {
+      return;
+    }
+    try {
+      const response = await api.post("/enderecos", {
+        ...data,
+      });
+      console.log(response.data);
+      limparFormulario();
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error("Erro cadastro", error);
+    }
+
+    // Aqui você pode acessar os dados do formulário
   };
 
   // Função de validação customizada para verificar se é um número válido
@@ -70,31 +86,18 @@ const FormAddress = () => {
   };
 
   if (!isFormOpen) {
-    return <p>Formulário enviado com sucesso! Fechando...</p>;
+    return <p>Formulário enviado com sucesso!</p>;
   }
 
-  const frameworks = [
-    {
-      value: "next.js",
-      label: "Next.js",
-    },
-    {
-      value: "sveltekit",
-      label: "SvelteKit",
-    },
-    {
-      value: "nuxt.js",
-      label: "Nuxt.js",
-    },
-    {
-      value: "remix",
-      label: "Remix",
-    },
-    {
-      value: "astro",
-      label: "Astro",
-    },
-  ];
+  const limparFormulario = () => {
+    reset({
+      rua: "",
+      bairro: "",
+      numero: "",
+      cep: "",
+      cidade: "",
+    });
+  };
 
   return (
     <div>
@@ -191,7 +194,7 @@ const FormAddress = () => {
               {errors.city && (
                 <p className="text-red-500">{errors.city.message}</p>
               )} */}
-              <FormLabel>Cidade</FormLabel>
+              {/* <FormLabel>Cidade</FormLabel>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
@@ -238,7 +241,7 @@ const FormAddress = () => {
                     </CommandGroup>
                   </Command>
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
             </FormItem>
           </div>
 
