@@ -36,7 +36,7 @@ type FormValues = {
   cidade: string;
 };
 
-const FormAddress = () => {
+const FormAddress = ({ onSave }: { onSave: () => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
   // const [open, setOpen] = React.useState(false);
@@ -45,6 +45,7 @@ const FormAddress = () => {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { errors },
   } = methods;
 
@@ -60,6 +61,7 @@ const FormAddress = () => {
       console.log(response.data);
       limparFormulario();
       setIsFormOpen(false);
+      onSave();
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -76,11 +78,20 @@ const FormAddress = () => {
     return true;
   };
 
+   // Função para formatar o CEP no formato 00000-000
+   const formatCep = (value: string) => {
+    value = value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+    if (value.length > 5) {
+      value = value.slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2');
+    }
+    return value;
+  };
+
   // Função para validar o CEP
   const validateZipcode = (value: string) => {
-    const cepRegex = /^[0-9]{8}$/; // Expressão regular para validar um CEP com exatamente 8 dígitos numéricos
+    const cepRegex = /^[0-9]{5}-[0-9]{3}$/; // Expressão regular para validar um CEP com exatamente 8 dígitos numéricos
     if (!value.match(cepRegex)) {
-      return "Please enter a valid zip code (8 digits)";
+      return "Por favor entre com um cep valido!";
     }
     return true; // CEP válido
   };
@@ -165,6 +176,8 @@ const FormAddress = () => {
                   {...register("cep", {
                     required: "O cep é requerido",
                     validate: validateZipcode,
+                    onChange: (e) => setValue("cep", formatCep(e.target.value)),
+                    maxLength: 9,
                   })}
                 />
               </FormControl>
@@ -245,7 +258,7 @@ const FormAddress = () => {
             </FormItem>
           </div>
 
-          <Button type="submit">To save</Button>
+          <Button type="submit">Continuar</Button>
         </form>
       </FormProvider>
     </div>

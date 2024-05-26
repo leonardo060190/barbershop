@@ -22,24 +22,45 @@ const FormCadastroUser = () => {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = async(data) => {
-    console.log(data); // Aqui você pode acessar os dados do formulário
-    if(!window.confirm('Confirma o Casdastro ?')){
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
+
+    const dataNascimentoFormatada = converterDataParaFormatoBanco(data.dataNascimento);
+
+    if (!window.confirm("Confirma o Casdastro ?")) {
       return;
     }
     try {
-      const response = await api.post("/clientes",{
+      const response = await api.post("/clientes", {
         ...data,
+        dataNascimento: dataNascimentoFormatada
       });
       console.log(response.data);
       limparFormulario();
-      navigate('/home')
+      navigate("/home");
     } catch (error) {
       console.error("Erro cadastro", error);
     }
+  };
+
+  //função para formatar o cpf
+  const formatCpf = (value: string) => {
+    value = value.replace(/\D/g, "");
+    
+    let formattedValue = "";
+    for (let i = 0; i < value.length; i++){
+      if (i === 3 || i === 6){
+        formattedValue += ".";
+      }else if (i === 9){
+        formattedValue += "-"
+      }
+      formattedValue += value[i];
+    }
+    return formattedValue;
   };
 
   // Função para validar o CPF
@@ -93,7 +114,33 @@ const FormCadastroUser = () => {
     return;
   }
 
-  const limparFormulario = () =>{
+
+  // Função para formatar a data de nascimento enquanto o usuário digita
+  const formatarDataNascimento = (value: string) => {
+    // Remove todos os caracteres não numéricos
+    const numericValue = value.replace(/\D/g, "");
+
+    // Formata a data de nascimento como dd/mm/yyyy
+    let formattedValue = "";
+    for (let i = 0; i < numericValue.length; i++) {
+      if (i === 2 || i === 4) {
+        formattedValue += "-";
+      }
+      formattedValue += numericValue[i];
+    }
+    return formattedValue;
+  };
+
+  // Função para converter a data formatada para o formato desejado (yyyy-MM-dd)
+  const converterDataParaFormatoBanco = (value: string) => {
+    const [day, month, year] = value.split("-");
+    const formattedDate = `${year}-${month}-${day}`;
+    return formattedDate;
+  };
+
+
+  
+  const limparFormulario = () => {
     reset({
       foto: "",
       nome: "",
@@ -101,9 +148,9 @@ const FormCadastroUser = () => {
       cpf: "",
       sobreNome: "",
       senha: "",
-      dataNascimento: ""
-    })
-  }
+      dataNascimento: "",
+    });
+  };
 
   return (
     <div className="">
@@ -189,6 +236,7 @@ const FormCadastroUser = () => {
                   {...register("cpf", {
                     required: "CPF é requerido",
                     validate: validateCPF,
+                    onChange: (e) => setValue("cpf", formatCpf(e.target.value)),
                   })}
                 />
               </FormControl>
@@ -206,6 +254,13 @@ const FormCadastroUser = () => {
                   {...register("dataNascimento", {
                     required: "Data de nascimento é requerido",
                   })}
+                  onChange={(e) => {
+                    const formattedValue = formatarDataNascimento(
+                      e.target.value
+                    );
+                    setValue("dataNascimento", formattedValue);
+                  }}
+                  maxLength={10}
                 />
               </FormControl>
               {errors.dataNascimento && (

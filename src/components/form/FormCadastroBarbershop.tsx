@@ -2,7 +2,7 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormItem, FormLabel, FormControl } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import {api} from "../../../config/ConfigAxios"
+import { api } from "../../../config/ConfigAxios";
 import { useNavigate } from "react-router-dom";
 
 type FormValues = {
@@ -22,25 +22,47 @@ const FormCadastroUser = () => {
     handleSubmit,
     register,
     reset,
+    setValue,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> =  async (data) => {
-    if(!window.confirm('Confirma o Casdastro ?')){
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    if (!window.confirm("Confirma o Casdastro ?")) {
       return;
     }
     try {
-      const respose = await api.post("/barbearias",{
+      const respose = await api.post("/barbearias", {
         ...data,
-      })
+      });
       console.log(respose.data);
       limpaFormulario();
-      navigate('/home')
-
+      navigate("/home");
     } catch (error) {
       console.error("Erro cadastro", error);
     }
     console.log(data); // Aqui você pode acessar os dados do formulário
+  };
+
+  //função para formatar o cnpj
+  const formatCnpj = (value: string) => {
+    // Remove caracteres não numéricos
+    value = value.replace(/\D/g, "");
+
+    value = value.slice(0, 14);
+    
+    // Aplica a máscara de CNPJ (##.###.###/####-##)
+    let formattedValue = "";
+    for (let i = 0; i < value.length; i++) {
+      if (i === 2 || i === 5) {
+        formattedValue += ".";
+      } else if (i === 8) {
+        formattedValue += "/";
+      } else if (i === 12) {
+        formattedValue += "-";
+      }
+      formattedValue += value[i];
+    }
+    return formattedValue;
   };
 
   // Função para validar o CNPJ
@@ -102,9 +124,9 @@ const FormCadastroUser = () => {
       cpf: "",
       razaoSocial: "",
       cnpj: "",
-      senha: ""
-    })
-  }
+      senha: "",
+    });
+  };
   return (
     <div className="items-center">
       <FormProvider {...methods}>
@@ -112,7 +134,7 @@ const FormCadastroUser = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3 grid gap-3 sm:grid-cols-1"
         >
-           <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <FormItem>
               <FormLabel>foto</FormLabel>
               <FormControl>
@@ -127,7 +149,7 @@ const FormCadastroUser = () => {
               )}
             </FormItem>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-4">
             <FormItem>
               <FormLabel>Nome</FormLabel>
@@ -150,6 +172,9 @@ const FormCadastroUser = () => {
                   {...register("cnpj", {
                     required: "CNPJ é requerido",
                     validate: validateCNPJ,
+                    onChange: (e) =>
+                      setValue("cnpj", formatCnpj(e.target.value)),
+                    maxLength: 18,
                   })}
                 />
               </FormControl>
@@ -212,7 +237,7 @@ const FormCadastroUser = () => {
             )}
           </FormItem>
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Finalizar</Button>
         </form>
       </FormProvider>
     </div>
