@@ -4,7 +4,20 @@ import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { useNavigate } from "react-router-dom";
 
-const barbershopItemRecomendados = () => {
+interface BarbershopItemProps {
+  id: string;
+  foto: string;
+  nome: string;
+  endereco: string;
+}
+
+const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
+  id,
+  foto,
+  nome,
+  endereco,
+}) => {
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
@@ -13,7 +26,7 @@ const barbershopItemRecomendados = () => {
   };
 
   return (
-    <div>
+    <div key={id}>
       <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
         <CardContent className="p-0 pt-1 ">
           <div className="px-1 relative">
@@ -25,8 +38,8 @@ const barbershopItemRecomendados = () => {
               <span>5,0</span>
             </Badge>
             <img
-              src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
-              alt="barber"
+              src={foto}
+              alt={nome}
               height={0}
               width={0}
               sizes="100vw"
@@ -35,9 +48,9 @@ const barbershopItemRecomendados = () => {
           </div>
 
           <div className="px-3 pb-3">
-            <h2 className="font-bold mt-2">barberShopName</h2>
+            <h2 className="font-bold mt-2">{nome}</h2>
             <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
-              barberShopAdddress
+              {endereco}
             </p>
             <Button
               className=" w-full mt-3 rounded-2xl"
@@ -53,4 +66,4 @@ const barbershopItemRecomendados = () => {
   );
 };
 
-export default barbershopItemRecomendados;
+export default BarbershopItemRecomendados;

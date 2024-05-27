@@ -1,7 +1,7 @@
 import FormCadastroUser from "../../components/form/FormCadastroUser";
 import Header from "../../components/header/headerRegistration" 
 
-const registrationPage = () => {
+const RegistrationUser = () => {
   return (
     <>
     <Header/>
@@ -12,4 +12,4 @@ const registrationPage = () => {
   );
 };
 
-export default registrationPage;
+export default RegistrationUser;

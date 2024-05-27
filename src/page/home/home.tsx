@@ -10,7 +10,38 @@ import {
 } from "@/components/ui/carousel";
 import BarbershopItemRecomendados from "@/components/barbershopItem/barbershopItemRecomendados";
 import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemPopulares";
-const home = () => {
+import { useEffect, useState } from "react";
+import { api } from "../../../config/ConfigAxios";
+
+interface Barbershop {
+  id: string;
+  foto: string;
+  nome: string;
+  endereco: string;
+}
+
+const Home = () => {
+  const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
+  const [produtosReload, setProdutosReload] = useState(false);
+
+  const obterLista = async () => {
+    try {
+      const lista = await api.get("/barbearias");
+      console.log("lista:" + lista.data);
+      setBarbershops(lista.data);
+    } catch (error) {
+      alert(`Erro: ..Não foi possível obter os dados: ${error}`);
+    }
+  };
+
+  useEffect(() => {
+    obterLista();
+    if (produtosReload) {
+      obterLista(); // Fetch updated data and re-render
+      setProdutosReload(false); // Reset the reload flag
+    }
+  }, [produtosReload]);
+
   return (
     <div>
       <Header />
@@ -28,7 +59,6 @@ const home = () => {
             <div className=" mt-6">
               <Search />
             </div>
-            
           </div>
         </div>
         {/* Recomendados */}
@@ -43,16 +73,18 @@ const home = () => {
             className="max-w-[54rem]"
           >
             <CarouselContent className="flex">
-              {Array.from({ length: 7 }).map((_, index) => (
+              {barbershops.slice(0, 5).map((barbershop, index) => (
                 <CarouselItem
                   key={index}
                   style={{ width: "180px" }}
                   className="basis-48"
                 >
-                  {/* {barbershop.map((barbershop) => ( */}
-                  <BarbershopItemRecomendados />
-
-                  {/* ))} */}
+                  <BarbershopItemRecomendados
+                    id={barbershop.id}
+                    foto={barbershop.foto}
+                    nome={barbershop.nome}
+                    endereco={barbershop.endereco}
+                  />
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -74,10 +106,18 @@ const home = () => {
           className="w-full max-w-full	"
         >
           <CarouselContent>
-            {Array.from({ length: 10 }).map((_, index) => (
-              <CarouselItem key={index} className="basis-48">
-                {/* {barbershop.map((barbershop) => ( */}
-                <BarbershopItemPopulares />
+          {barbershops.slice(0, 10).map((barbershop, index) => (
+                <CarouselItem
+                  key={index}
+                  style={{ width: "180px" }}
+                  className="basis-48"
+                >
+                  <BarbershopItemPopulares
+                    id={barbershop.id}
+                    foto={barbershop.foto}
+                    nome={barbershop.nome}
+                    endereco={barbershop.endereco}
+                  />
 
                 {/* ))} */}
               </CarouselItem>
@@ -91,4 +131,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Home;

@@ -32,18 +32,18 @@ const SideMenu = () => {
       <SheetFooter className="text-left border-b border-solid border-secondary p-5 ">
         <div className=" flex flex-col  justify-between gap-8">
           <Link
-            to={"/customerRegistration"}
+            to={"/RegistrationUser"}
             className="flex items-center justify-center gap-2"
           >
             <CircleUserRound size={16} />
-            Cadatro de Usuários
+            Cadastro de Usuários
           </Link>
           <Link
             to={"/RegistrationBarbershop"}
             className="flex items-center justify-center gap-2"
           >
             <Scissors size={16} />
-            Cadatro de Barbearia
+            Cadastro de Barbearias
           </Link>
         </div>
       </SheetFooter>
