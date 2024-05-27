@@ -222,7 +222,7 @@ const FormCadastroUser = () => {
             <FormControl>
               <Input
                 type="password"
-                placeholder="create one password"
+                placeholder="Crie uma senha com mais de 6 caracteres!"
                 {...register("senha", {
                   required: "A senha é requerido",
                   minLength: {
