@@ -32,7 +32,7 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
           <div className="px-1 relative">
             <Badge
               variant="secondary"
-              className=" opacity-90 gap-1 absolute top-1 left-2"
+              className=" opacity-90 gap-1 absolute top-1 right-2"
             >
               <StarIcon size={12} className="fill-primary text-primary" />
               <span>5,0</span>

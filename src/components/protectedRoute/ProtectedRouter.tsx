@@ -1,26 +1,26 @@
-// import React, { ReactNode, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// import { useAuth } from "../authProvider/AuthProvider";
+import React, { ReactNode, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../authProvider/AuthProvider";
 
-// interface ProtectedRouteProps {
-//   children: ReactNode;
-// }
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
 
-// const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-//   const { autenticado } = useAuth();
-//   const navigate = useNavigate();
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  const { autenticado } = useAuth();
+  const navigate = useNavigate();
 
-//   useEffect(() => {
-//     if (!autenticado) {
-//       navigate("/home");
-//     }
-//   }, [autenticado, navigate]);
+  useEffect(() => {
+    if (!autenticado) {
+      navigate("/home");
+    }
+  }, [autenticado, navigate]);
 
-//   if (!autenticado) {
-//     return null;
-//   }
+  if (!autenticado) {
+    return null;
+  }
 
-//   return <>{children}</>;
-// };
+  return <>{children}</>;
+};
 
-// export default ProtectedRoute;
+export default ProtectedRoute;

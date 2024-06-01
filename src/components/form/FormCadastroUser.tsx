@@ -8,14 +8,12 @@ import { useNavigate } from "react-router-dom";
 type FormValues = {
   foto: string;
   nome: string;
-  email: string;
   cpf: string;
   sobreNome: string;
-  senha: string;
   dataNascimento: string;
 };
 
-const FormCadastroUser = () => {
+const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const navigate = useNavigate();
   const {
@@ -41,6 +39,7 @@ const FormCadastroUser = () => {
       });
       console.log(response.data);
       limparFormulario();
+      onSave();
       navigate("/home");
     } catch (error) {
       console.error("Erro cadastro", error);
@@ -144,10 +143,8 @@ const FormCadastroUser = () => {
     reset({
       foto: "",
       nome: "",
-      email: "",
       cpf: "",
       sobreNome: "",
-      senha: "",
       dataNascimento: "",
     });
   };
@@ -206,26 +203,6 @@ const FormCadastroUser = () => {
             </FormItem>
           </div>
 
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <FormControl>
-              <Input
-                className="w-full"
-                placeholder="Digite o e-mail"
-                {...register("email", {
-                  required: "Email é requerido",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-            </FormControl>
-            {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
-          </FormItem>
-
           <div className="grid grid-cols-2 gap-4">
             <FormItem>
               <FormLabel>CPF</FormLabel>
@@ -268,26 +245,6 @@ const FormCadastroUser = () => {
               )}
             </FormItem>
           </div>
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl>
-              <Input
-                className="w-full"
-                type="password"
-                placeholder="Digite a senha"
-                {...register("senha", {
-                  required: "Senha é requerido",
-                  minLength: {
-                    value: 6,
-                    message: "A senha deve conter mais de 6 caracteres",
-                  },
-                })}
-              />
-            </FormControl>
-            {errors.senha && (
-              <p className="text-red-500">{errors.senha.message}</p>
-            )}
-          </FormItem>
 
           <Button type="submit">Submit</Button>
         </form>

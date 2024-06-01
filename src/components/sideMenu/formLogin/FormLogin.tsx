@@ -4,8 +4,8 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-// import { useAuth } from "@/components/authProvider/AuthProvider";
-// import { api } from "../../../../config/ConfigAxios";
+import { useAuth } from "@/components/authProvider/AuthProvider";
+import { api } from "../../../../config/ConfigAxios";
 
 type FormValues = {
   email: string;
@@ -14,28 +14,28 @@ type FormValues = {
 
 const FormLogin = () => {
   const methods = useForm<FormValues>();
-  // const { login } = useAuth();
+  const { login } = useAuth();
 
   const { handleSubmit, register } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = async(data) => {
     console.log(data);
 
-//     if(data.email.trim() === "" || data.senha.trim() === ""){
-//       return;
-//     }
-//     try {
-//       const response = await api.post("/login",{
-//         ...data
-//       });
-//       if (response.status === 200) {
-//         login();
-//     } else {
-//         alert("Usuário ou senha inválidos!");
-//     }
-// } catch (error) {
-//     alert("Erro ao tentar logar. Tente novamente mais tarde.");
-// }
+    if(data.email.trim() === "" || data.senha.trim() === ""){
+      return;
+    }
+    try {
+      const response = await api.post("/login",{
+        ...data
+      });
+      if (response.status === 200) {
+        login();
+    } else {
+        alert("Usuário ou senha inválidos!");
+    }
+} catch (error) {
+    alert("Erro ao tentar logar. Tente novamente mais tarde.");
+}
   };
 
   return (
