@@ -1,5 +1,5 @@
 import { LogInIcon } from "lucide-react";
-import { SheetClose, SheetFooter } from "../../ui/sheet";
+import {  SheetFooter } from "../../ui/sheet";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
@@ -18,25 +18,26 @@ const FormLogin = () => {
 
   const { handleSubmit, register } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = async(data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
 
-    if(data.email.trim() === "" || data.senha.trim() === ""){
+    if (data.email.trim() === "" || data.senha.trim() === "") {
       return;
     }
     try {
-      const response = await api.post("/login",{
-        ...data
+      const response = await api.post("/login/authenticade", {
+        ...data,
       });
       if (response.status === 200) {
         login();
-    } else {
+      } else {
         alert("Usuário ou senha inválidos!");
+      }
+    } catch (error) {
+      alert("Erro ao tentar logar. Tente novamente mais tarde.");
     }
-} catch (error) {
-    alert("Erro ao tentar logar. Tente novamente mais tarde.");
-}
   };
+  
 
   return (
     <FormProvider {...methods}>
@@ -66,12 +67,12 @@ const FormLogin = () => {
           </div>
 
           <SheetFooter className="text-left border-b border-solid flex justify-end sm:flex-row sm:justify-end border-secondary p-5">
-            <SheetClose asChild className="px-4 mb-4">
+            {/* <SheetClose asChild className="px-4 mb-4"> */}
               <Button type="submit" className="gap-3">
                 <LogInIcon size={16} />
                 Entrar
               </Button>
-            </SheetClose>
+            {/* </SheetClose> */}
           </SheetFooter>
         </div>
       </form>

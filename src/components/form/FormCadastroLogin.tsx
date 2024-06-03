@@ -25,7 +25,7 @@ const FormCadastroLogin = () => {
       return;
     }
     try {
-      const respose = await api.post("/barbearias", {
+      const respose = await api.post("/login", {
         ...data,
       });
       console.log(respose.data);

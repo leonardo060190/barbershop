@@ -8,21 +8,21 @@ interface BarbershopItemProps {
   id: string;
   foto: string;
   nome: string;
-  endereco: string;
+  rua?: string;
 }
 
 const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
   id,
   foto,
   nome,
-  endereco,
+  rua,
 }) => {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
 
   const hadleBookingClick = () => {
-    navigate("/BarberShops");
+    navigate(`/barberShops/${id}`);
   };
 
   return (
@@ -50,7 +50,7 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
           <div className="px-3 pb-3">
             <h2 className="font-bold mt-2">{nome}</h2>
             <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
-              {endereco}
+              {rua || "Endereço indisponivel"}
             </p>
             <Button
               className=" w-full mt-3 rounded-2xl"

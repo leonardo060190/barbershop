@@ -1,21 +1,11 @@
+import { api } from "../../../../config/ConfigAxios";
 
-// import do banco
-
-interface SaveBookingParams {
-    barbershopId: string;
-    serviceId: string;
-    userId: string;
-    date: Date;
-}
-
-export const saveBooking = async (params: SaveBookingParams) => {
-await db.booking.create({
-    data:{
-        serviceId: params.serviceId,
-        userId: params.userId,
-        date: params.date,
-        barbershopId: params.barbershopId
+export const saveBooking = async (bookingData) => {
+    try {
+      const response = await api.post('/api/agendamentos', bookingData);
+      return response.data;
+    } catch (error) {
+      console.error('Error saving booking:', error);
+      throw error;
     }
-})
-
-}
+  };

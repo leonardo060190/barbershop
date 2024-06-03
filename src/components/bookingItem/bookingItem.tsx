@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
-import { isFuture, isPast } from "date-fns";
-import bookings from "@/page/bookings/bookins";
+// import { isFuture, isPast } from "date-fns";
+// import bookings from "@/page/bookings/bookins";
 // import bookings from "@/page/bookings/bookins";
 
 const bookingItem = () => {

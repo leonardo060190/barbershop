@@ -3,7 +3,6 @@ import { FormItem, FormLabel, FormControl } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { api } from "../../../config/ConfigAxios";
-import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   foto: string;
@@ -15,9 +14,8 @@ type FormValues = {
   senha: string;
 };
 
-const FormCadastroUser = () => {
+const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -36,7 +34,7 @@ const FormCadastroUser = () => {
       });
       console.log(respose.data);
       limpaFormulario();
-      navigate("/home");
+      onSave();
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -183,24 +181,6 @@ const FormCadastroUser = () => {
               )}
             </FormItem>
           </div>
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Digite o e-mail"
-                {...register("email", {
-                  required: "E-mail é requerido",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-            </FormControl>
-            {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
-          </FormItem>
 
           <FormItem>
             <FormLabel>Razão social</FormLabel>
@@ -214,26 +194,6 @@ const FormCadastroUser = () => {
             </FormControl>
             {errors.razaoSocial && (
               <p className="text-red-500">{errors.razaoSocial.message}</p>
-            )}
-          </FormItem>
-
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl>
-              <Input
-                type="password"
-                placeholder="Crie uma senha com mais de 6 caracteres!"
-                {...register("senha", {
-                  required: "A senha é requerido",
-                  minLength: {
-                    value: 6,
-                    message: "A senha deve conter mais de 6 caracteres",
-                  },
-                })}
-              />
-            </FormControl>
-            {errors.senha && (
-              <p className="text-red-500">{errors.senha.message}</p>
             )}
           </FormItem>
 

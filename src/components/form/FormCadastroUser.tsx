@@ -3,7 +3,6 @@ import { FormItem, FormLabel, FormControl } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { api } from "../../../config/ConfigAxios";
-import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   foto: string;
@@ -15,7 +14,6 @@ type FormValues = {
 
 const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -40,7 +38,6 @@ const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
       console.log(response.data);
       limparFormulario();
       onSave();
-      navigate("/home");
     } catch (error) {
       console.error("Erro cadastro", error);
     }

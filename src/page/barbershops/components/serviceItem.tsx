@@ -20,7 +20,26 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { getDayBookings } from "./getBookings";
 
-const ServiceItem = () => {
+interface BarbershopServicosProps {
+  id:string;
+  nome: string;
+  foto:string;
+  preco: number;
+  descricao: string;
+  barbeariaId:string;
+  nomeBarbershop:string;
+}
+
+const ServiceItem : React.FC<BarbershopServicosProps> = ({
+  id,
+  foto,
+  nome,
+  preco,
+  descricao,
+  barbeariaId,
+  nomeBarbershop,
+}) => {
+
   // const {data} = useSession()
   const navigate = useNavigate();
 
@@ -36,8 +55,10 @@ const ServiceItem = () => {
       return;
     }
     const refreshAvailableHours = async () => {
-      const dayBookings = await getDayBookings(date);
+      const bookings = await getDayBookings(date);
+      setDayBookings(bookings);
     };
+    refreshAvailableHours();
   }, [date]);
 
   const handleDateClick = (date: Date | undefined) => {
@@ -57,14 +78,14 @@ const ServiceItem = () => {
       }
 
       const dateHour = Number(hour.split(":")[0]);
-      const dateMinutes = Number(hour.split(":")[0]);
+      const dateMinutes = Number(hour.split(":")[1]);
       const newDate = setMinutes(setHours(date, dateHour), dateMinutes);
 
       await saveBooking({
-        serviceId: service.id,
-        barbershopId: barbershopItemPopulares.id,
-        date: newDate,
-        userId: (data.user as any).id,
+        barbershopId: barbeariaId,
+        date: newDate.toISOString().split('T')[0], // "yyyy-MM-dd"
+        hora: newDate.toISOString().split('T')[1].slice(0, 5), // "HH:mm" 
+        clienteId: (data.user as any).id,
       });
 
       setSheetISOpen(false);
@@ -111,14 +132,14 @@ const ServiceItem = () => {
   console.log(timeList);
 
   return (
-    <div>
+    <div key={id}>
       <Card className="w-full">
         <CardContent className="p-3">
           <div className="flex gap-6 items-center">
             <div className="relative ">
               <img
-                src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
-                alt="barber"
+                src={foto}
+                alt={nome}
                 height={0}
                 width={0}
                 sizes="100vw"
@@ -128,15 +149,15 @@ const ServiceItem = () => {
 
             <div className="flex flex-col w-full">
               <div className="break-all">
-                <h1 className="font-bold text-sm">Service nome</h1>
-                <p className="text-sm text-gray-400">Descrição...</p>
+                <h1 className="font-bold text-sm">{nome}</h1>
+                <p className="text-sm text-gray-400">{descricao}</p>
               </div>
               <div className="flex items-center justify-between mt-2">
                 <p className="text-l text-sm font-bold text-primary">
                   {Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
-                  }).format(Number(55.4))}
+                  }).format(preco)}
                 </p>
 
                 <Sheet open={sheetIsOpen} onOpenChange={setSheetISOpen}>
@@ -201,12 +222,12 @@ const ServiceItem = () => {
                         <CardContent className="px-0 py-0">
                           <div className="px-6 py-5 flex flex-col gap-3">
                             <div className="flex justify-between ">
-                              <h2 className="font-bold">Nome Serviço</h2>
+                              <h2 className="font-bold">{nome}</h2>
                               <h3 className="font-bold text-sm">
                                 {Intl.NumberFormat("pt-BR", {
                                   style: "currency",
                                   currency: "BRL",
-                                }).format(Number(55.4))}
+                                }).format(preco)}
                               </h3>
                             </div>
                             {date && (
@@ -232,7 +253,7 @@ const ServiceItem = () => {
                               <h3 className="text-gray-400 text-sm">
                                 Barbearia
                               </h3>
-                              <h4 className="text-sm ">{"Nome barbearia"}</h4>
+                              <h4 className="text-sm ">{nomeBarbershop}</h4>
                             </div>
                           </div>
                         </CardContent>

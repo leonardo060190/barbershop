@@ -13,11 +13,17 @@ import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemP
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 
+interface Endereco {
+  bairro:string;
+  cep: string;
+  rua: string;
+  numero: string;
+}
 interface Barbershop {
   id: string;
   foto: string;
   nome: string;
-  endereco: string;
+  endereco?: Endereco;
 }
 
 const Home = () => {
@@ -83,7 +89,7 @@ const Home = () => {
                     id={barbershop.id}
                     foto={barbershop.foto}
                     nome={barbershop.nome}
-                    endereco={barbershop.endereco}
+                    rua={barbershop.endereco?.rua}
                   />
                 </CarouselItem>
               ))}
@@ -116,7 +122,7 @@ const Home = () => {
                     id={barbershop.id}
                     foto={barbershop.foto}
                     nome={barbershop.nome}
-                    endereco={barbershop.endereco}
+                    rua={barbershop.endereco?.rua}
                   />
 
                 {/* ))} */}
