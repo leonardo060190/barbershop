@@ -5,10 +5,15 @@ import {
   CardDescription,
   CardHeader,
  } from "@/components/ui/card";
+import Telefone from "./Telefone";
+import React from "react";
 // import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { Smartphone } from "lucide-react";
 
-const information = () => {
+
+
+
+
+const Information: React.FC<{telefones: {id: string, numero: string}[]}> =({telefones})=> {
   return (
     <div>
       <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">
@@ -27,15 +32,15 @@ const information = () => {
           </CardHeader>
           <CardContent>
             <div className="py-5 pt-0 flex flex-col gap-4  border-b border-solid border-secondary">
-              <p className="text-sm flex gap-3 items-center">
-                <Smartphone size={16} className="text-primary" />
-                485555555
-              </p>
-
-              <p className="text-sm flex gap-3 items-center">
-                <Smartphone size={16} className="text-primary" />
-                485555555
-              </p>
+              
+              {telefones.length > 0 ? (
+                telefones.map((telefone)=>(
+                  <Telefone key={telefone.id} numero={telefone.numero}/>
+                ))
+              ):(
+                <div>Nenhum telefone disponível</div>
+              )}
+              
             </div>
 
             <div className="mt-5 flex flex-col gap-3">
@@ -86,4 +91,4 @@ const information = () => {
   );
 };
 
-export default information;
+export default Information;

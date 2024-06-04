@@ -1,16 +1,22 @@
 import Header from "@/components/header/header";
-import ServiceItem from "./components/ServiceItem";
-import Information from "./components/information";
+import ServiceItem from "./components/serviceItem";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
+import Telefone from "./components/Telefone";
+import Information from "../barbershops/components/information";
+
+interface Telefone {
+  id: string;
+  numero: string;
+}
 
 interface Service {
   id: string;
   nome: string;
-  foto:string;
+  foto: string;
   preco: number;
   descricao: string;
   barbeariaId: string;
@@ -31,6 +37,7 @@ interface BarberShop {
   descricao: string;
   servicos: Service[];
   endereco?: Endereco;
+  telefones: Telefone[];
 }
 
 const BarberShopDetailsPage = () => {
@@ -59,7 +66,7 @@ const BarberShopDetailsPage = () => {
   return (
     <div>
       <Header />
-      <div className="px-12 max-w-[100rem] min-w-[32rem] flex flex-col md:flex-row">
+      <div className="px-12 max-w-[80rem] min-w-[32rem] flex flex-col md:flex-row">
         <div>
           <div className="pb-6">
             <div className=" pt-10 ">
@@ -79,8 +86,7 @@ const BarberShopDetailsPage = () => {
                   <MapPinIcon className="text-primary" size={18} />
                   <p className="text-sm">
                     {barberShop.endereco?.bairro || "Endereço indisponivel"}{" "}
-                    {barberShop.endereco?.rua}{" "}
-                    {barberShop.endereco?.numero}
+                    {barberShop.endereco?.rua} {barberShop.endereco?.numero}
                   </p>
                 </div>
               </div>
@@ -103,7 +109,7 @@ const BarberShopDetailsPage = () => {
 
           <div className=" pb-6 flex-wrap justify-center">
             <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
-            {barberShop.servicos?.length > 0 ? (
+              {barberShop.servicos?.length > 0 ? (
                 barberShop.servicos.map((servico) => (
                   <ServiceItem
                     key={servico.id} // Use um identificador único se disponível
@@ -123,18 +129,7 @@ const BarberShopDetailsPage = () => {
           </div>
         </div>
         <div className="pl-12 py-10">
-        {barberShop.servicos?.length > 0 ? (
-                barberShop.servicos.map((servico) => (
-                  <Information
-                    key={telefone.id} // Use um identificador único se disponível
-                    id={telefone.id}
-                    numero={telefone.numero}
-                  />
-                ))
-              ) : (
-                <div>Nenhum serviço disponível</div>
-              )}
-          
+          <Information telefones={barberShop.telefones}/>
         </div>
       </div>
     </div>
