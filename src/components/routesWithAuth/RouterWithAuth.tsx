@@ -35,7 +35,7 @@ const RoutesWithAuth: React.FC = () => {
         />
 
         <Route
-          path="/splintbarbershop"
+          path="/splintbarbershop/:id"
           element={
             <ProtectedRoute>
               <Splintbarbershop />

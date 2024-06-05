@@ -19,18 +19,36 @@ import {
 import { Edit, X } from "lucide-react";
 import FormEditService from "../forms/FormEditService";
 
-const EditServices = () => {
+
+
+interface BarbershopServicosProps {
+  id:string;
+  nome: string;
+  foto:string;
+  preco: number;
+  descricao: string;
+  
+}
+
+const EditServices : React.FC<BarbershopServicosProps> = ({
+  id,
+  foto,
+  nome,
+  preco,
+  descricao
+ 
+}) => {
   // const {data} = useSession()
 
   return (
-    <div>
+    <div key={id}>
       <Card className="w-full">
         <CardContent className="p-3">
           <div className="flex  gap-6 items-center">
             <div className="relative ">
               <img
-                src="https://utfs.io/f/c97a2dc9-cf62-468b-a851-bfd2bdde775f-16p.png"
-                alt="barber"
+                src={foto}
+                alt={nome}
                 height={0}
                 width={0}
                 sizes="100vw"
@@ -39,15 +57,15 @@ const EditServices = () => {
             </div>
             <div className="flex flex-col w-full">
               <div className="break-all">
-                <h1 className="font-bold text-sm">Service nome</h1>
-                <p className="text-sm text-gray-400">Descrição</p>
+                <h1 className="font-bold text-sm">{nome}</h1>
+                <p className="text-sm text-gray-400">{descricao}</p>
               </div>
               <div className="flex mt-12">
                 <p className="text-l text-sm font-bold text-primary">
                   {Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
-                  }).format(Number(54.4))}
+                  }).format(preco)}
                 </p>
               </div>
             </div>
@@ -56,36 +74,17 @@ const EditServices = () => {
                 <X size={18} />
                 Delete
               </Button>
-
-              {/* <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="secondary" className="gap-3 text-primary">
-                    <Edit size={18} />
-                    To edit
-                  </Button>
-                </SheetTrigger>
-
-                <SheetContent className="p-0">
-                  <SheetHeader className="text-left px-5 py-4 border-b border-solid border-secondary">
-                    <SheetTitle>Editar os serviços</SheetTitle>
-                  </SheetHeader>
-
-                  <div className="px-4 py-6">
-                    <FormEdit />
-                  </div>
-                </SheetContent>
-              </Sheet> */}
               
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="secondary" className="gap-3 text-primary">
                     <Edit size={18} />
-                    To edit
+                    Editar
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader  className=" border-b border-solid border-secondary ">
-                    <DialogTitle className="pb-3">Edit services</DialogTitle>
+                    <DialogTitle className="pb-3">Editar Serviços</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
                   <FormEditService />
