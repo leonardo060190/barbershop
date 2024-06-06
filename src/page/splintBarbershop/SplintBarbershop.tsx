@@ -3,7 +3,6 @@ import Header from "@/components/header/header";
 // import { StarIcon } from "lucide-react";
 import EditServices from "./components/renderForms/EditServices";
 import EditProfile from "./components/renderForms/EditProfile";
-import AddressRegistration from "../../components/form/formsRender/AddressRegistration";
 import RegisterServices from "./components/renderForms/RegisterServices";
 import RegisterOpeningHours from "./components/renderForms/RegisterOpeningHours";
 import TelefoneRender from "@/components/telefone/TelefoneRender";
@@ -88,7 +87,6 @@ const SplintBarbershop = () => {
                 <div className="flex gap-3">
                   <div className="grid gap-2 grid-cols-2 md-grid-cols-3 xl:grid-cols-4">
                     <EditProfile />
-                    <AddressRegistration />
                     <RegisterServices />
                     <RegisterOpeningHours />
                     <TelefoneRender />

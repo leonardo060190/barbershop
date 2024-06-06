@@ -3,6 +3,7 @@ import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { useEffect } from "react";
 // import { useState } from "react";
 
 type FormValues = {
@@ -12,12 +13,29 @@ type FormValues = {
   descricao: string;
 };
 
-const FormEditService = () => {
+interface FormEditServiceProps {
+  id:string;
+  nome: string;
+  foto:string;
+  preco: number;
+  descricao: string;
+  
+}
+
+const FormEditService : React.FC<FormEditServiceProps> = ({
+  id,
+  foto,
+  nome,
+  preco,
+  descricao
+ 
+}) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   // const [isFormOpen, setIsFormOpen] = useState(true);
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = methods;
 
@@ -25,6 +43,14 @@ const FormEditService = () => {
     // setIsFormOpen(false);
     console.log(data); // Aqui você pode acessar os dados do formulário
   };
+
+  useEffect(()=>{
+    setValue("foto", foto);
+    setValue("nome", nome);
+    setValue("preco", preco.toString());
+    setValue("descricao", descricao);
+
+  }, [foto, nome, descricao, preco, setValue])
 
   // Função de validação customizada para verificar se é um número válido
   const validatePrice = (value: string) => {
@@ -40,7 +66,7 @@ const FormEditService = () => {
   // }
 
   return (
-    <div className="">
+    <div key={id}>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}

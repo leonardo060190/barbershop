@@ -38,7 +38,7 @@ const EditServices : React.FC<BarbershopServicosProps> = ({
   descricao
  
 }) => {
-  // const {data} = useSession()
+
 
   return (
     <div key={id}>
@@ -87,7 +87,7 @@ const EditServices : React.FC<BarbershopServicosProps> = ({
                     <DialogTitle className="pb-3">Editar Serviços</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
-                  <FormEditService />
+                  <FormEditService id={id} nome={nome} foto={foto} preco={preco} descricao={descricao} />
                 </DialogContent>
               </Dialog>
             </div>
