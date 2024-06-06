@@ -32,7 +32,7 @@ const Home = () => {
 
   const obterLista = async () => {
     try {
-      const lista = await api.get("/barbearias");
+      const lista = await api.get("/barbearia");
       console.log("lista:" + lista.data);
       setBarbershops(lista.data);
     } catch (error) {

@@ -1,5 +1,5 @@
 import Header from "@/components/header/header";
-import ServiceItem from "./components/serviceItem";
+import ServiceItem from "./components/ServiceItem";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -47,7 +47,7 @@ const BarberShopDetailsPage = () => {
   useEffect(() => {
     const obterBarbearia = async () => {
       try {
-        const response = await api.get(`/barbearias/${id}`);
+        const response = await api.get(`/barbearia/${id}`);
         setBarberShop(response.data);
         console.log(response.data);
       } catch (error) {

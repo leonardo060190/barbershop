@@ -29,7 +29,7 @@ const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
       return;
     }
     try {
-      const respose = await api.post("/barbearias", {
+      const respose = await api.post("/barbearia", {
         ...data,
       });
       console.log(respose.data);

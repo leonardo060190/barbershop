@@ -55,7 +55,7 @@ const FormAddress = ({ onSave }: { onSave: () => void }) => {
       return;
     }
     try {
-      const response = await api.post("/enderecos", {
+      const response = await api.post("/endereco", {
         ...data,
       });
       console.log(response.data);

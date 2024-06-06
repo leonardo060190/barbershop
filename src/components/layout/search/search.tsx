@@ -26,7 +26,7 @@ const SearchComponent = () => {
   const filtrarLista = async () => {
     const campos = getValues();
     try {
-      const response = await api.get(`/barbearias/search/${campos.nome}`);
+      const response = await api.get(`/barbearia/search/${campos.nome}`);
       const data = response.data;
       console.log(data);
       if (data.length) {

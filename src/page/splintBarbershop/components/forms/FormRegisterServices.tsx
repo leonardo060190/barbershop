@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
+import { useParams } from "react-router-dom";
 
 type FormValues = {
   foto: string;
@@ -14,6 +15,7 @@ type FormValues = {
 };
 
 const FormRegisterServices = () => {
+  const { id } = useParams<{id: string}>();
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
   const {
@@ -28,8 +30,9 @@ const FormRegisterServices = () => {
       return;
     }
     try {
-      const response = await api.post("/servicos", {
+      const response = await api.post("/servico", {
         ...data,
+        barbearia: id,
       });
       console.log(response.data);
       limparFormulario();
@@ -71,7 +74,7 @@ const FormRegisterServices = () => {
         >
           <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>foto</FormLabel>
+              <FormLabel>Foto</FormLabel>
               <FormControl>
                 <Input
                   className="w-full "

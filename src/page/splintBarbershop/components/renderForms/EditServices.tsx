@@ -18,27 +18,38 @@ import {
 
 import { Edit, X } from "lucide-react";
 import FormEditService from "../forms/FormEditService";
-
-
+import { api } from "../../../../../config/ConfigAxios";
+import { useState } from "react";
 
 interface BarbershopServicosProps {
-  id:string;
+  id: string;
   nome: string;
-  foto:string;
+  foto: string;
   preco: number;
   descricao: string;
-  
 }
 
-const EditServices : React.FC<BarbershopServicosProps> = ({
+const EditServices: React.FC<BarbershopServicosProps> = ({
   id,
   foto,
   nome,
   preco,
-  descricao
- 
+  descricao,
 }) => {
+  const [servico, setServico] = useState<BarbershopServicosProps[]>([]);
 
+  const removeServico = async (id: string) => {
+    if (!window.confirm(`Confirma a exclusão do serviço ${nome} ?`)) {
+      return;
+    }
+    try {
+      await api.delete(`/servico/${id}`);
+
+      setServico(servico.filter((servico) => servico.id !== id));
+    } catch (error) {
+      console.error("Erro ao deletar o serviço:", error);
+    }
+  };
 
   return (
     <div key={id}>
@@ -70,11 +81,15 @@ const EditServices : React.FC<BarbershopServicosProps> = ({
               </div>
             </div>
             <div className="flex flex-col content-around gap-3 ">
-              <Button variant="secondary" className="text-[#ff6666] gap-3">
+              <Button
+                variant="secondary"
+                className="text-[#ff6666] gap-3"
+                onClick={() => removeServico(id)}
+              >
                 <X size={18} />
                 Delete
               </Button>
-              
+
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="secondary" className="gap-3 text-primary">
@@ -83,11 +98,17 @@ const EditServices : React.FC<BarbershopServicosProps> = ({
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader  className=" border-b border-solid border-secondary ">
+                  <DialogHeader className=" border-b border-solid border-secondary ">
                     <DialogTitle className="pb-3">Editar Serviços</DialogTitle>
                     <DialogDescription></DialogDescription>
                   </DialogHeader>
-                  <FormEditService id={id} nome={nome} foto={foto} preco={preco} descricao={descricao} />
+                  <FormEditService
+                    id={id}
+                    nome={nome}
+                    foto={foto}
+                    preco={preco}
+                    descricao={descricao}
+                  />
                 </DialogContent>
               </Dialog>
             </div>

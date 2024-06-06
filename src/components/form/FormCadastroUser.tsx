@@ -31,7 +31,7 @@ const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
       return;
     }
     try {
-      const response = await api.post("/clientes", {
+      const response = await api.post("/cliente", {
         ...data,
         dataNascimento: dataNascimentoFormatada
       });

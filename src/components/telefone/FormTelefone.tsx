@@ -26,7 +26,7 @@ const FormTelefone = () => {
       return;
     }
     try {
-      const response = await api.post("/telefones", {
+      const response = await api.post("/telefone", {
         ...data,
       });
       console.log(response.data);

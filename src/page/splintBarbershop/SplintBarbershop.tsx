@@ -50,7 +50,7 @@ const SplintBarbershop = () => {
   useEffect(() => {
     const obterBarbearia = async () => {
       try {
-        const response = await api.get(`/barbearias/${id}`);
+        const response = await api.get(`/barbearia/${id}`);
         setBarberShop(response.data);
         console.log(response.data);
       } catch (error) {
