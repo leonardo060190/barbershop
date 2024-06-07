@@ -149,7 +149,7 @@ const SplintBarbershop = () => {
                   <EditServices
                     key={servico.id} // Use um identificador único se disponível
                     id={servico.id}
-                    barbeariaId={id || ''}
+                    barbeariaId={id || ""}
                     nome={servico.nome}
                     foto={servico.foto}
                     descricao={servico.descricao}
@@ -165,7 +165,10 @@ const SplintBarbershop = () => {
           </div>
         </div>
         <div className="pl-12 py-10">
-          <Information telefones={barberShop.telefones} />
+          <Information
+            telefones={barberShop.telefones}
+            onTelefoneDeletado={atualizarSplintBarbershop}
+          />
         </div>
       </div>
     </>

@@ -13,6 +13,7 @@ import FormTelefone from "./FormTelefone";
 interface IdBarberShopRegisterTelefone {
   idBarbershop: string;
   onTelefoneRegistrado: () => void;
+  
 }
 
 const TelefoneRender: React.FC<IdBarberShopRegisterTelefone> = ({
@@ -35,7 +36,10 @@ const TelefoneRender: React.FC<IdBarberShopRegisterTelefone> = ({
           <DialogTitle className="pb-3"> Registre o telefone</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <FormTelefone idBarbershop={idBarbershop} onTelefoneRegistrado={onTelefoneRegistrado}/>
+        <FormTelefone
+          idBarbershop={idBarbershop}
+          onTelefoneRegistrado={onTelefoneRegistrado}
+        />
       </DialogContent>
     </Dialog>
   );
