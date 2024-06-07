@@ -27,7 +27,9 @@ interface BarbershopServicosProps {
   foto: string;
   preco: number;
   descricao: string;
+  barbeariaId: string;
   onServicoDeletado: () => void;
+  onServicoUpdated: () => void;
 }
 
 const EditServices: React.FC<BarbershopServicosProps> = ({
@@ -36,7 +38,9 @@ const EditServices: React.FC<BarbershopServicosProps> = ({
   nome,
   preco,
   descricao,
+  barbeariaId,
   onServicoDeletado,
+  onServicoUpdated,
 }) => {
   const [servico, setServico] = useState<BarbershopServicosProps[]>([]);
 
@@ -110,6 +114,8 @@ const EditServices: React.FC<BarbershopServicosProps> = ({
                     foto={foto}
                     preco={preco}
                     descricao={descricao}
+                    barbeariaId={barbeariaId}
+                    onServicoUpdated={onServicoUpdated}
                   />
                 </DialogContent>
               </Dialog>

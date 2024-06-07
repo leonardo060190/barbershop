@@ -36,15 +36,16 @@ interface BarberShop {
   nome: string;
   foto: string;
   avaliacao: number;
+  cnpj: string;
+  razaoSocial: string;
   numAvaliacoes: number;
-  descricao: string;
   servicos: Service[];
   endereco?: Endereco;
   telefones: Telefone[];
 }
 
 const SplintBarbershop = () => {
-  const { id } = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
 
   useEffect(() => {
@@ -62,15 +63,14 @@ const SplintBarbershop = () => {
     }
   }, [id]);
 
-
-  const atualizarSplintBarbershop = async ()=>{
+  const atualizarSplintBarbershop = async () => {
     try {
       const response = await api.get(`/barbearia/${id}`);
       setBarberShop(response.data);
     } catch (error) {
       console.error("Erro ao atualizar os serviços:", error);
     }
-  }
+  };
 
   if (!barberShop) {
     return <div>Carregando...</div>;
@@ -97,10 +97,30 @@ const SplintBarbershop = () => {
                 <h1 className="text-xl font-bold">{barberShop.nome}</h1>
                 <div className="flex gap-3">
                   <div className="grid gap-2 grid-cols-2 md-grid-cols-3 xl:grid-cols-4">
-                    <EditProfile />
-                    {id && <RegisterServices idBarbershop={id} onServicoRegistrado={atualizarSplintBarbershop}/>}
+                    {id && (
+                      <EditProfile
+                        key={id}
+                        id={id}
+                        nome={barberShop.nome}
+                        foto={barberShop.foto}
+                        cnpj={barberShop.cnpj}
+                        razaoSocial={barberShop.razaoSocial}
+                        onProfileUpdated={atualizarSplintBarbershop}
+                      />
+                    )}
+                    {id && (
+                      <RegisterServices
+                        idBarbershop={id}
+                        onServicoRegistrado={atualizarSplintBarbershop}
+                      />
+                    )}
                     <RegisterOpeningHours />
-                    {id && <TelefoneRender idBarbershop={id} onTelefoneRegistrado={atualizarSplintBarbershop}/>}
+                    {id && (
+                      <TelefoneRender
+                        idBarbershop={id}
+                        onTelefoneRegistrado={atualizarSplintBarbershop}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -124,23 +144,23 @@ const SplintBarbershop = () => {
           <div className=" pb-6 flex-wrap justify-center">
             <h1 className="text-xl font-bold py-6">Serviços Regitrados</h1>
             <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
-            {barberShop.servicos?.length > 0 ? (
+              {barberShop.servicos?.length > 0 ? (
                 barberShop.servicos.map((servico) => (
                   <EditServices
                     key={servico.id} // Use um identificador único se disponível
                     id={servico.id}
+                    barbeariaId={id || ''}
                     nome={servico.nome}
                     foto={servico.foto}
                     descricao={servico.descricao}
                     preco={servico.preco}
                     onServicoDeletado={atualizarSplintBarbershop}
-                    
+                    onServicoUpdated={atualizarSplintBarbershop}
                   />
                 ))
               ) : (
                 <div>Nenhum serviço disponível</div>
               )}
-             
             </div>
           </div>
         </div>

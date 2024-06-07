@@ -3,7 +3,8 @@ import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { api } from "../../../../../config/ConfigAxios";
 // import { useState } from "react";
 
 type FormValues = {
@@ -14,24 +15,26 @@ type FormValues = {
 };
 
 interface FormEditServiceProps {
-  id:string;
+  id: string;
   nome: string;
-  foto:string;
+  foto: string;
   preco: number;
   descricao: string;
-  
+  barbeariaId: string;
+  onServicoUpdated: () => void;
 }
 
-const FormEditService : React.FC<FormEditServiceProps> = ({
+const FormEditService: React.FC<FormEditServiceProps> = ({
   id,
   foto,
   nome,
   preco,
-  descricao
- 
+  descricao,
+  barbeariaId,
+  onServicoUpdated,
 }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
-  // const [isFormOpen, setIsFormOpen] = useState(true);
+  const [isFormOpen, setIsFormOpen] = useState(true);
   const {
     handleSubmit,
     register,
@@ -39,18 +42,27 @@ const FormEditService : React.FC<FormEditServiceProps> = ({
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
-    // setIsFormOpen(false);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    setIsFormOpen(false);
+    try {
+      const response = await api.put(`/servico/${id}`, {
+        ...data,
+        barbearia: { id: barbeariaId },
+      });
+      console.log(response.data);
+      onServicoUpdated();
+    } catch (error) {
+      console.error("Erro ao atualizar o serviço:", error);
+    }
     console.log(data); // Aqui você pode acessar os dados do formulário
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setValue("foto", foto);
     setValue("nome", nome);
     setValue("preco", preco.toString());
     setValue("descricao", descricao);
-
-  }, [foto, nome, descricao, preco, setValue])
+  }, [foto, nome, descricao, preco, setValue]);
 
   // Função de validação customizada para verificar se é um número válido
   const validatePrice = (value: string) => {
@@ -61,9 +73,9 @@ const FormEditService : React.FC<FormEditServiceProps> = ({
     return true;
   };
 
-  // if (!isFormOpen) {
-  //   return <p>Formulário enviado com sucesso! Fechando...</p>;
-  // }
+  if (!isFormOpen) {
+    return <p>Formulário enviado com sucesso! Fechando...</p>;
+  }
 
   return (
     <div key={id}>
@@ -108,7 +120,6 @@ const FormEditService : React.FC<FormEditServiceProps> = ({
                 <Input
                   type="text"
                   className="w-full"
-
                   placeholder="Digite o preço"
                   {...register("preco", {
                     required: "Preço é requerido",

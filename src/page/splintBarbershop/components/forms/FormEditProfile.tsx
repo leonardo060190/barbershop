@@ -2,30 +2,60 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { api } from "../../../../../config/ConfigAxios";
 
 type FormValues = {
   foto: string;
   nome: string;
   cnpj: string;
-  email: string;
   razaoSocial: string;
-  password: string;
 };
 
-const FormEdit = () => {
+interface BarbershopEditProfileProps {
+  id: string;
+  nome: string;
+  foto: string;
+  cnpj: string;
+  razaoSocial: string;
+  onProfileUpdated: ()=>void;
+}
+
+const FormEdit: React.FC<BarbershopEditProfileProps> = ({
+  id,
+  foto,
+  nome,
+  cnpj,
+  razaoSocial,
+  onProfileUpdated,
+}) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = methods;
 
-  const onSubmit: SubmitHandler<FormValues> = (data) => {
+  const onSubmit: SubmitHandler<FormValues> =async (data) => {
     setIsFormOpen(false);
+    try {
+      const response = await api.put(`/barbearia/${id}`, data);
+      console.log(response.data)
+      onProfileUpdated();
+    } catch (error) {
+      console.error("Erro ao atualizar o perfil:", error);
+    }
     console.log(data); // Aqui você pode acessar os dados do formulário
   };
+
+  useEffect(() => {
+    setValue("nome", nome);
+    setValue("foto", foto);
+    setValue("cnpj", cnpj);
+    setValue("razaoSocial", razaoSocial);
+  }, [nome, foto, cnpj, razaoSocial, setValue]);
 
   // Função para validar o CNPJ
   function validateCNPJ(cnpj: string) {
@@ -83,13 +113,13 @@ const FormEdit = () => {
   }
 
   return (
-    <div className="">
+    <div>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3  grid gap-3 sm:grid-cols-1"
         >
-           <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-1 gap-4">
             <FormItem>
               <FormLabel>Foto</FormLabel>
               <FormControl>
@@ -138,65 +168,24 @@ const FormEdit = () => {
             </FormItem>
           </div>
 
-          <div className="grid grid-cols-1 gap-4">
-          <FormItem>
-            <FormLabel>Email</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Digite o e-mail"
-                {...register("email", {
-                  required: "E-mail é requerido",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-            </FormControl>
-            {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
-          </FormItem>
-          </div>
           <div className="grid grid-cols-1  gap-4">
-          <FormItem>
-            <FormLabel>Razão social</FormLabel>
-            <FormControl>
-              <Input
-                placeholder="Digite a razão social"
-                {...register("razaoSocial", {
-                  required: "Razão social é requerido",
-                })}
-              />
-            </FormControl>
-            {errors.razaoSocial && (
-              <p className="text-red-500">{errors.razaoSocial.message}</p>
-            )}
-          </FormItem>
+            <FormItem>
+              <FormLabel>Razão social</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Digite a razão social"
+                  {...register("razaoSocial", {
+                    required: "Razão social é requerido",
+                  })}
+                />
+              </FormControl>
+              {errors.razaoSocial && (
+                <p className="text-red-500">{errors.razaoSocial.message}</p>
+              )}
+            </FormItem>
           </div>
-          <div className="grid grid-cols-1  gap-4">
-          <FormItem>
-            <FormLabel>Password</FormLabel>
-            <FormControl>
-              <Input
-                type="password"
-                placeholder="Digite a senha"
-                {...register("password", {
-                  required: "Senha é requerido",
-                  minLength: {
-                    value: 6,
-                    message: "Password must have at least 6 characters",
-                  },
-                })}
-              />
-            </FormControl>
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
-          </FormItem>
-          </div>
-          
-          <Button type="submit">To save</Button>
+
+          <Button type="submit">Salvar</Button>
         </form>
       </FormProvider>
     </div>
