@@ -1,17 +1,26 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { FormControl, FormItem, FormLabel } from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Input } from "../../../../components/ui/input";
+import { Button } from "../../../../components/ui/button";
 
-import { api } from "../../../config/ConfigAxios";
+import { api } from "../../../../../config/ConfigAxios";
+import { useState } from "react";
+import { FormControl, FormItem, FormLabel } from "../../../../components/ui/form";
 
 type FormValues = {
   numero: string;
 };
 
-const FormTelefone = () => {
+interface IdBarberShopRegisterTelefone {
+  idBarbershop: string;
+  onTelefoneRegistrado: () => void;
+}
+
+const FormTelefone: React.FC<IdBarberShopRegisterTelefone> = ({
+  idBarbershop,
+  onTelefoneRegistrado,
+}) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
- 
+  const [isFormOpen, setIsFormOpen] = useState(true);
   const {
     handleSubmit,
     register,
@@ -25,38 +34,46 @@ const FormTelefone = () => {
     if (!window.confirm("Confirma o Casdastro ?")) {
       return;
     }
+    const requestData = {
+      ...data,
+      barbearia: { id: idBarbershop },
+    };
+    console.log(requestData);
+
     try {
-      const response = await api.post("/telefone", {
-        ...data,
-      });
+      const response = await api.post("/telefone", requestData);
       console.log(response.data);
       limparFormulario();
+      setIsFormOpen(false);
+      onTelefoneRegistrado();
     } catch (error) {
       console.error("Erro cadastro", error);
     }
   };
 
-
   //função para formatar o cpf
   const formatTelefone = (value: string) => {
     value = value.replace(/\D/g, "");
-    
-    value = value.slice(0, 11)
+
+    value = value.slice(0, 11);
 
     let formattedValue = "";
-    for (let i = 0; i < value.length; i++){
-      if (i === 0 ){
-        formattedValue += "( ";
-      }else if (i === 2 ){
-        formattedValue += " ) "
-      }else if (i === 7 ){
-        formattedValue += " - "
+    for (let i = 0; i < value.length; i++) {
+      if (i === 0) {
+        formattedValue += "(";
+      } else if (i === 2) {
+        formattedValue += ") ";
+      } else if (i === 7) {
+        formattedValue += "-";
       }
       formattedValue += value[i];
     }
     return formattedValue;
   };
 
+  if (!isFormOpen) {
+    return <p>Formulário enviado com sucesso!</p>;
+  }
 
   const limparFormulario = () => {
     reset({
@@ -65,7 +82,7 @@ const FormTelefone = () => {
   };
 
   return (
-    <div>
+    <div key={idBarbershop}>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -80,8 +97,8 @@ const FormTelefone = () => {
                   placeholder="(00) 00000-0000"
                   {...register("numero", {
                     required: "O número do telefone é requerido",
-                    onChange: (e) => setValue("numero", formatTelefone(e.target.value)),
-
+                    onChange: (e) =>
+                      setValue("numero", formatTelefone(e.target.value)),
                   })}
                 />
               </FormControl>

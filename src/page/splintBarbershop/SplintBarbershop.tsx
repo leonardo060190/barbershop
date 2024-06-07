@@ -5,7 +5,7 @@ import EditServices from "./components/renderForms/EditServices";
 import EditProfile from "./components/renderForms/EditProfile";
 import RegisterServices from "./components/renderForms/RegisterServices";
 import RegisterOpeningHours from "./components/renderForms/RegisterOpeningHours";
-import TelefoneRender from "@/components/telefone/TelefoneRender";
+import TelefoneRender from "./components/telefone/TelefoneRender";
 import Information from "../../components/informações/information";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
@@ -44,7 +44,7 @@ interface BarberShop {
 }
 
 const SplintBarbershop = () => {
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
 
   useEffect(() => {
@@ -61,6 +61,17 @@ const SplintBarbershop = () => {
       obterBarbearia();
     }
   }, [id]);
+
+
+  const atualizarSplintBarbershop = async ()=>{
+    try {
+      const response = await api.get(`/barbearia/${id}`);
+      setBarberShop(response.data);
+    } catch (error) {
+      console.error("Erro ao atualizar os serviços:", error);
+    }
+  }
+
   if (!barberShop) {
     return <div>Carregando...</div>;
   }
@@ -87,9 +98,9 @@ const SplintBarbershop = () => {
                 <div className="flex gap-3">
                   <div className="grid gap-2 grid-cols-2 md-grid-cols-3 xl:grid-cols-4">
                     <EditProfile />
-                    <RegisterServices />
+                    {id && <RegisterServices idBarbershop={id} onServicoRegistrado={atualizarSplintBarbershop}/>}
                     <RegisterOpeningHours />
-                    <TelefoneRender />
+                    {id && <TelefoneRender idBarbershop={id} onTelefoneRegistrado={atualizarSplintBarbershop}/>}
                   </div>
                 </div>
               </div>
@@ -122,6 +133,7 @@ const SplintBarbershop = () => {
                     foto={servico.foto}
                     descricao={servico.descricao}
                     preco={servico.preco}
+                    onServicoDeletado={atualizarSplintBarbershop}
                     
                   />
                 ))

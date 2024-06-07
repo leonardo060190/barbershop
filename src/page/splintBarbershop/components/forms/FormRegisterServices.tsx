@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
-import { useParams } from "react-router-dom";
 
 type FormValues = {
   foto: string;
@@ -14,8 +13,15 @@ type FormValues = {
   descricao: string;
 };
 
-const FormRegisterServices = () => {
-  const { id } = useParams<{id: string}>();
+interface IdBarberShopRegisterServices {
+  idBarbershop: string;
+  onServicoRegistrado: () => void;
+}
+
+const FormRegisterServices: React.FC<IdBarberShopRegisterServices> = ({
+  idBarbershop,
+  onServicoRegistrado,
+}) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
   const {
@@ -29,14 +35,17 @@ const FormRegisterServices = () => {
     if (!window.confirm("Confirma o Casdastro ?")) {
       return;
     }
+    const requestData = {
+      ...data,
+      barbearia: { id: idBarbershop },
+    };
+    console.log("requestData", requestData);
     try {
-      const response = await api.post("/servico", {
-        ...data,
-        barbearia: id,
-      });
-      console.log(response.data);
+      const response = await api.post("/servico", requestData);
+      console.log("Aki", response);
       limparFormulario();
       setIsFormOpen(false);
+      onServicoRegistrado();
       console.log(data);
     } catch (error) {
       console.error("Erro cadastro", error);
@@ -66,7 +75,7 @@ const FormRegisterServices = () => {
   };
 
   return (
-    <div>
+    <div key={idBarbershop}>
       <FormProvider {...methods}>
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -136,7 +145,7 @@ const FormRegisterServices = () => {
             )}
           </FormItem>
 
-          <Button type="submit">To save</Button>
+          <Button type="submit">Salvar</Button>
         </form>
       </FormProvider>
     </div>

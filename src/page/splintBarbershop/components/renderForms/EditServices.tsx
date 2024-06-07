@@ -27,6 +27,7 @@ interface BarbershopServicosProps {
   foto: string;
   preco: number;
   descricao: string;
+  onServicoDeletado: () => void;
 }
 
 const EditServices: React.FC<BarbershopServicosProps> = ({
@@ -35,6 +36,7 @@ const EditServices: React.FC<BarbershopServicosProps> = ({
   nome,
   preco,
   descricao,
+  onServicoDeletado,
 }) => {
   const [servico, setServico] = useState<BarbershopServicosProps[]>([]);
 
@@ -44,8 +46,8 @@ const EditServices: React.FC<BarbershopServicosProps> = ({
     }
     try {
       await api.delete(`/servico/${id}`);
-
       setServico(servico.filter((servico) => servico.id !== id));
+      onServicoDeletado();
     } catch (error) {
       console.error("Erro ao deletar o serviço:", error);
     }

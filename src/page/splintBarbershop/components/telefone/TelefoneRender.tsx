@@ -1,24 +1,23 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-
 import { Edit } from "lucide-react";
-import FormRegisterServices from "../forms/FormRegisterServices";
+import { DialogHeader } from "../../../../components/ui/dialog";
+import { Button } from "../../../../components/ui/button";
+import FormTelefone from "./FormTelefone";
 
-interface IdBarberShopRegisterServices {
+interface IdBarberShopRegisterTelefone {
   idBarbershop: string;
-  onServicoRegistrado: () => void;
+  onTelefoneRegistrado: () => void;
 }
 
-const RegisterServices: React.FC<IdBarberShopRegisterServices> = ({
+const TelefoneRender: React.FC<IdBarberShopRegisterTelefone> = ({
   idBarbershop,
-  onServicoRegistrado,
+  onTelefoneRegistrado,
 }) => {
   return (
     <Dialog>
@@ -28,21 +27,18 @@ const RegisterServices: React.FC<IdBarberShopRegisterServices> = ({
           className="gap-3 text-primary flex justify-start"
         >
           <Edit size={18} />
-          Register services
+          Registre o telefone
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className=" border-b border-solid border-secondary ">
-          <DialogTitle className="pb-3">Register yous services</DialogTitle>
+          <DialogTitle className="pb-3"> Registre o telefone</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <FormRegisterServices
-          idBarbershop={idBarbershop}
-          onServicoRegistrado={onServicoRegistrado}
-        />
+        <FormTelefone idBarbershop={idBarbershop} onTelefoneRegistrado={onTelefoneRegistrado}/>
       </DialogContent>
     </Dialog>
   );
 };
 
-export default RegisterServices;
+export default TelefoneRender;

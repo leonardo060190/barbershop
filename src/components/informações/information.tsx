@@ -5,7 +5,7 @@ import {
   CardDescription,
   CardHeader,
  } from "@/components/ui/card";
-import Telefone from "../telefone/Telefone";
+import Telefone from "../../page/splintBarbershop/components/telefone/Telefone";
 import React from "react";
 // import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 

@@ -1,11 +1,11 @@
 import Header from "@/components/header/header";
-import ServiceItem from "./components/ServiceItem";
+import ServiceItem from "./components/serviceItem";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
-import Telefone from "../../components/telefone/Telefone";
+import Telefone from "../splintBarbershop/components/telefone/Telefone";
 import Information from "../../components/informações/information";
 
 interface Telefone {
