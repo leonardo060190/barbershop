@@ -63,6 +63,8 @@ const BarberShopDetailsPage = () => {
     return <div>Carregando...</div>;
   }
 
+
+
   return (
     <div>
       <Header />
@@ -129,7 +131,11 @@ const BarberShopDetailsPage = () => {
           </div>
         </div>
         <div className="pl-12 py-10">
-          <Information telefones={barberShop.telefones}/>
+          <Information
+            telefones={barberShop.telefones}
+            onTelefoneDeletado={BarberShopDetailsPage}
+            showDeleteButton={false}
+          />
         </div>
       </div>
     </div>

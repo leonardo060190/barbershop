@@ -168,6 +168,7 @@ const SplintBarbershop = () => {
           <Information
             telefones={barberShop.telefones}
             onTelefoneDeletado={atualizarSplintBarbershop}
+            showDeleteButton={true}
           />
         </div>
       </div>

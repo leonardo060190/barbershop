@@ -7,15 +7,15 @@ interface BarbershopTelefonesProps {
   id: string;
   numero: string;
   onTelefoneDeletado: () => void;
+  showDeleteButton: boolean;
 }
 
 const Telefone: React.FC<BarbershopTelefonesProps> = ({
   id,
   numero,
   onTelefoneDeletado,
+  showDeleteButton,
 }) => {
-
-
   const [telefone, setTelefone] = useState<BarbershopTelefonesProps[]>([]);
 
   const removeTelefone = async (id: string) => {
@@ -38,13 +38,15 @@ const Telefone: React.FC<BarbershopTelefonesProps> = ({
           <Smartphone size={16} className="text-primary" />
           {numero}
         </p>
-        <Button
-          variant="transparent"
-          className="text-[#ff6666] gap-2  ml-auto"
-          onClick={() => removeTelefone(id)}
-        >
-          <X size={16} />
-        </Button>
+        {showDeleteButton && (
+          <Button
+            variant="transparent"
+            className="text-[#ff6666] gap-2  ml-auto"
+            onClick={() => removeTelefone(id)}
+          >
+            <X size={16} />
+          </Button>
+        )}
       </div>
     </div>
   );

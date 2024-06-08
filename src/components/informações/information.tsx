@@ -11,11 +11,13 @@ import React from "react";
 interface InformationTelefoneProps {
   telefones: { id: string; numero: string }[];
   onTelefoneDeletado: () => void;
+  showDeleteButton: boolean;
 }
 
 const Information: React.FC<InformationTelefoneProps> = ({
   telefones,
   onTelefoneDeletado,
+  showDeleteButton,
 }) => {
   return (
     <div>
@@ -42,6 +44,7 @@ const Information: React.FC<InformationTelefoneProps> = ({
                     id={telefone.id}
                     numero={telefone.numero}
                     onTelefoneDeletado={onTelefoneDeletado}
+                    showDeleteButton={showDeleteButton}
                   />
                 ))
               ) : (
