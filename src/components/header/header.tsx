@@ -1,4 +1,4 @@
-import { CalendarDays, CircleUserRound } from "lucide-react";
+import { CircleUserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -27,21 +27,16 @@ const Header = () => {
           <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
         </Link>
         <div className="flex gap-3 ">
-          <Link
-            className="flex items-center border px-2 rounded-md border-solid border-secondary "
-            to={"/bookings"}
-          >
-            <CalendarDays size={16} className="me-2" /> Agendamentos
-          </Link>
-
           <AddressRegistration />
 
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-            {autenticado ? (
+              {autenticado ? (
                 <Avatar className="cursor-pointer">
                   <AvatarImage src={userFoto} alt={userName} />
-                  <AvatarFallback>{userName?.charAt(0).toUpperCase()}</AvatarFallback>
+                  <AvatarFallback>
+                    {userName?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
                 </Avatar>
               ) : (
                 <Button onClick={handleSheetOpen}>

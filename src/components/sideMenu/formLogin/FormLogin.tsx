@@ -66,7 +66,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid gap-4 py-4 px-4 ">
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="px-3">
             <Label htmlFor="email" className="text-right">
               E-mail
             </Label>
@@ -79,7 +79,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
             />
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div className="px-3">
             <Label htmlFor="senha" className="text-right">
               Senha
             </Label>
@@ -104,9 +104,9 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          <div className="text-left border-b border-solid flex justify-end sm:flex-row sm:justify-end border-secondary p-5">
+          <div className="text-left border-b border-solid flex justify-end sm:flex-row sm:justify-end border-secondary px-3 pt-2 pb-5">
          
-              <Button type="submit" className="gap-3">
+              <Button type="submit" className="gap-3 w-full">
                 <LogInIcon size={16} />
                 Entrar
               </Button>

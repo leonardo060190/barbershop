@@ -61,7 +61,9 @@ const Home = () => {
           <div className="w-80 justify-center">
             <h2 className="text-xl">
               {autenticado && userName ? (
-                <span className="me-3 capitalize">Olá, {userName}</span>
+                <span>
+                  Olá, <span className="me-3 capitalize font-bold">{userName}</span>
+                </span>
               ) : (
                 <span>
                   Olá, <span className="font-bold">Faça seu Login</span>!
