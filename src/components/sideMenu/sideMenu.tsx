@@ -10,7 +10,11 @@ import { Link } from "react-router-dom";
 
 import FormLogin from "./formLogin/FormLogin";
 
-const SideMenu = () => {
+interface SideMenuProps {
+  onClose: () => void;
+}
+
+const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
   return (
     <>
       <SheetHeader className="text-left border-b border-solid border-secondary p-5">
@@ -21,7 +25,7 @@ const SideMenu = () => {
         <SheetDescription>Faça login da sua conta aqui !</SheetDescription>
       </SheetHeader>
 
-      <FormLogin />
+      <FormLogin onLoginSuccess={onClose} />
 
       <SheetHeader className="text-left border-b border-solid border-secondary p-5">
         <SheetTitle>Faça seu cadastro no app Aqui!</SheetTitle>

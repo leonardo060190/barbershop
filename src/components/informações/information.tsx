@@ -19,6 +19,8 @@ const Information: React.FC<InformationTelefoneProps> = ({
   onTelefoneDeletado,
   showDeleteButton,
 }) => {
+
+  
   return (
     <div>
       <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">

@@ -1,5 +1,4 @@
-import { EyeIcon, EyeOffIcon, LogInIcon } from "lucide-react";
-import { SheetFooter } from "../../ui/sheet";
+import { EyeIcon, EyeOffIcon, LogInIcon, LogOutIcon } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
@@ -7,17 +6,23 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { api } from "../../../../config/ConfigAxios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   email: string;
   senha: string;
 };
 
-const FormLogin = () => {
-  const methods = useForm<FormValues>();
-  const { login } = useAuth();
+interface FormLoginProps {
+  onLoginSuccess: () => void;
+}
 
-  const { handleSubmit, register } = methods;
+const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
+  const methods = useForm<FormValues>();
+  const { autenticado, login, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const { handleSubmit, register, reset } = methods;
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,6 +38,8 @@ const FormLogin = () => {
       });
       if (response.status === 200) {
         login();
+        limpaFormulario();
+        onLoginSuccess();
       } else {
         alert("Usuário ou senha inválidos!");
       }
@@ -44,6 +51,19 @@ const FormLogin = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleLogout = () => {
+    logout();
+    onLoginSuccess();
+    navigate("/");
+  };
+
+  const limpaFormulario = () =>{
+    reset({
+      email: "",
+      senha: "",
+    })
+  }
 
   return (
     <FormProvider {...methods}>
@@ -87,14 +107,19 @@ const FormLogin = () => {
             </div>
           </div>
 
-          <SheetFooter className="text-left border-b border-solid flex justify-end sm:flex-row sm:justify-end border-secondary p-5">
-            {/* <SheetClose asChild className="px-4 mb-4"> */}
-            <Button type="submit" className="gap-3">
-              <LogInIcon size={16} />
-              Entrar
-            </Button>
-            {/* </SheetClose> */}
-          </SheetFooter>
+          <div className="text-left border-b border-solid flex justify-end sm:flex-row sm:justify-end border-secondary p-5">
+            {autenticado ? (
+              <Button onClick={handleLogout} className="gap-3">
+                <LogOutIcon size={16} />
+                Sair
+              </Button>
+            ) : (
+              <Button type="submit" className="gap-3">
+                <LogInIcon size={16} />
+                Entrar
+              </Button>
+            )}
+          </div>
         </div>
       </form>
     </FormProvider>

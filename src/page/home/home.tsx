@@ -28,7 +28,7 @@ interface Barbershop {
 
 const Home = () => {
   const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
-  const [produtosReload, setProdutosReload] = useState(false);
+  const [barbershopReload, setBarbershopReload] = useState(false);
 
   const obterLista = async () => {
     try {
@@ -42,11 +42,11 @@ const Home = () => {
 
   useEffect(() => {
     obterLista();
-    if (produtosReload) {
+    if (barbershopReload) {
       obterLista(); // Fetch updated data and re-render
-      setProdutosReload(false); // Reset the reload flag
+      setBarbershopReload(false); // Reset the reload flag
     }
-  }, [produtosReload]);
+  }, [barbershopReload]);
 
   return (
     <div>
@@ -125,7 +125,7 @@ const Home = () => {
                     rua={barbershop.endereco?.rua}
                   />
 
-                {/* ))} */}
+             
               </CarouselItem>
             ))}
           </CarouselContent>

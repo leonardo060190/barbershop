@@ -37,6 +37,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = () => {
     setAutenticado(false);
+    localStorage.removeItem("autenticado")
   };
 
   return (

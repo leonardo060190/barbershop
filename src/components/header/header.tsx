@@ -5,8 +5,15 @@ import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Link } from "react-router-dom";
 import SideMenu from "@/components/sideMenu/sideMenu";
 import AddressRegistration from "../form/formsRender/AddressRegistration";
+import { useState } from "react";
 
-const header = () => {
+const Header = () => {
+
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const handleSheetOpen = () => setIsSheetOpen(true);
+  const handleSheetClose = () => setIsSheetOpen(false);
+
   return (
     <Card className="rounded-none border-none shadow-xl">
       <CardContent className="p-9 py-8 justify-between items-center flex flex-row">
@@ -25,14 +32,14 @@ const header = () => {
 
           <AddressRegistration />
 
-          <Sheet>
+          <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
-              <Button>
+              <Button onClick={handleSheetOpen}>
                 <CircleUserRound size={16} className="me-2 " /> Login
               </Button>
             </SheetTrigger>
             <SheetContent className="p-0">
-              <SideMenu />
+              <SideMenu onClose={handleSheetClose}/>
             </SheetContent>
           </Sheet>
         </div>
@@ -41,4 +48,4 @@ const header = () => {
   );
 };
 
-export default header;
+export default Header;
