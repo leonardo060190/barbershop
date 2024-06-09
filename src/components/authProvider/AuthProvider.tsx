@@ -1,8 +1,31 @@
-import React, { useState, createContext, useContext, ReactNode, useEffect } from "react";
+import React, {
+  useState,
+  createContext,
+  useContext,
+  ReactNode,
+  useEffect,
+} from "react";
 
+interface Cliente {
+  nome: string;
+  foto: string;
+  // Adicione outras propriedades de Cliente aqui, se necessário
+}
+
+interface Barbearia {
+  nome: string;
+  foto: string;
+  // Adicione outras propriedades de Barbearia aqui, se necessário
+}
+interface User {
+  nome?: string;
+  cliente?: Cliente;
+  barbearia?: Barbearia;
+}
 interface AuthContextType {
   autenticado: boolean;
-  login: () => void;
+  user: User | null;
+  login: (user: User) => void;
   logout: () => void;
 }
 
@@ -27,21 +50,33 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     return storeAuth ? JSON.parse(storeAuth) : false;
   });
 
-  useEffect(()=>{
+  const [user, setUser] = useState<User | null>(() => {
+    const storedUser = localStorage.getItem("user");
+    return storedUser ? JSON.parse(storedUser) : null;
+  });
+  useEffect(() => {
     localStorage.setItem("autenticado", JSON.stringify(autenticado));
-  }, [autenticado]);
+    if (user) {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, [autenticado, user]);
 
-  const login = () => {
+  const login = (user: User) => {
     setAutenticado(true);
+    setUser(user);
   };
 
   const logout = () => {
     setAutenticado(false);
-    localStorage.removeItem("autenticado")
+    setUser(null);
+    localStorage.removeItem("autenticado");
+    localStorage.removeItem("user");
   };
 
   return (
-    <AuthContext.Provider value={{ autenticado, login, logout }}>
+    <AuthContext.Provider value={{ autenticado, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { EyeIcon, EyeOffIcon, LogInIcon, LogOutIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, LogInIcon } from "lucide-react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
@@ -6,7 +6,6 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { api } from "../../../../config/ConfigAxios";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   email: string;
@@ -19,8 +18,8 @@ interface FormLoginProps {
 
 const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
   const methods = useForm<FormValues>();
-  const { autenticado, login, logout } = useAuth();
-  const navigate = useNavigate();
+  const { login } = useAuth();
+ 
 
   const { handleSubmit, register, reset } = methods;
 
@@ -37,9 +36,11 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
         ...data,
       });
       if (response.status === 200) {
-        login();
+        const user = response.data;
+        login(user);
         limpaFormulario();
         onLoginSuccess();
+        console.log("oi", user)
       } else {
         alert("Usuário ou senha inválidos!");
       }
@@ -52,11 +53,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
     setShowPassword(!showPassword);
   };
 
-  const handleLogout = () => {
-    logout();
-    onLoginSuccess();
-    navigate("/");
-  };
+
 
   const limpaFormulario = () =>{
     reset({
@@ -108,17 +105,12 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
           </div>
 
           <div className="text-left border-b border-solid flex justify-end sm:flex-row sm:justify-end border-secondary p-5">
-            {autenticado ? (
-              <Button onClick={handleLogout} className="gap-3">
-                <LogOutIcon size={16} />
-                Sair
-              </Button>
-            ) : (
+         
               <Button type="submit" className="gap-3">
                 <LogInIcon size={16} />
                 Entrar
               </Button>
-            )}
+      
           </div>
         </div>
       </form>

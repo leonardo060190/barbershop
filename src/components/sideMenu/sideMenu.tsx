@@ -1,4 +1,4 @@
-import { CircleUserRound, Scissors, UserIcon } from "lucide-react";
+import { CircleUserRound, LogOutIcon, Scissors, UserIcon } from "lucide-react";
 import {
   SheetDescription,
   SheetFooter,
@@ -6,24 +6,59 @@ import {
   SheetTitle,
 } from "../ui/sheet";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import FormLogin from "./formLogin/FormLogin";
+import { useAuth } from "../authProvider/AuthProvider";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 
 interface SideMenuProps {
   onClose: () => void;
 }
 
 const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
+  const { autenticado, user, logout } = useAuth();
+  const navigate = useNavigate();
+
+
+  const handleLogout = () => {
+    logout();
+    onClose();
+    navigate("/");
+  };
+
+
+  const userName =
+    user?.nome || user?.cliente?.nome || user?.barbearia?.nome || undefined;
+
+  const userFoto = user?.cliente?.foto || user?.barbearia?.foto || undefined;
   return (
     <>
-      <SheetHeader className="text-left border-b border-solid border-secondary p-5">
-        <div className="flex gap-3">
-          <UserIcon />
-          <SheetTitle>Faça seu Login</SheetTitle>
+      {autenticado && userName ? (
+        <div className="text-left border-b border-solid border-secondary p-5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={userFoto} alt={userName} />
+            <AvatarFallback>{userName?.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <span className="capitalize">{userName}</span>
         </div>
-        <SheetDescription>Faça login da sua conta aqui !</SheetDescription>
-      </SheetHeader>
+        <Button onClick={handleLogout} className="gap-2">
+          <LogOutIcon size={16} />
+          Sair
+        </Button>
+      </div>
+      ) : (
+        <SheetHeader className="text-left border-b border-solid border-secondary p-5">
+          <div className="flex gap-3">
+            <UserIcon />
+
+            <SheetTitle>Faça seu Login</SheetTitle>
+          </div>
+          <SheetDescription>Faça login da sua conta aqui !</SheetDescription>
+        </SheetHeader>
+      )}
 
       <FormLogin onLoginSuccess={onClose} />
 

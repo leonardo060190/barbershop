@@ -12,9 +12,10 @@ import BarbershopItemRecomendados from "@/components/barbershopItem/barbershopIt
 import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemPopulares";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
+import { useAuth } from "@/components/authProvider/AuthProvider";
 
 interface Endereco {
-  bairro:string;
+  bairro: string;
   cep: string;
   rua: string;
   numero: string;
@@ -27,6 +28,7 @@ interface Barbershop {
 }
 
 const Home = () => {
+  const { autenticado, user } = useAuth();
   const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
   const [barbershopReload, setBarbershopReload] = useState(false);
 
@@ -48,6 +50,8 @@ const Home = () => {
     }
   }, [barbershopReload]);
 
+  const userName = user?.nome || user?.cliente?.nome || null;
+
   return (
     <div>
       <Header />
@@ -56,7 +60,13 @@ const Home = () => {
         <div className="ps-12 py-12 flex gap-20 items-center  justify-between flex-col md:flex-row">
           <div className="w-80 justify-center">
             <h2 className="text-xl">
-              Olá, <span className="font-bold">Faça seu Login</span> !
+              {autenticado && userName ? (
+                <span className="me-3 capitalize">Olá, {userName}</span>
+              ) : (
+                <span>
+                  Olá, <span className="font-bold">Faça seu Login</span>!
+                </span>
+              )}
             </h2>
 
             {/* exibe o horario atual*/}
@@ -112,20 +122,18 @@ const Home = () => {
           className="w-full max-w-full	"
         >
           <CarouselContent>
-          {barbershops.slice(0, 10).map((barbershop, index) => (
-                <CarouselItem
-                  key={index}
-                  style={{ width: "180px" }}
-                  className="basis-48"
-                >
-                  <BarbershopItemPopulares
-                    id={barbershop.id}
-                    foto={barbershop.foto}
-                    nome={barbershop.nome}
-                    rua={barbershop.endereco?.rua}
-                  />
-
-             
+            {barbershops.slice(0, 10).map((barbershop, index) => (
+              <CarouselItem
+                key={index}
+                style={{ width: "180px" }}
+                className="basis-48"
+              >
+                <BarbershopItemPopulares
+                  id={barbershop.id}
+                  foto={barbershop.foto}
+                  nome={barbershop.nome}
+                  rua={barbershop.endereco?.rua}
+                />
               </CarouselItem>
             ))}
           </CarouselContent>
