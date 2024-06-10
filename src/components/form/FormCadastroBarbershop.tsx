@@ -14,7 +14,7 @@ type FormValues = {
   senha: string;
 };
 
-const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
+const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, onSave: () => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const {
     handleSubmit,
@@ -31,6 +31,7 @@ const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
     try {
       const respose = await api.post("/barbearia", {
         ...data,
+        endereco: {id: endereco},
       });
       console.log(respose.data);
       limpaFormulario();
@@ -204,4 +205,4 @@ const FormCadastroUser = ({ onSave }: { onSave: () => void }) => {
   );
 };
 
-export default FormCadastroUser;
+export default FormCadastroBarbershop;

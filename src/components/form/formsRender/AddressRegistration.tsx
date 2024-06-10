@@ -12,6 +12,8 @@ import { Edit } from "lucide-react";
 import FormAddress from "../FormAddress";
 
 const AddressRegistration = () => {
+
+  
   return (
     <Dialog>
       <DialogTrigger asChild>

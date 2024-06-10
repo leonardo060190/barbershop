@@ -36,7 +36,7 @@ type FormValues = {
   cidade: string;
 };
 
-const FormAddress = ({ onSave }: { onSave: () => void }) => {
+const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
   // const [open, setOpen] = React.useState(false);
@@ -61,7 +61,7 @@ const FormAddress = ({ onSave }: { onSave: () => void }) => {
       console.log(response.data);
       limparFormulario();
       setIsFormOpen(false);
-      onSave();
+      onSave(response.data.id);
     } catch (error) {
       console.error("Erro cadastro", error);
     }
