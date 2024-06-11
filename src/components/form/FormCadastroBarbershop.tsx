@@ -8,13 +8,12 @@ type FormValues = {
   foto: string;
   nome: string;
   email: string;
-  cpf: string;
   razaoSocial: string;
   cnpj: string;
-  senha: string;
+ 
 };
 
-const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, onSave: () => void }) => {
+const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, onSave: (id: number) => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const {
     handleSubmit,
@@ -35,7 +34,7 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
       });
       console.log(respose.data);
       limpaFormulario();
-      onSave();
+      onSave(respose.data.id);
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -120,10 +119,8 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
       foto: "",
       nome: "",
       email: "",
-      cpf: "",
       razaoSocial: "",
       cnpj: "",
-      senha: "",
     });
   };
   return (

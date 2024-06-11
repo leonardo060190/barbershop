@@ -4,23 +4,25 @@ import Header from "../../components/header/headerRegistration";
 import { useState } from "react";
 
 const RegistrationUser = () => {
-
+  const [clientId, setClientId] = useState<number | null>(null);
   const [isCadastroUser, setIsCadastroUser] = useState(false);
 
-  const handleCadastroUser = () =>{
+  const handleCadastroUser = (id: number | null) => {
+    if (id !== null) {
+      setClientId(id);
+    }
     setIsCadastroUser(true);
-  }
+  };
 
   return (
     <>
       <Header />
       <div className=" px-16 py-12 mb-10">
-      {!isCadastroUser ? (
-          <FormCadastroUser onSave={handleCadastroUser}/>
-        ):(
-            <FormCadastroLogin />
+        {!isCadastroUser && !clientId? (
+          <FormCadastroUser onSave={handleCadastroUser} />
+        ) : (
+          <FormCadastroLogin cliente={clientId}/>
         )}
-     
       </div>
     </>
   );

@@ -5,11 +5,14 @@ import Header from "@/components/header/headerRegistration";
 import { useState } from "react";
 
 const RegistrationBarbershop = () => {
-
+  const [barberId, setBarberId] = useState<number | null>(null);
   const [currentStep, setCurrentStep] = useState(1)
   const [endereco, setEndereco] = useState<number | null>(null);
   
-  const handleAddressSave = (id: number) =>{
+  const handleAddressSave = (id: number | null) =>{
+    if (id !== null) {
+      setBarberId(id);
+    }
     setEndereco(id);
     setCurrentStep(2);
   };
@@ -28,8 +31,8 @@ const RegistrationBarbershop = () => {
         {currentStep === 2 && endereco !== null &&(
           <FormCadastroBarbershop endereco={endereco} onSave={handleBarbershopSave} />
         )}
-        {currentStep === 3 && (
-          <FormCadastroLogin />
+        {currentStep === 3 && barberId !== null &&(
+          <FormCadastroLogin barbearia={barberId}/>
         )}
       </div>
     </>
