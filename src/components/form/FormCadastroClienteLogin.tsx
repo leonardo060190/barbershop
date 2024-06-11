@@ -10,12 +10,12 @@ type FormValues = {
   senha: string;
 };
 
-interface FormCadastroLoginProps{
+interface FormCadastroLoginProps {
   cliente?: number | null;
-  barbearia?: number | null;
+
 }
 
-const FormCadastroLogin = ({cliente, barbearia}: FormCadastroLoginProps) => {
+const FormCadastroClienteLogin = ({ cliente }: FormCadastroLoginProps) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const navigate = useNavigate();
   const {
@@ -32,8 +32,8 @@ const FormCadastroLogin = ({cliente, barbearia}: FormCadastroLoginProps) => {
     try {
       const respose = await api.post("/login", {
         ...data,
-        cliente: {id: cliente !== null ? cliente : undefined},
-        barbearia: {id: barbearia !== null ? barbearia : undefined},
+        cliente: { id: cliente },
+       
       });
       console.log(respose.data);
       limpaFormulario();
@@ -106,4 +106,4 @@ const FormCadastroLogin = ({cliente, barbearia}: FormCadastroLoginProps) => {
   );
 };
 
-export default FormCadastroLogin;
+export default FormCadastroClienteLogin;

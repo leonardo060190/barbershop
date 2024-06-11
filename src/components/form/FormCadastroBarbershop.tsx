@@ -28,13 +28,14 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
       return;
     }
     try {
-      const respose = await api.post("/barbearia", {
+      const response = await api.post("/barbearia", {
         ...data,
         endereco: {id: endereco},
       });
-      console.log(respose.data);
+      console.log(response.data);
       limpaFormulario();
-      onSave(respose.data.id);
+      onSave(response.data.id);
+      console.log("barber",response.data.id);
     } catch (error) {
       console.error("Erro cadastro", error);
     }

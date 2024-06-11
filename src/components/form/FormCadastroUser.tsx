@@ -10,7 +10,6 @@ type FormValues = {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
-  // endereco?: number;
 };
 
 const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
@@ -34,12 +33,13 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
     try {
       const response = await api.post("/cliente", {
         ...data,
-        // endereco: {id: endereco},
+      
         dataNascimento: dataNascimentoFormatada
       });
       console.log(response.data);
       limparFormulario();
       onSave(response.data.id);
+      console.log("ola", response.data.id)
     } catch (error) {
       console.error("Erro cadastro", error);
     }

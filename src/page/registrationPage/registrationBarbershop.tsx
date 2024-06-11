@@ -1,6 +1,6 @@
 import FormAddress from "@/components/form/FormAddress";
 import FormCadastroBarbershop from "@/components/form/FormCadastroBarbershop";
-import FormCadastroLogin from "@/components/form/FormCadastroLogin";
+import FormCadastroBarbeariaLogin from "@/components/form/FormCadastroBarbeariaLogin";
 import Header from "@/components/header/headerRegistration";
 import { useState } from "react";
 
@@ -32,7 +32,7 @@ const RegistrationBarbershop = () => {
           <FormCadastroBarbershop endereco={endereco} onSave={handleBarbershopSave} />
         )}
         {currentStep === 3 && barberId !== null &&(
-          <FormCadastroLogin barbearia={barberId}/>
+          <FormCadastroBarbeariaLogin barbearia={barberId}/>
         )}
       </div>
     </>
