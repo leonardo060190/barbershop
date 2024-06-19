@@ -18,19 +18,20 @@ import { Loader2 } from "lucide-react";
 import { saveBooking } from "./saveBooking";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { getDayBookings } from "./getBookings";
+// import { getDayBookings } from "./getBookings";
+import { useAuth } from "@/components/authProvider/AuthProvider";
 
 interface BarbershopServicosProps {
-  id:string;
+  id: string;
   nome: string;
-  foto:string;
+  foto: string;
   preco: number;
   descricao: string;
-  barbeariaId:string;
-  nomeBarbershop:string;
+  barbeariaId: string;
+  nomeBarbershop: string;
 }
 
-const ServiceItem : React.FC<BarbershopServicosProps> = ({
+const ServiceItem: React.FC<BarbershopServicosProps> = ({
   id,
   foto,
   nome,
@@ -39,8 +40,9 @@ const ServiceItem : React.FC<BarbershopServicosProps> = ({
   barbeariaId,
   nomeBarbershop,
 }) => {
-
-  // const {data} = useSession()
+  const { user } = useAuth();
+  const userId = user?.cliente?.id || null;
+  console.log("userId", userId);
   const navigate = useNavigate();
 
   const [submitIsLoading, SetSubmitIsLoading] = useState(false);
@@ -48,14 +50,14 @@ const ServiceItem : React.FC<BarbershopServicosProps> = ({
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
-  const [dayBookings, setDayBookings] = useState([]);
+  const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
   useEffect(() => {
     if (!date) {
       return;
     }
     const refreshAvailableHours = async () => {
-      const bookings = await getDayBookings(date);
+      const bookings = await getDayBookings(barbeariaId, date);
       setDayBookings(bookings);
     };
     refreshAvailableHours();
@@ -73,7 +75,7 @@ const ServiceItem : React.FC<BarbershopServicosProps> = ({
   const handleBookingSubmit = async () => {
     SetSubmitIsLoading(true);
     try {
-      if (!hour || !date || !data?.user) {
+      if (!hour || !date || !userId) {
         return;
       }
 
@@ -82,11 +84,12 @@ const ServiceItem : React.FC<BarbershopServicosProps> = ({
       const newDate = setMinutes(setHours(date, dateHour), dateMinutes);
 
       await saveBooking({
-        barbershopId: barbeariaId,
-        date: newDate.toISOString().split('T')[0], // "yyyy-MM-dd"
-        hora: newDate.toISOString().split('T')[1].slice(0, 5), // "HH:mm" 
-        clienteId: (data.user as any).id,
+        barbershopId: barbeariaId ,
+        date: newDate.toISOString().split("T")[0], // "yyyy-MM-dd"
+        hora: newDate.toISOString().split("T")[1].slice(0, 5), // "HH:mm"
+        clienteId:  userId ,
       });
+  
 
       setSheetISOpen(false);
       setHour(undefined);

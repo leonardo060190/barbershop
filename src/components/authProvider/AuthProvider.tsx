@@ -7,6 +7,7 @@ import React, {
 } from "react";
 
 interface Cliente {
+  id: string;
   nome: string;
   foto: string;
   // Adicione outras propriedades de Cliente aqui, se necessário

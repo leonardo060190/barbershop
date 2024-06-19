@@ -6,10 +6,10 @@ import { useState } from "react";
 
 const RegistrationBarbershop = () => {
   const [barberId, setBarberId] = useState<number | null>(null);
-  const [currentStep, setCurrentStep] = useState(1)
+  const [currentStep, setCurrentStep] = useState(1);
   const [endereco, setEndereco] = useState<number | null>(null);
-  
-  const handleAddressSave = (id: number | null) =>{
+
+  const handleAddressSave = (id: number | null) => {
     if (id !== null) {
       setBarberId(id);
     }
@@ -25,14 +25,15 @@ const RegistrationBarbershop = () => {
     <>
       <Header />
       <div className="px-16 py-12 mb-10">
-      {currentStep === 1 && (
-          <FormAddress onSave={handleAddressSave} />
+        {currentStep === 1 && <FormAddress onSave={handleAddressSave} />}
+        {currentStep === 2 && endereco !== null && (
+          <FormCadastroBarbershop
+            endereco={endereco}
+            onSave={handleBarbershopSave}
+          />
         )}
-        {currentStep === 2 && endereco !== null &&(
-          <FormCadastroBarbershop endereco={endereco} onSave={handleBarbershopSave} />
-        )}
-        {currentStep === 3 && barberId !== null &&(
-          <FormCadastroBarbeariaLogin barbearia={barberId}/>
+        {currentStep === 3 && barberId !== null && (
+          <FormCadastroBarbeariaLogin barbearia={barberId} />
         )}
       </div>
     </>

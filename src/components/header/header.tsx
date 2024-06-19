@@ -4,7 +4,6 @@ import { Card, CardContent } from "../ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Link } from "react-router-dom";
 import SideMenu from "@/components/sideMenu/sideMenu";
-import AddressRegistration from "../form/formsRender/AddressRegistration";
 import { useState } from "react";
 import { useAuth } from "../authProvider/AuthProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -27,8 +26,6 @@ const Header = () => {
           <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
         </Link>
         <div className="flex gap-3 ">
-          <AddressRegistration />
-
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>
               {autenticado ? (
