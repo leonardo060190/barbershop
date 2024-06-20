@@ -15,12 +15,10 @@ import { generateDayTimeList } from "./hours";
 import { format, setHours, setMinutes } from "date-fns";
 import { Loader2 } from "lucide-react";
 
-import { saveBooking } from "./saveBooking";
+import { api } from "../../../../config/ConfigAxios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-// import { getDayBookings } from "./getBookings";
 import { useAuth } from "@/components/authProvider/AuthProvider";
-
 interface BarbershopServicosProps {
   id: string;
   nome: string;
@@ -29,6 +27,9 @@ interface BarbershopServicosProps {
   descricao: string;
   barbeariaId: string;
   nomeBarbershop: string;
+}
+interface Booking {
+  date: Date;
 }
 
 const ServiceItem: React.FC<BarbershopServicosProps> = ({
@@ -43,6 +44,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
   console.log("userId", userId);
+
   const navigate = useNavigate();
 
   const [submitIsLoading, SetSubmitIsLoading] = useState(false);
@@ -56,12 +58,17 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
     if (!date) {
       return;
     }
-    const refreshAvailableHours = async () => {
-      const bookings = await getDayBookings(barbeariaId, date);
-      setDayBookings(bookings);
+    const refreshAvailableHours = async (): Promise<void> => {
+      try {
+        const bookings = await getDayBookings(barbeariaId, date);
+        setDayBookings(bookings);
+      } catch (error) {
+        console.error("Error fetching day bookings:", error);
+        // Tratar o erro de forma apropriada (toast, mensagem de erro, etc.)
+      }
     };
     refreshAvailableHours();
-  }, [date]);
+  }, [date, barbeariaId]);
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -81,15 +88,18 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
 
       const dateHour = Number(hour.split(":")[0]);
       const dateMinutes = Number(hour.split(":")[1]);
-      const newDate = setMinutes(setHours(date, dateHour), dateMinutes);
+      const newDate = setMinutes(setHours(date!, dateHour), dateMinutes);
+
+      const formattedDate = format(newDate, "yyyy-MM-dd");
+      console.log(formattedDate);
 
       await saveBooking({
-        barbershopId: barbeariaId ,
-        date: newDate.toISOString().split("T")[0], // "yyyy-MM-dd"
+        // barbearia: barbeariaId,
+        servico: id,
+        data: formattedDate, // "yyyy-MM-dd"
         hora: newDate.toISOString().split("T")[1].slice(0, 5), // "HH:mm"
-        clienteId:  userId ,
+        cliente: userId,
       });
-  
 
       setSheetISOpen(false);
       setHour(undefined);
@@ -134,6 +144,39 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
 
   console.log(timeList);
 
+  // Função para salvar a reserva
+  async function saveBooking(bookingData: {
+    // barbearia: string;
+    servico: string;
+    data: string; // Formato yyyy-MM-dd
+    hora: string; // Formato HH:mm
+    cliente: string;
+  }) {
+    try {
+      const response = await api.post("/agendamento", {
+        ...bookingData,
+        cliente: { id: bookingData.cliente },
+        servico: { id: bookingData.servico },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error saving booking:", error);
+      throw error;
+    } finally {
+      SetSubmitIsLoading(false);
+    }
+  }
+
+  // Função para obter as reservas do dia
+  async function getDayBookings(barbeariaId: string, date: Date) {
+    try {
+      const bookings = await getDayBookings(barbeariaId, date);
+      setDayBookings(bookings);
+    } catch (error) {
+      console.error("Error fetching day bookings:", error);
+      // Adicionar feedback ao usuário (toast, mensagem de erro no UI, etc.)
+    }
+  }
   return (
     <div key={id}>
       <Card className="w-full">
@@ -220,7 +263,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                         ))}
                       </div>
                     )}
-                    <div className="py-5 px-5 border-solid border-seconndary">
+                    <div className="py-5 px-5 border-solid border-secondary">
                       <Card>
                         <CardContent className="px-0 py-0">
                           <div className="px-6 py-5 flex flex-col gap-3">
