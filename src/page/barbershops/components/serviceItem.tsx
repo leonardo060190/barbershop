@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Calendar } from "@/components/ui/calendar";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "./hours";
 import { format, setHours, setMinutes } from "date-fns";
@@ -29,7 +29,7 @@ interface BarbershopServicosProps {
   nomeBarbershop: string;
 }
 interface Booking {
-  date: Date;
+  date: string;
 }
 
 const ServiceItem: React.FC<BarbershopServicosProps> = ({
@@ -54,6 +54,22 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
   const [hour, setHour] = useState<string | undefined>();
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
+  const getDayBookings = useCallback(async (barbeariaId: string, date: Date): Promise<Booking[]> => {
+    try {
+      const response = await api.get("/agendamento", {
+        params: {
+          barbeariaId,
+          date: date.toISOString().split("T")[0], // Enviar a data no formato yyyy-MM-dd
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching day bookings:", error);
+      return [];
+    }
+  }, []);
+
+
   useEffect(() => {
     if (!date) {
       return;
@@ -68,7 +84,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       }
     };
     refreshAvailableHours();
-  }, [date, barbeariaId]);
+  }, [date, barbeariaId, getDayBookings]);
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -97,9 +113,10 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
         // barbearia: barbeariaId,
         servico: id,
         data: formattedDate, // "yyyy-MM-dd"
-        hora: newDate.toISOString().split("T")[1].slice(0, 5), // "HH:mm"
+        hora: format(newDate, "HH:mm"),// "HH:mm"
         cliente: userId,
       });
+
 
       setSheetISOpen(false);
       setHour(undefined);
@@ -129,8 +146,9 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       const timeMinutes = Number(time.split(":")[1]);
 
       const booking = dayBookings.find((booking) => {
-        const bookingHour = booking.date.getHours();
-        const bookingMinutes = booking.date.getMinutes();
+        const bookingDate = new Date(booking.date);
+        const bookingHour = bookingDate.getHours();
+        const bookingMinutes = bookingDate.getMinutes();
 
         return bookingHour === timeHour && bookingMinutes === timeMinutes;
       });
@@ -167,16 +185,6 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
     }
   }
 
-  // Função para obter as reservas do dia
-  async function getDayBookings(barbeariaId: string, date: Date) {
-    try {
-      const bookings = await getDayBookings(barbeariaId, date);
-      setDayBookings(bookings);
-    } catch (error) {
-      console.error("Error fetching day bookings:", error);
-      // Adicionar feedback ao usuário (toast, mensagem de erro no UI, etc.)
-    }
-  }
   return (
     <div key={id}>
       <Card className="w-full">

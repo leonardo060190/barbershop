@@ -1,12 +1,12 @@
-import BookingItem from "@/components/bookingItem/bookingItem";
+import BookingItem from "../../components/bookingItem/bookingItem";
 import Header from "../../components/header/header";
 import { isFuture, isPast } from "date-fns";
 
 const bookings = () => {
 
 
-  // const confirmedBookings = bookings.filter(booking => isFuture(booking.date))
-  // const finishedBookings = bookings.filter(booking => isPast(booking.date))
+  const confirmedBookings = bookings.filter(booking => isFuture(booking.date))
+  const finishedBookings = bookings.filter(booking => isPast(booking.date))
 
   return (
     <>
@@ -19,18 +19,18 @@ const bookings = () => {
           Cofirmados
         </h2>
         <div className="flex flex-col gap-3">
-          {/* {confirmedBookings.map((booking) => (
+          {confirmedBookings.map((booking) => (
             <BookingItem key={booking.id} booking={booking} />
-          ))} */}
+          ))}
         </div>
 
         <h2 className="text-gray-400 uppercase font-bold text-sm mt-6 mb-3">
           Finalizados
         </h2>
         <div className="flex flex-col gap-3">
-          {/* {finishedBookings.map((booking) => (
+          {finishedBookings.map((booking) => (
             <BookingItem key={booking.id} booking={booking} />
-          ))} */}
+          ))}
         </div>
       </div>
     </>
