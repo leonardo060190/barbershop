@@ -1,6 +1,8 @@
 import {
   Sheet,
+  SheetClose,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -14,6 +16,9 @@ import { Badge } from "../../../components/ui/badge";
 import { Card, CardContent } from "../../../components/ui/card";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { Button } from "@/components/ui/button";
+import { api } from "../../../../config/ConfigAxios";
+import { X } from "lucide-react";
 
 interface Service {
   id: string;
@@ -47,14 +52,34 @@ interface Booking {
 
 interface BookingItemProps {
   booking: Booking;
+  onRemoveBooking: (id: string) => void;
 }
 
-const BookingItem: React.FC<BookingItemProps> = ({ booking }) => {
+const BookingItem: React.FC<BookingItemProps> = ({
+  booking,
+  onRemoveBooking,
+}) => {
   const bookingDate = new Date(`${booking.data}T${booking.hora}`);
   const isBookingConfirmed = booking.status === "Confirmado";
 
   // Busca a barbearia correspondente ao serviço
   const barbearia = booking.servico.barbearia;
+
+  const removeAgendamento = async (id: string) => {
+    if (
+      !window.confirm(
+        `Confirma a exclusão do serviço ${booking.servico.nome} ?`
+      )
+    ) {
+      return;
+    }
+    try {
+      await api.delete(`/agendamento/${id}`);
+      onRemoveBooking(id);
+    } catch (error) {
+      console.error("Erro ao deletar o serviço:", error);
+    }
+  };
 
   return (
     <Sheet>
@@ -168,6 +193,23 @@ const BookingItem: React.FC<BookingItemProps> = ({ booking }) => {
               </div>
             </CardContent>
           </Card>
+
+          <SheetFooter className="flex-row gap-3 mt-6  w-11/12 ">
+            <SheetClose asChild>
+              <Button className="w-full hover:text-primary" variant="secondary">
+                Voltar
+              </Button>
+            </SheetClose>
+            <Button
+              disabled={!isBookingConfirmed}
+              className="w-full hover:text-black"
+              variant="destructive"
+              onClick={() => removeAgendamento(booking.id)}
+            >
+              <X size={18} />
+              Cancelar Reserva
+            </Button>
+          </SheetFooter>
         </div>
       </SheetContent>
     </Sheet>

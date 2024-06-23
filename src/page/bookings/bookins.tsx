@@ -38,7 +38,6 @@ interface bookingsWithServices extends Booking {
   status: "Confirmado" | "Finalizado";
   servico: Service;
   barbearia: Barbearia;
-  
 }
 
 const Bookings = () => {
@@ -89,6 +88,12 @@ const Bookings = () => {
     (booking) => booking.status === "Finalizado"
   );
 
+  const removeItensAgendados = (id: string) => {
+    setBookings((prevBookings) =>
+      prevBookings ? prevBookings.filter((booking) => booking.id !== id) : []
+    );
+  };
+
   return (
     <>
       <Header />
@@ -102,7 +107,11 @@ const Bookings = () => {
         <div className="flex flex-col gap-3">
           {confirmedBookings.length > 0 ? (
             confirmedBookings.map((booking) => (
-              <BookingItem key={booking.id} booking={booking} />
+              <BookingItem
+                key={booking.id}
+                booking={booking}
+                onRemoveBooking={removeItensAgendados}
+              />
             ))
           ) : (
             <div>Nenhum agendamento confirmado.</div>
@@ -115,7 +124,11 @@ const Bookings = () => {
         <div className="flex flex-col gap-3">
           {finishedBookings.length > 0 ? (
             finishedBookings.map((booking) => (
-              <BookingItem key={booking.id} booking={booking} />
+              <BookingItem
+                key={booking.id}
+                booking={booking}
+                onRemoveBooking={removeItensAgendados}
+              />
             ))
           ) : (
             <div>Nenhum agendamento finalizado.</div>
