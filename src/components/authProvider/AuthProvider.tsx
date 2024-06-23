@@ -59,7 +59,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [sessionTimer, setSessionTimer] = useState<NodeJS.Timeout | null>(null);
 
   const startSessionTimer = () => {
-    const sessionTimeout = 5 * 60 * 60 * 1000; //5 horas
+    const sessionTimeout = 18000000; //5 horas
 
     const timer = setTimeout(() => {
       logout();

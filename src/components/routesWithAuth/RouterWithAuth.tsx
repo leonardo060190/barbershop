@@ -8,6 +8,7 @@ import RegistrationUser from "../../page/registrationPage/registrationUserPage";
 import RegistrationBarbershop from "../../page/registrationPage/registrationBarbershop";
 import Bookings from "../../page/bookings/bookins";
 import Splintbarbershop from "../../page/splintBarbershop/SplintBarbershop";
+import AllBarbershopsDetails from "../../page/allBarbershops/AllBarbershopsDetails"
 import Footer from "../layout/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "../protectedRoute/ProtectedRouter";
@@ -47,6 +48,14 @@ const RoutesWithAuth: React.FC = () => {
           element={
             <ProtectedRoute>
               <Bookings />
+            </ProtectedRoute>
+          }
+        />
+              <Route
+          path="/allbarbershopsdetails"
+          element={
+            <ProtectedRoute>
+              <AllBarbershopsDetails />
             </ProtectedRoute>
           }
         />

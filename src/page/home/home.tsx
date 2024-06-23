@@ -8,11 +8,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import BarbershopItemRecomendados from "@/components/barbershopItem/barbershopItemRecomendados";
-import BarbershopItemPopulares from "@/components/barbershopItem/barbershopItemPopulares";
+import BarbershopItemRecomendados from "./barbershopItem/barbershopItemRecomendados";
+import BarbershopItemPopulares from "./barbershopItem/barbershopItemPopulares";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useAuth } from "@/components/authProvider/AuthProvider";
+import { Link } from "react-router-dom";
 
 interface Endereco {
   bairro: string;
@@ -62,7 +63,8 @@ const Home = () => {
             <h2 className="text-xl">
               {autenticado && userName ? (
                 <span>
-                  Olá, <span className="me-3 capitalize font-bold">{userName}</span>
+                  Olá,{" "}
+                  <span className="me-3 capitalize font-bold">{userName}</span>
                 </span>
               ) : (
                 <span>
@@ -77,6 +79,12 @@ const Home = () => {
             <div className=" mt-6">
               <Search />
             </div>
+            <Link
+              className="h-10 mt-4 text-xl hover:text-primary hover:bg-[rgba(24,24,25,0.84)] flex items-center justify-center border rounded-md border-solid border-secondary px-3"
+              to={"/allbarbershopsdetails"}
+            >
+              Todas as Barbearias
+            </Link>
           </div>
         </div>
         {/* Recomendados */}

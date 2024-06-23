@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/authProvider/AuthProvider";
-import BookingItem from "../../components/bookingItem/bookingItem";
+import BookingItem from "./bookingItem/bookingItem";
 import Header from "../../components/header/header";
 import { isFuture } from "date-fns";
 import { useEffect, useState } from "react";
@@ -9,14 +9,20 @@ interface Service {
   id: string;
   nome: string;
   preco: string;
-  barbeariaId: string;
+  barbearia: Barbearia;
+}
 
+interface Endereco {
+  id: string;
+  bairro: string;
+  rua: string;
 }
 
 interface Barbearia {
   id: string;
   nome: string;
   foto: string;
+  endereco: Endereco;
 }
 interface Booking {
   id: string;
@@ -24,35 +30,40 @@ interface Booking {
   hora: string;
   servico: Service;
   barbearia: Barbearia;
+  endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
 }
 
 interface bookingsWithServices extends Booking {
   status: "Confirmado" | "Finalizado";
-  servico: Service; 
+  servico: Service;
   barbearia: Barbearia;
+  
 }
-
 
 const Bookings = () => {
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
- 
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         if (!userId) return;
 
-        const response = await api.get<Booking[]>(`/agendamento/cliente/${userId}`);
+        const response = await api.get<Booking[]>(
+          `/agendamento/cliente/${userId}`
+        );
         const bookingsData = response.data;
 
-        const bookingsWithServices = bookingsData.map(booking => {
+        const bookingsWithServices = bookingsData.map((booking) => {
           const bookingDate = new Date(`${booking.data}T${booking.hora}`);
-          const status: "Confirmado" | "Finalizado" = isFuture(bookingDate) ? "Confirmado" : "Finalizado";
+          const status: "Confirmado" | "Finalizado" = isFuture(bookingDate)
+            ? "Confirmado"
+            : "Finalizado";
           return {
             ...booking,
-            status
+            status,
           };
         });
 
@@ -71,15 +82,12 @@ const Bookings = () => {
     return <div>Loading...</div>; // ou qualquer indicador de carregamento
   }
 
-
   const confirmedBookings = bookings.filter(
     (booking) => booking.status === "Confirmado"
   );
   const finishedBookings = bookings.filter(
     (booking) => booking.status === "Finalizado"
   );
-
-
 
   return (
     <>

@@ -145,7 +145,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       const timeHour = Number(time.split(":")[0]);
       const timeMinutes = Number(time.split(":")[1]);
 
-      const booking = dayBookings.find((booking) => {
+      const isTimeBooked  = dayBookings.find((booking) => {
         const bookingDate = new Date(booking.date);
         const bookingHour = bookingDate.getHours();
         const bookingMinutes = bookingDate.getMinutes();
@@ -153,10 +153,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
         return bookingHour === timeHour && bookingMinutes === timeMinutes;
       });
 
-      if (!booking) {
-        return true;
-      }
-      return false;
+      return !isTimeBooked;
     });
   }, [date, dayBookings]);
 
@@ -221,10 +218,10 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                     </Button>
                   </SheetTrigger>
                   <SheetContent className="p-0">
-                    <SheetHeader className="text-left px-5 py-4 border-b border-solid border-secondary">
+                    <SheetHeader className="text-left px-5 py-2 border-b border-solid border-secondary">
                       <SheetTitle>Fazer Reserva</SheetTitle>
                     </SheetHeader>
-                    <div className="py-3 px-5">
+                    <div className="px-3">
                       <Calendar
                         mode="single"
                         selected={date}

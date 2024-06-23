@@ -1,7 +1,7 @@
 import { StarIcon } from "lucide-react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 
 interface BarbershopItemProps {
@@ -11,7 +11,7 @@ interface BarbershopItemProps {
   rua?: string;
 }
 
-const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
+const AllBarbershops: React.FC<BarbershopItemProps> = ({
   id,
   foto,
   nome,
@@ -26,7 +26,7 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
   };
 
   return (
-    <div key={id}>
+    
       <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
         <CardContent className="p-0 pt-1 ">
           <div className="px-1 relative">
@@ -53,7 +53,7 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
               {rua || "Endereço indisponivel"}
             </p>
             <Button
-              className=" w-full mt-3 rounded-2xl"
+              className=" w-full mt-3 rounded-2xl hover:text-primary"
               variant="secondary"
               onClick={hadleBookingClick}
             >
@@ -62,8 +62,8 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
           </div>
         </CardContent>
       </Card>
-    </div>
+    
   );
 };
 
-export default BarbershopItemPopulares;
+export default AllBarbershops;

@@ -1,7 +1,7 @@
 import { StarIcon } from "lucide-react";
-import { Badge } from "../ui/badge";
-import { Button } from "../ui/button";
-import { Card, CardContent } from "../ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 
 interface BarbershopItemProps {
@@ -53,7 +53,7 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
               {rua || "Endereço indisponivel"}
             </p>
             <Button
-              className=" w-full mt-3 rounded-2xl"
+              className=" w-full mt-3 rounded-2xl hover:text-primary"
               variant="secondary"
               onClick={hadleBookingClick}
             >
