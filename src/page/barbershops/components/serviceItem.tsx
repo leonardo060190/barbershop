@@ -127,7 +127,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
         }),
         action: {
           label: "Visualizar",
-          onClick: () => navigate("/agendamento"),
+          onClick: () => navigate("/bookings"),
         },
       });
     } catch (error) {

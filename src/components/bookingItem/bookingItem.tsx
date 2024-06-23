@@ -1,52 +1,84 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Card, CardContent } from "../ui/card";
-// import { isFuture, isPast } from "date-fns";
-// import bookings from "@/page/bookings/bookins";
-// import bookings from "@/page/bookings/bookins";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-const bookingItem = () => {
+interface Service {
+  id: string;
+  nome: string;
+  preco: string;
+  barbeariaId: string;
+}
 
-  // const isBookingConfirmed = isFuture(booking.date);
+interface Barbearia {
+  id: string;
+  nome: string;
+  foto: string;
+}
+
+interface Booking {
+  id: string;
+  data: string;
+  hora: string;
+  servico: Service;
+  barbearia: Barbearia;
+  status: "Confirmado" | "Finalizado";
+}
+
+interface BookingItemProps {
+  booking: Booking;
+}
+
+const BookingItem: React.FC<BookingItemProps> = ({ booking }) => {
+  const bookingDate = new Date(`${booking.data}T${booking.hora}`);
+  const isBookingConfirmed = booking.status === "Confirmado";
+
+  // Busca a barbearia correspondente ao serviço
+  const barbearia = booking.servico.barbearia;
 
   return (
-    <Card>
-      <CardContent className="p-0 flex py-0">
-        <div className="flex flex-col gap-2 py-5 flex-[3] pl-5">
+    <Card className="debug-border">
+      <CardContent className="p-0 flex py-0 debug-border">
+        <div className="flex flex-col gap-2 py-5 flex-[3] pl-5 debug-border">
           <div className=" flex items-center">
             <Badge
-              // variant={isBookingConfirmed ? "default" : "secondary"}
+              variant={isBookingConfirmed ? "default" : "secondary"}
               className=" justify-center"
             >
-              {/* {isBookingConfirmed ? "Confirmado" : "Finalizado"} */}
+              {isBookingConfirmed ? "Confirmado" : "Finalizado"}
             </Badge>
           </div>
 
-          <h2 className="font-bold">Corte de cabelo</h2>
+          <h2 className="font-bold">
+            {booking.servico.nome} R$: {booking.servico.preco}
+          </h2>
 
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage
-                src="https://github.com/shadcn.png"
-                alt="LD"
-                width={30}
+                src={barbearia.foto}
+                alt={barbearia.nome.charAt(0) || ""}
+                width={40}
                 className="rounded-full"
               />
-              <AvatarFallback>LD</AvatarFallback>
+              <AvatarFallback>{barbearia.nome.charAt(0)}</AvatarFallback>
             </Avatar>
 
-            <h3 className="text-sm">Vintage Barbar</h3>
+            <h3 className="text-sm">{barbearia.nome}</h3>
           </div>
         </div>
 
-        <div className="flex flex-col items-center justify-center border-l flex-1 border-solid border-secondary">
-          <p className="text-sm">janeiro</p>
-          <p className="text-2xl">06</p>
-          <p className="text-sm">09:23</p>
+        <div className="flex flex-col items-center justify-center border-l flex-1 border-solid border-secondary debug-border">
+          <p className="text-sm">
+            {format(bookingDate, "MMMM", { locale: ptBR })}
+          </p>
+          <p className="text-2xl">{format(bookingDate, "dd")}</p>
+          <p className="text-sm">{format(bookingDate, "HH:mm")}</p>
         </div>
       </CardContent>
     </Card>
   );
 };
 
-export default bookingItem;
+export default BookingItem;

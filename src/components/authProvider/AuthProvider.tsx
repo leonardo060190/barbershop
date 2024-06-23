@@ -55,6 +55,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
+
+  const [sessionTimer, setSessionTimer] = useState<NodeJS.Timeout | null>(null);
+
+  const startSessionTimer = () => {
+    const sessionTimeout = 5 * 60 * 60 * 1000; //5 horas
+
+    const timer = setTimeout(() => {
+      logout();
+    }, sessionTimeout);
+
+    setSessionTimer(timer);
+  };
+
   useEffect(() => {
     localStorage.setItem("autenticado", JSON.stringify(autenticado));
     if (user) {
@@ -67,6 +80,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (user: User) => {
     setAutenticado(true);
     setUser(user);
+    startSessionTimer();
   };
 
   const logout = () => {
@@ -74,6 +88,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(null);
     localStorage.removeItem("autenticado");
     localStorage.removeItem("user");
+    if (sessionTimer) {
+      clearTimeout(sessionTimer);
+      setSessionTimer(null);
+    }
   };
 
   return (
