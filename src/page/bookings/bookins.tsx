@@ -38,8 +38,7 @@ const Bookings = () => {
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
-  console.log(bookings);
-
+ 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -58,7 +57,6 @@ const Bookings = () => {
         });
 
         setBookings(bookingsWithServices);
-        console.log("Fetched bookings:", bookingsWithServices);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -73,7 +71,6 @@ const Bookings = () => {
     return <div>Loading...</div>; // ou qualquer indicador de carregamento
   }
 
-  console.log("Bookings state:", bookings);
 
   const confirmedBookings = bookings.filter(
     (booking) => booking.status === "Confirmado"
@@ -82,8 +79,7 @@ const Bookings = () => {
     (booking) => booking.status === "Finalizado"
   );
 
-  console.log("Confirmed bookings:", confirmedBookings);
-  console.log("Finished bookings:", finishedBookings);
+
 
   return (
     <>
