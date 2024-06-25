@@ -1,6 +1,6 @@
 import HoraFormat from "@/components/horaFormat/HoraFormat";
 import Header from "../../components/header/header";
-import Search from "@/components/layout/search/search";
+import Search from "../search/components/search";
 import {
   Carousel,
   CarouselContent,

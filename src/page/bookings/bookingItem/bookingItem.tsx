@@ -18,7 +18,20 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { api } from "../../../../config/ConfigAxios";
-import { X } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 interface Service {
   id: string;
@@ -61,23 +74,22 @@ const BookingItem: React.FC<BookingItemProps> = ({
 }) => {
   const bookingDate = new Date(`${booking.data}T${booking.hora}`);
   const isBookingConfirmed = booking.status === "Confirmado";
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   // Busca a barbearia correspondente ao serviço
   const barbearia = booking.servico.barbearia;
 
   const removeAgendamento = async (id: string) => {
-    if (
-      !window.confirm(
-        `Confirma a exclusão do serviço ${booking.servico.nome} ?`
-      )
-    ) {
-      return;
-    }
+    if (!isBookingConfirmed) return;
+    setIsDeleteLoading(true);
     try {
       await api.delete(`/agendamento/${id}`);
       onRemoveBooking(id);
+      toast.success("Reserva cancelada com sucesso!");
     } catch (error) {
-      console.error("Erro ao deletar o serviço:", error);
+      console.error("Erro ao deletar o agendamento:", error);
+    } finally {
+      setIsDeleteLoading(false);
     }
   };
 
@@ -200,15 +212,52 @@ const BookingItem: React.FC<BookingItemProps> = ({
                 Voltar
               </Button>
             </SheetClose>
-            <Button
-              disabled={!isBookingConfirmed}
-              className="w-full hover:text-black"
-              variant="destructive"
-              onClick={() => removeAgendamento(booking.id)}
-            >
-              <X size={18} />
-              Cancelar Reserva
-            </Button>
+
+            <AlertDialog>
+              {!isBookingConfirmed || isDeleteLoading ? (
+                <Button
+                  disabled
+                  className="w-full hover:text-black"
+                  variant="destructive"
+                >
+                  Cancelar Reserva
+                </Button>
+              ) : (
+                <AlertDialogTrigger asChild>
+                  <Button
+                    className="w-full hover:text-black"
+                    variant="destructive"
+                  >
+                    Cancelar Reserva
+                  </Button>
+                </AlertDialogTrigger>
+              )}
+              <AlertDialogContent className="w-[90%">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Deseja mesmo cancelar essa reserva?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Uma vez cancelada, não será possivel reverter essa ação.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter className="flex-row gap-3">
+                  <AlertDialogCancel className="w-full mt-0">
+                    Voltar
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    disabled={isDeleteLoading}
+                    className="w-full"
+                    onClick={() => removeAgendamento(booking.id)}
+                  >
+                    {isDeleteLoading && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    Confirmar
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </SheetFooter>
         </div>
       </SheetContent>

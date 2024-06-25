@@ -4,8 +4,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
-import { api } from "../../../../config/ConfigAxios";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   nome: string;
@@ -13,7 +12,7 @@ type FormValues = {
 
 const SearchComponent = () => {
   const methods = useForm<FormValues>();
-  const [barbershops, setBarbershops] = useState([]);
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -25,26 +24,11 @@ const SearchComponent = () => {
 
   const filtrarLista = async () => {
     const campos = getValues();
-    try {
-      const response = await api.get(`/barbearia/search/${campos.nome}`);
-      const data = response.data;
-      console.log(data);
-      if (data.length) {
-        setBarbershops(data);
-        limpaFormulario();
-      } else {
-        alert("Não há produtos cadastrados com a palavra chave pesquisada");
-      }
-    } catch (error) {
-      alert(`Erro: Não foi possível obter os dados`);
-    }
+  navigate(`/search-results/${campos.nome}`)
+    reset({nome:""});
   };
 
-  const limpaFormulario = () =>{
-    reset({
-      nome: ""
-    });
-  };
+ 
 
   return (
     <div>
@@ -54,16 +38,15 @@ const SearchComponent = () => {
             <Input
               className="outline-0"
               type="text"
-              placeholder="Buscar Barbearias"
+              placeholder="Buscar Barbearia"
               {...register("nome", { required: "Nome é obrigatório" })}
             />
             <Button variant="default" type="submit">
               <Search />
             </Button>
           </div>
-          {errors.nome && (
-              <p className="text-red-500">{errors.nome.message}</p>
-            )}        </form>
+          {errors.nome && <p className="text-red-500">{errors.nome.message}</p>}{" "}
+        </form>
       </FormProvider>
     </div>
   );
