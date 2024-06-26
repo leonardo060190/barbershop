@@ -11,22 +11,23 @@ import { api } from "../../../config/ConfigAxios";
 //   SelectTrigger,
 //   SelectValue,
 // } from "@/components/ui/select";
-// import * as React from "react";
-// import { Check, ChevronsUpDown } from "lucide-react";
-// import {
-//   Command,
-//   CommandEmpty,
-//   CommandGroup,
-//   CommandInput,
-//   CommandItem,
-// } from "@/components/ui/command";
-// import {
-//   Popover,
-//   PopoverContent,
-//   PopoverTrigger,
-// } from "@/components/ui/popover";
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
-// import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 
 type FormValues = {
   rua: string;
@@ -36,11 +37,35 @@ type FormValues = {
   cidade: string;
 };
 
+const frameworks = [
+  {
+    value: "next.js",
+    label: "Next.js",
+  },
+  {
+    value: "sveltekit",
+    label: "SvelteKit",
+  },
+  {
+    value: "nuxt.js",
+    label: "Nuxt.js",
+  },
+  {
+    value: "remix",
+    label: "Remix",
+  },
+  {
+    value: "astro",
+    label: "Astro",
+  },
+];
+
 const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
-  // const [open, setOpen] = React.useState(false);
-  // const [value, setValue] = React.useState("");
+  const [open, setOpen] = React.useState(false);
+  const [cidade, setCidade] = React.useState("")
+
   const {
     handleSubmit,
     register,
@@ -65,8 +90,6 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
     } catch (error) {
       console.error("Erro cadastro", error);
     }
-
-    
   };
 
   // Função de validação customizada para verificar se é um número válido
@@ -78,11 +101,11 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
     return true;
   };
 
-   // Função para formatar o CEP no formato 00000-000
-   const formatCep = (value: string) => {
-    value = value.replace(/\D/g, ''); // Remove tudo o que não é dígito
+  // Função para formatar o CEP no formato 00000-000
+  const formatCep = (value: string) => {
+    value = value.replace(/\D/g, ""); // Remove tudo o que não é dígito
     if (value.length > 5) {
-      value = value.slice(0, 8).replace(/^(\d{5})(\d)/, '$1-$2');
+      value = value.slice(0, 8).replace(/^(\d{5})(\d)/, "$1-$2");
     }
     return value;
   };
@@ -185,77 +208,60 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                 <p className="text-red-500">{errors.cep.message}</p>
               )}
             </FormItem>
-
-            <FormItem>
-              {/* <FormLabel>City</FormLabel>
-              <Select
-                {...register("city", { required: "Please select a city" })}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select the city" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="city1">city1</SelectItem>
-                  <SelectItem value="city2">city2</SelectItem>
-                  <SelectItem value="city3">city3</SelectItem>
-                  <SelectItem value="city4">city4</SelectItem>
-                  <SelectItem value="city5">city5</SelectItem>
-                </SelectContent>
-              </Select>
-              {errors.city && (
-                <p className="text-red-500">{errors.city.message}</p>
-              )} */}
-              {/* <FormLabel>Cidade</FormLabel>
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={open}
-                    className="w-[200px] justify-between"
-                  >
-                    {value
-                      ? frameworks.find(
-                          (framework) => framework.value === value
-                        )?.label
-                      : "Select framework..."}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command>
-                    <CommandInput placeholder="Search framework..." />
-                    <CommandEmpty>No framework found.</CommandEmpty>
-                    <CommandGroup>
-                      {frameworks.map((framework) => (
-                        <CommandItem
-                          key={framework.value}
-                          value={framework.value}
-                          onSelect={(currentValue) => {
-                            setValue(
-                              currentValue === value ? "" : currentValue
-                            );
-                            setOpen(false);
-                          }}
-                        >
-                          <Check
-                            className={cn(
-                              "mr-2 h-4 w-4",
-                              value === framework.value
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                          {framework.label}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </Command>
-                </PopoverContent>
-              </Popover> */}
-            </FormItem>
+            <div className="grid grid-cols-2  gap-4">
+              <FormItem>
+                <FormLabel>Cidade</FormLabel>
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={open}
+                      className="w-[200px] justify-between"
+                    >
+                      {cidade
+                        ? frameworks.find(
+                            (framework) => framework.value === cidade
+                          )?.label
+                        : "Selecione uma cidade..."}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder="Pesquisa Cidades" />
+                      <CommandList>
+                        <CommandEmpty>Cidade não encontrada.</CommandEmpty>
+                        <CommandGroup>
+                          {frameworks.map((framework) => (
+                            <CommandItem
+                              key={framework.value}
+                              value={framework.value}
+                              onSelect={(currentValue) => {
+                                setCidade(
+                                  currentValue === cidade ? "" : currentValue
+                                );
+                                setOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  cidade === framework.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {framework.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </FormItem>
+            </div>
           </div>
 
           <Button type="submit">Continuar</Button>
