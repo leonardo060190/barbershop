@@ -39,7 +39,7 @@ const SearchComponent = () => {
               className="outline-0"
               type="text"
               placeholder="Buscar Barbearia"
-              {...register("nome", { required: "Nome é obrigatório" })}
+              {...register("nome", { required: "Campo obrigatório." })}
             />
             <Button variant="default" type="submit">
               <Search />

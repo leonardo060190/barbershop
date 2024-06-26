@@ -41,7 +41,11 @@ const SearchResults = () => {
       <Header />
 
       <div className="px-12 py-12">
-        <h2 className="text-xl mb-6">Resultados da Pesquisa: {nome}</h2>
+        <h2 className="text-xl mb-6">
+          <span className="py-1 flex bg-secondary rounded-md px-4 font-bold items-center justify-center border-solid border-secondary  text-primary border">
+            Resultados da Pesquisa:
+          </span>
+        </h2>
         {barbershops.length > 0 ? (
           barbershops.map((barbershop) => (
             <AllBarbershops

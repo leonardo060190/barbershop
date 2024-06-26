@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { Link } from "react-router-dom";
+import MenuSettings from "./menuSettings/MenuSettings";
 
 interface Endereco {
   bairro: string;
@@ -52,20 +53,27 @@ const Home = () => {
   }, [barbershopReload]);
 
   const userName = user?.nome || user?.cliente?.nome || null;
+  const userid = user?.cliente?.id || null;
 
   return (
     <div>
       <Header />
-
+      <div className="py-1 flex bg-secondary px-4 font-bold items-center justify-center border-solid border-secondary  text-primary border">
+        {autenticado && userid && <MenuSettings idCliente={userid}/>}
+      </div>
       <div className="justify-between flex flex-col md:flex-row">
         <div className="ps-12 py-12 flex gap-20 items-center  justify-between flex-col md:flex-row">
           <div className="w-80 justify-center">
             <h2 className="text-xl">
               {autenticado && userName ? (
-                <span>
-                  Olá,{" "}
-                  <span className="me-3 capitalize font-bold">{userName}</span>
-                </span>
+                <>
+                  <span>
+                    Olá,{" "}
+                    <span className="me-3 capitalize font-bold">
+                      {userName}
+                    </span>
+                  </span>
+                </>
               ) : (
                 <span>
                   Olá, <span className="font-bold">Faça seu Login</span>!
