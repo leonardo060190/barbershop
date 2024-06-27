@@ -19,6 +19,7 @@ interface ClienteEditProps {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
+  onClienteUpdated: ()=> void;
 }
 
 const EditCliente: React.FC<ClienteEditProps> = ({
@@ -28,6 +29,7 @@ const EditCliente: React.FC<ClienteEditProps> = ({
   cpf,
   sobreNome,
   dataNascimento,
+  onClienteUpdated,
 }) => {
   return (
     <Dialog>
@@ -52,6 +54,7 @@ const EditCliente: React.FC<ClienteEditProps> = ({
           cpf={cpf}
           sobreNome={sobreNome}
           dataNascimento={dataNascimento}
+          onClienteUpdated={onClienteUpdated}
         />
       </DialogContent>
     </Dialog>

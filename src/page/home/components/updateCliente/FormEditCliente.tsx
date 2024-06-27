@@ -15,6 +15,7 @@ type FormValues = {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
+  
 };
 
 interface ClienteEditProfileProps {
@@ -24,6 +25,8 @@ interface ClienteEditProfileProps {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
+  onClienteUpdated: ()=> void;
+
 }
 
 const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
@@ -33,6 +36,7 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
   cpf,
   sobreNome,
   dataNascimento,
+  onClienteUpdated,
 }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
@@ -59,6 +63,7 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
         ...data,
         dataNascimento: dataNascimentoFormatada,
       });
+      onClienteUpdated();
       console.log(response.data);
     } catch (error) {
       console.error("Erro cadastro", error);

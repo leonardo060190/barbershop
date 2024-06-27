@@ -10,9 +10,7 @@ interface Cliente {
   id: string;
   nome: string;
   foto: string;
-  cpf: string;
-  sobreNome: string;
-  dataNascimento: string;
+ 
  
 }
 
