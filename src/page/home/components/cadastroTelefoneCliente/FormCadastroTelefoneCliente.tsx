@@ -1,10 +1,10 @@
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { Input } from "../../../components/ui/input";
-import { Button } from "../../../components/ui/button";
+import { Input } from "../../../../components/ui/input";
+import { Button } from "../../../../components/ui/button";
 
 import { useState } from "react";
-import { FormControl, FormItem, FormLabel } from "../../../components/ui/form";
-import { api } from "../../../../config/ConfigAxios";
+import { FormControl, FormItem, FormLabel } from "../../../../components/ui/form";
+import { api } from "../../../../../config/ConfigAxios";
 
 type FormValues = {
   numero: string;

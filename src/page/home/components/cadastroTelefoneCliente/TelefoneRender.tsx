@@ -6,8 +6,8 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog";
   import { Edit } from "lucide-react";
-  import { DialogHeader } from "../../../components/ui/dialog";
-  import { Button } from "../../../components/ui/button";
+  import { DialogHeader } from "../../../../components/ui/dialog";
+  import { Button } from "../../../../components/ui/button";
   import FormTelefoneCliente from "./FormCadastroTelefoneCliente";
   
   interface IdClienteRegisterTelefone {
@@ -25,7 +25,7 @@ import {
         <DialogTrigger asChild>
           <Button
             variant="secondary"
-            className="gap-3  items-center border-solid border-primary border"
+            className="gap-3  items-center border-solid border-gray-600 border"
           >
             <Edit size={18} />
             Registre o telefone

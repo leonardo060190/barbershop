@@ -8,13 +8,13 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import BarbershopItemRecomendados from "./barbershopItem/barbershopItemRecomendados";
-import BarbershopItemPopulares from "./barbershopItem/barbershopItemPopulares";
+import BarbershopItemRecomendados from "./components/barbershopItem/barbershopItemRecomendados";
+import BarbershopItemPopulares from "./components/barbershopItem/barbershopItemPopulares";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { Link } from "react-router-dom";
-import MenuSettings from "./menuSettings/MenuSettings";
+import MenuSettings from "./components/menuSettings/MenuSettings";
 
 interface Endereco {
   bairro: string;
@@ -58,7 +58,7 @@ const Home = () => {
   return (
     <div>
       <Header />
-      <div className="py-1 flex bg-secondary px-4 font-bold items-center justify-center border-solid border-secondary  text-primary border">
+      <div className="py-2 flex bg-dark px-4 font-bold items-center justify-center shadow-lg">
         {autenticado && userid && <MenuSettings idCliente={userid}/>}
       </div>
       <div className="justify-between flex flex-col md:flex-row">

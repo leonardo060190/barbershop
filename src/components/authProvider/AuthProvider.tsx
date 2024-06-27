@@ -10,7 +10,10 @@ interface Cliente {
   id: string;
   nome: string;
   foto: string;
-  // Adicione outras propriedades de Cliente aqui, se necessário
+  cpf: string;
+  sobreNome: string;
+  dataNascimento: string;
+ 
 }
 
 interface Barbearia {

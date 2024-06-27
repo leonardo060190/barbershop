@@ -20,7 +20,7 @@ const Header = () => {
   const userFoto = user?.cliente?.foto || user?.barbearia?.foto || undefined;
 
   return (
-    <Card className="rounded-none border-none shadow-xl">
+    <Card className="rounded-none border-none ">
       <CardContent className="p-9 py-8 justify-between items-center flex flex-row">
         <Link to={"/"}>
           <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
