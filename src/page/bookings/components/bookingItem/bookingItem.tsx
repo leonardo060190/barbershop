@@ -11,13 +11,13 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "../../../components/ui/avatar";
-import { Badge } from "../../../components/ui/badge";
-import { Card, CardContent } from "../../../components/ui/card";
+} from "../../../../components/ui/avatar";
+import { Badge } from "../../../../components/ui/badge";
+import { Card, CardContent } from "../../../../components/ui/card";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
-import { api } from "../../../../config/ConfigAxios";
+import { api } from "../../../../../config/ConfigAxios";
 import {
   AlertDialog,
   AlertDialogAction,

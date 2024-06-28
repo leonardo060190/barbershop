@@ -15,7 +15,10 @@ const RegisterOpeningHours = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="secondary" className="gap-3 text-primary flex justify-start">
+        <Button
+          variant="secondary"
+          className="gap-3  items-center border-solid border-gray-600 border"
+        >
           <Edit size={18} />
           Hora funcinamento
         </Button>

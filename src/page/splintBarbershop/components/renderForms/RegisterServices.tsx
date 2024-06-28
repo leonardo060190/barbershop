@@ -25,15 +25,15 @@ const RegisterServices: React.FC<IdBarberShopRegisterServices> = ({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="gap-3 text-primary flex justify-start"
+          className="gap-3  items-center border-solid border-gray-600 border"
         >
           <Edit size={18} />
-          Register services
+          Cadastro serviços
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader className=" border-b border-solid border-secondary ">
-          <DialogTitle className="pb-3">Register yous services</DialogTitle>
+          <DialogTitle className="pb-3">Cadastre seu serviços</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <FormRegisterServices

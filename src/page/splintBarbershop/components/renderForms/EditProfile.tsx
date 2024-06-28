@@ -33,7 +33,7 @@ const EditProfile: React.FC<BarbershopEditProps> = ({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="gap-3 text-primary flex justify-start"
+          className="gap-3  items-center border-solid border-gray-600 border"
         >
           <Edit size={18} />
           Editar Barbearia

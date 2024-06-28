@@ -1,5 +1,5 @@
 import { useAuth } from "@/components/authProvider/AuthProvider";
-import BookingItem from "./bookingItem/bookingItem";
+import BookingItem from "./components/bookingItem/bookingItem";
 import Header from "../../components/header/header";
 import { isFuture } from "date-fns";
 import { useEffect, useState } from "react";

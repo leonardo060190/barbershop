@@ -9,7 +9,8 @@ import RegistrationBarbershop from "../../page/registrationPage/registrationBarb
 import Bookings from "../../page/bookings/bookins";
 import Splintbarbershop from "../../page/splintBarbershop/SplintBarbershop";
 import AllBarbershopsDetails from "../../page/allBarbershops/AllBarbershopsDetails";
-import SearchResults from "../../page/search/SearchResults"
+import SearchResults from "../../page/search/SearchResults";
+import BookingBarbershop from "../../page/splintBarbershop/components/bookingsBarbershop/BookingsBarbershop"
 import Footer from "../layout/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "../protectedRoute/ProtectedRouter";
@@ -60,11 +61,20 @@ const RoutesWithAuth: React.FC = () => {
             </ProtectedRoute>
           }
         />
-         <Route
+        <Route
           path="/search-results/:nome"
           element={
             <ProtectedRoute>
               <SearchResults />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/bookingsBarbershop"
+          element={
+            <ProtectedRoute>
+              <BookingBarbershop />
             </ProtectedRoute>
           }
         />
