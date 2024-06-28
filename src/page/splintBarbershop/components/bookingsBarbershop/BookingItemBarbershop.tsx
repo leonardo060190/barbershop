@@ -37,44 +37,57 @@ interface Service {
   id: string;
   nome: string;
   preco: string;
+  barbearia: Barbearia;
+}
+
+interface Endereco {
+  id: string;
+  bairro: string;
+  rua: string;
 }
 
 interface Barbearia {
   id: string;
   nome: string;
   foto: string;
+  endereco: Endereco;
 }
 interface Cliente {
   id: string;
   nome: string;
+  foto: string;
+  sobreNome: string;
   telefone: string;
 }
 
-interface Booking {
+interface BookingBarbershop {
   id: string;
   data: string;
   hora: string;
   servico: Service;
   cliente: Cliente;
   barbearia: Barbearia;
+  endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
 }
 
-interface BookingItemProps {
-  booking: Booking;
+interface BookingItemBarbershopProps {
+  bookingBarbershop: BookingBarbershop;
   onRemoveBooking: (id: string) => void;
 }
 
-const BookingItemBarbershop: React.FC<BookingItemProps> = ({
-  booking,
+const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
+  bookingBarbershop,
   onRemoveBooking,
 }) => {
-  const bookingDate = new Date(`${booking.data}T${booking.hora}`);
-  const isBookingConfirmed = booking.status === "Confirmado";
+  const bookingDate = new Date(
+    `${bookingBarbershop.data}T${bookingBarbershop.hora}`
+  );
+  const isBookingConfirmed = bookingBarbershop.status === "Confirmado";
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   // Busca a barbearia correspondente ao serviço
-  // const barbearia = booking.servico.barbearia;
+  const barbearia = bookingBarbershop.servico.barbearia;
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;
@@ -106,22 +119,26 @@ const BookingItemBarbershop: React.FC<BookingItemProps> = ({
               </div>
 
               <h2 className="font-bold">
-                {booking.servico.nome}{" "}
-                <span className="p-12">R$: {booking.servico.preco}</span>
+                {bookingBarbershop.servico.nome}{" "}
+                <span className="p-12">
+                  R$: {bookingBarbershop.servico.preco}
+                </span>
               </h2>
 
               <div className="flex items-center gap-2">
                 <Avatar>
                   <AvatarImage
-                    src={.foto}
-                    alt={barbearia.nome.charAt(0) || ""}
+                    src={bookingBarbershop.cliente.foto}
+                    alt={bookingBarbershop.cliente.nome.charAt(0) || ""}
                     width={40}
                     className="rounded-full"
                   />
-                  <AvatarFallback>{barbearia.nome.charAt(0)}</AvatarFallback>
+                  <AvatarFallback>
+                    {bookingBarbershop.cliente.nome.charAt(0)}
+                  </AvatarFallback>
                 </Avatar>
 
-                <h3 className="text-sm">{barbearia.nome}</h3>
+                <h3 className="text-sm">{bookingBarbershop.cliente.nome}</h3>
               </div>
             </div>
 
@@ -172,12 +189,14 @@ const BookingItemBarbershop: React.FC<BookingItemProps> = ({
             <CardContent className="px-0 py-0 ">
               <div className="px-6 py-5 flex flex-col gap-3">
                 <div className="flex justify-between ">
-                  <h2 className="font-bold">{booking.servico.nome}</h2>
+                  <h2 className="font-bold">
+                    {bookingBarbershop.servico.nome}
+                  </h2>
                   <h3 className="font-bold text-sm">
                     {Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    }).format(Number(booking.servico.preco))}
+                    }).format(Number(bookingBarbershop.servico.preco))}
                   </h3>
                 </div>
 
@@ -196,8 +215,8 @@ const BookingItemBarbershop: React.FC<BookingItemProps> = ({
                 </div>
 
                 <div className="flex justify-between">
-                  <h3 className="text-gray-400 text-sm">Barbearia</h3>
-                  <h4 className="text-sm ">{barbearia.nome}</h4>
+                  <h3 className="text-gray-400 text-sm">Cliente</h3>
+                  <h4 className="text-sm ">{bookingBarbershop.cliente.nome} {bookingBarbershop.cliente.sobreNome}</h4>
                 </div>
               </div>
             </CardContent>
@@ -245,7 +264,7 @@ const BookingItemBarbershop: React.FC<BookingItemProps> = ({
                   <AlertDialogAction
                     disabled={isDeleteLoading}
                     className="w-full"
-                    onClick={() => removeAgendamento(booking.id)}
+                    onClick={() => removeAgendamento(bookingBarbershop.id)}
                   >
                     {isDeleteLoading && (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />

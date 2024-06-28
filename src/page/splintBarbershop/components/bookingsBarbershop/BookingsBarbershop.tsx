@@ -21,6 +21,8 @@ interface Barbearia {
 interface Cliente {
   id: string;
   nome: string;
+  foto: string;
+  sobreNome: string;
   telefone: string;
 }
 interface BookingBarbershop {
@@ -33,7 +35,7 @@ interface BookingBarbershop {
   status: "Confirmado" | "Finalizado";
 }
 
-interface BookingsBarbershopServices extends BookingBarbershop {
+interface bookingsBarbershopServices extends BookingBarbershop {
   status: "Confirmado" | "Finalizado";
   servico: Service;
   barbearia: Barbearia;
@@ -41,10 +43,8 @@ interface BookingsBarbershopServices extends BookingBarbershop {
 const BookingsBarbershop = () => {
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
-  const [bookingsBarbershop, setBookingsBarbershop] = useState<
-    BookingsBarbershopServices[] | null
-  >(null);
-  console.log("aki", bookingsBarbershop)
+  const [bookingsBarbershop, setBookingsBarbershop] = useState<bookingsBarbershopServices[] | null>(null);
+  console.log("aki", bookingsBarbershop);
 
   useEffect(() => {
     const fetchBookingsBarbershop = async () => {
@@ -58,7 +58,7 @@ const BookingsBarbershop = () => {
         );
 
         const bookingsBarbershopData = response.data;
-        console.log('Response data:', response.data);
+        console.log("Response data:", response.data);
         const BookingsBarbershopServices = bookingsBarbershopData.map(
           (bookingBarbershop) => {
             const bookingDate = new Date(
@@ -74,8 +74,7 @@ const BookingsBarbershop = () => {
           }
         );
 
-        console.log('Processed bookings:', BookingsBarbershopServices);
-
+        console.log("Processed bookings:", BookingsBarbershopServices);
 
         setBookingsBarbershop(BookingsBarbershopServices);
       } catch (error) {
