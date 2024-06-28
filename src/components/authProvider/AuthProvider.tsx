@@ -15,6 +15,7 @@ interface Cliente {
 }
 
 interface Barbearia {
+  id: string;
   nome: string;
   foto: string;
   // Adicione outras propriedades de Barbearia aqui, se necessário
