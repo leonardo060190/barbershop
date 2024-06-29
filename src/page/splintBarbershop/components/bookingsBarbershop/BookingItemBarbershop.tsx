@@ -29,7 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -52,12 +52,17 @@ interface Barbearia {
   foto: string;
   endereco: Endereco;
 }
+
 interface Cliente {
   id: string;
   nome: string;
   foto: string;
   sobreNome: string;
-  telefone: string;
+}
+
+interface Telefone {
+  id: string;
+  numero: string;
 }
 
 interface BookingBarbershop {
@@ -80,14 +85,32 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
   bookingBarbershop,
   onRemoveBooking,
 }) => {
+  console.log(bookingBarbershop);
   const bookingDate = new Date(
     `${bookingBarbershop.data}T${bookingBarbershop.hora}`
   );
   const isBookingConfirmed = bookingBarbershop.status === "Confirmado";
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-
+  const [telefones, setTelefones] = useState<Telefone[]>([]);
+  console.log("telefones", telefones);
   // Busca a barbearia correspondente ao serviço
   const barbearia = bookingBarbershop.servico.barbearia;
+
+  useEffect(() => {
+    const fetchTelefones = async () => {
+      try {
+        const response = await api.get(
+          `/telefone/${bookingBarbershop.cliente.id}`
+        );
+        setTelefones(response.data);
+        console.log("telefonecliente", response.data)
+      } catch (error) {
+        console.error("Erro ao buscar os telefones:", error);
+      }
+    };
+
+    fetchTelefones();
+  }, [bookingBarbershop.cliente.id]);
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;
@@ -216,7 +239,25 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
 
                 <div className="flex justify-between">
                   <h3 className="text-gray-400 text-sm">Cliente</h3>
-                  <h4 className="text-sm ">{bookingBarbershop.cliente.nome} {bookingBarbershop.cliente.sobreNome}</h4>
+                  <h4 className="text-sm ">
+                    {bookingBarbershop.cliente.nome}{" "}
+                    {bookingBarbershop.cliente.sobreNome}
+                  </h4>
+                </div>
+
+                <div className="flex justify-between">
+                  <h3 className="text-gray-400 text-sm">Telefones</h3>
+                  <div className="text-sm">
+                    {telefones && telefones.length > 0 ? (
+                      telefones.map((telefone) => (
+                        <div className="text-sm " key={telefone.id}>
+                          {telefone.numero}
+                        </div>
+                      ))
+                    ) : (
+                      <p>Nenhum telefone cadastrado</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </CardContent>

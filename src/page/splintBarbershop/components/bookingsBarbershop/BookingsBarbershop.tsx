@@ -16,6 +16,20 @@ interface Barbearia {
   id: string;
   nome: string;
   foto: string;
+  endereco: Endereco;
+}
+
+interface Endereco {
+  id: string;
+  bairro: string;
+  rua: string;
+}
+
+interface Telefone {
+  id: string;
+  numero: string;
+  cliente: Cliente;
+
 }
 
 interface Cliente {
@@ -23,8 +37,11 @@ interface Cliente {
   nome: string;
   foto: string;
   sobreNome: string;
-  telefone: string;
+  telefones?: Telefone[];
+
+
 }
+
 interface BookingBarbershop {
   id: string;
   data: string;
@@ -32,6 +49,7 @@ interface BookingBarbershop {
   servico: Service;
   barbearia: Barbearia;
   cliente: Cliente;
+  endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
 }
 
@@ -43,7 +61,9 @@ interface bookingsBarbershopServices extends BookingBarbershop {
 const BookingsBarbershop = () => {
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
-  const [bookingsBarbershop, setBookingsBarbershop] = useState<bookingsBarbershopServices[] | null>(null);
+  const [bookingsBarbershop, setBookingsBarbershop] = useState<
+    bookingsBarbershopServices[] | null
+  >(null);
   console.log("aki", bookingsBarbershop);
 
   useEffect(() => {

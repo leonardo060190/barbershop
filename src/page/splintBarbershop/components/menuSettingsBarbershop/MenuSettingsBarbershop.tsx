@@ -1,10 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import EditProfile from "../../components/renderForms/EditProfile";
 import RegisterOpeningHours from "../../components/renderForms/RegisterOpeningHours";
 import TelefoneRender from "../../components/telefone/TelefoneRender";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
-import { CalendarDays } from "lucide-react";
 
 interface Telefone {
   id: string;
@@ -101,14 +100,6 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({ onUpdat
         <RegisterOpeningHours />
       </div>
 
-      <div className="py-1 px-4">
-        <Link
-              className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-              to={"/bookingsBarbershop"}
-            >
-              <CalendarDays size={16} className="me-2" /> Agendamentos 
-            </Link>
-      </div>
     </>
   );
 };

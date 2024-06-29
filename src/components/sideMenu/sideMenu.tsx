@@ -65,10 +65,20 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
               <Home size={16} className="me-2" /> Home
             </Link>
           </div>
-          <div className=" justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+          <div className=" justify-center text-left border-solid flex border-secondary px-3 pb-4">
             <Link
               className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
               to={"/bookings"}
+            >
+              <CalendarDays size={16} className="me-2" /> Agendamentos
+            </Link>
+          </div>
+          
+          
+          <div className=" justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+            <Link
+              className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+              to={"/bookingsBarbershop"}
             >
               <CalendarDays size={16} className="me-2" /> Agendamentos
             </Link>
