@@ -4,7 +4,13 @@ import { Button } from "../../../../components/ui/button";
 
 import { api } from "../../../../../config/ConfigAxios";
 import { useState } from "react";
-import { FormControl, FormItem, FormLabel } from "../../../../components/ui/form";
+import {
+  FormControl,
+  FormItem,
+  FormLabel,
+} from "../../../../components/ui/form";
+
+import { toast } from "sonner";
 
 type FormValues = {
   numero: string;
@@ -30,7 +36,6 @@ const FormTelefone: React.FC<IdBarberShopRegisterTelefone> = ({
   } = methods;
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
     if (!window.confirm("Confirma o Casdastro ?")) {
       return;
     }
@@ -46,6 +51,7 @@ const FormTelefone: React.FC<IdBarberShopRegisterTelefone> = ({
       limparFormulario();
       setIsFormOpen(false);
       onTelefoneRegistrado();
+      toast.success("Telefone cadastrado com sucesso!");
     } catch (error) {
       console.error("Erro cadastro", error);
     }

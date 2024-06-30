@@ -100,10 +100,10 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
     const fetchTelefones = async () => {
       try {
         const response = await api.get(
-          `/telefone/${bookingBarbershop.cliente.id}`
+          `/telefone/cliente/${bookingBarbershop.cliente.id}`
         );
         setTelefones(response.data);
-        console.log("telefonecliente", response.data)
+        console.log("telefonecliente", bookingBarbershop.cliente.id)
       } catch (error) {
         console.error("Erro ao buscar os telefones:", error);
       }
@@ -245,7 +245,7 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                   </h4>
                 </div>
 
-                <div className="flex justify-between">
+                <div className="flex items-center justify-between">
                   <h3 className="text-gray-400 text-sm">Telefones</h3>
                   <div className="text-sm">
                     {telefones && telefones.length > 0 ? (
@@ -289,7 +289,7 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                   </Button>
                 </AlertDialogTrigger>
               )}
-              <AlertDialogContent className="w-[90%">
+              <AlertDialogContent className="w-[90%]">
                 <AlertDialogHeader>
                   <AlertDialogTitle>
                     Deseja mesmo cancelar essa reserva?

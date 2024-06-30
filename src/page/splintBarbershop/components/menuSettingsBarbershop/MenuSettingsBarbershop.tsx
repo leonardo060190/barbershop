@@ -1,9 +1,10 @@
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import EditProfile from "../../components/renderForms/EditProfile";
 import RegisterOpeningHours from "../../components/renderForms/RegisterOpeningHours";
 import TelefoneRender from "../../components/telefone/TelefoneRender";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
+import EditLogin from "../renderForms/EditLogin";
 
 interface Telefone {
   id: string;
@@ -17,6 +18,14 @@ interface Service {
   preco: number;
   descricao: string;
   barbeariaId: string;
+}
+
+interface Login {
+  id: string;
+  email: string;
+  senha: string;
+  dataCriacao: string;
+  barbearia: BarberShop;
 }
 
 interface Endereco {
@@ -36,15 +45,20 @@ interface BarberShop {
   servicos: Service[];
   endereco?: Endereco;
   telefones: Telefone[];
+  login: Login;
 }
 
 interface MenuSettingsBarbershopProps {
   onUpdate: () => void;
 }
 
-const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({ onUpdate }) => {
+const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
+  onUpdate,
+}) => {
   const { id } = useParams<{ id: string }>();
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
+  const [login, setLogin] = useState<Login | null>(null);
+
 
   useEffect(() => {
     const obterBarbearia = async () => {
@@ -56,8 +70,20 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({ onUpdat
         alert(`Erro: Não foi possível obter os dados: ${error}`);
       }
     };
+
+    const obterLogin = async () => {
+      try {
+        const response = await api.get(`/login/barbearia/${id}`);
+        setLogin(response.data);
+        console.log(response.data);
+      } catch (error) {
+        alert(`Erro: Não foi possível obter os dados de login: ${error}`);
+      }
+    };
+
     if (id) {
       obterBarbearia();
+      obterLogin();
     }
   }, [id]);
 
@@ -100,6 +126,18 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({ onUpdat
         <RegisterOpeningHours />
       </div>
 
+      <div className="py-1 px-4">
+      {id && login && (
+          <EditLogin
+            key={login.id}
+            id={login.id}
+            idBarbershop={id}
+            email={login.email}
+            senha={login.senha}
+            
+          />
+        )}
+      </div>
     </>
   );
 };

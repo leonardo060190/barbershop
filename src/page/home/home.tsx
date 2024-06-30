@@ -36,9 +36,15 @@ const Home = () => {
 
   const obterLista = async () => {
     try {
-      const lista = await api.get("/barbearia");
-      console.log("lista:" + lista.data);
-      setBarbershops(lista.data);
+      const response = await api.get("/barbearia");
+      const lista = response.data;
+      console.log("lista:", lista);
+      if (Array.isArray(lista)) {
+        setBarbershops(lista);
+      } else {
+        console.error("Dados de barbearia não são um array:", lista);
+        alert("Erro: Os dados retornados não são uma lista válida.");
+      }
     } catch (error) {
       alert(`Erro: ..Não foi possível obter os dados: ${error}`);
     }

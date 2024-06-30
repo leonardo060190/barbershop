@@ -148,7 +148,7 @@ const FormEditService: React.FC<FormEditServiceProps> = ({
             )}
           </FormItem>
 
-          <Button type="submit">To save</Button>
+          <Button type="submit">Confirmar</Button>
         </form>
       </FormProvider>
     </div>
