@@ -37,7 +37,7 @@ interface Service {
   id: string;
   nome: string;
   preco: string;
-  barbearia: Barbearia;
+  barbearia?: Barbearia;
 }
 
 interface Barbearia {
@@ -58,7 +58,7 @@ interface Booking {
   data: string;
   hora: string;
   servico: Service;
-  barbearia: Barbearia;
+  barbearia?: Barbearia;
   endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
 }
@@ -77,7 +77,8 @@ const BookingItem: React.FC<BookingItemProps> = ({
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   // Busca a barbearia correspondente ao serviço
-  const barbearia = booking.servico.barbearia;
+  const barbearia = booking.servico?.barbearia;
+  console.log("barbearia",booking)
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;
@@ -109,22 +110,22 @@ const BookingItem: React.FC<BookingItemProps> = ({
               </div>
 
               <h2 className="font-bold">
-                {booking.servico.nome}{" "}
-                <span className="p-12">R$: {booking.servico.preco}</span>
+                {booking.servico?.nome}
+                <span className="p-12">R$: {booking.servico?.preco}</span>
               </h2>
 
               <div className="flex items-center gap-2">
                 <Avatar>
                   <AvatarImage
-                    src={barbearia.foto}
-                    alt={barbearia.nome.charAt(0) || ""}
+                    src={barbearia?.foto}
+                    alt={barbearia?.nome.charAt(0) || ""}
                     width={40}
                     className="rounded-full"
                   />
-                  <AvatarFallback>{barbearia.nome.charAt(0)}</AvatarFallback>
+                  <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                 </Avatar>
 
-                <h3 className="text-sm">{barbearia.nome}</h3>
+                <h3 className="text-sm">{barbearia?.nome}</h3>
               </div>
             </div>
 
@@ -144,16 +145,16 @@ const BookingItem: React.FC<BookingItemProps> = ({
         </SheetHeader>
         <div className="px-4">
           <div className="relative h-[180] w-11/12 mt-4">
-            <img src="/BarberShopCard.png" alt={barbearia.nome} />
+            <img src="/BarberShopCard.png" alt={barbearia?.nome} />
             <div className="w-full absolute bottom-4 left-0 px-6">
               <Card>
                 <CardContent className="p-3 flex gap-2 items-center">
                   <Avatar>
-                    <AvatarImage src={barbearia.foto} />
+                    <AvatarImage src={barbearia?.foto} />
                   </Avatar>
                   <div>
-                    <h2 className="font-bold">{barbearia.nome}</h2>
-                    {barbearia.endereco ? (
+                    <h2 className="font-bold">{barbearia?.nome}</h2>
+                    {barbearia?.endereco ? (
                       <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.bairro}`}</h3>
                     ) : (
                       <h3>Endereço não disponível</h3>
@@ -200,7 +201,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
 
                 <div className="flex justify-between">
                   <h3 className="text-gray-400 text-sm">Barbearia</h3>
-                  <h4 className="text-sm ">{barbearia.nome}</h4>
+                  <h4 className="text-sm ">{barbearia?.nome}</h4>
                 </div>
               </div>
             </CardContent>

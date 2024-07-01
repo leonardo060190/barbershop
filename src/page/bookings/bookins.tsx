@@ -44,7 +44,7 @@ const Bookings = () => {
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
-
+console.log(bookings)
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -53,6 +53,7 @@ const Bookings = () => {
         const response = await api.get<Booking[]>(
           `/agendamento/cliente/${userId}`
         );
+        console.log("API Response:", response.data);
         const bookingsData = response.data;
 
         const bookingsWithServices = bookingsData.map((booking) => {
