@@ -23,8 +23,8 @@ interface Telefone {
 }
 
 const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
-  const [telefones, setTelefones] = useState<Telefone | null>(null);
-
+  const [telefones, setTelefones] = useState<Telefone []>([]);
+  console.log("telefones",telefones);
 
   useEffect(() => {
     const obterTelefones = async () => {
@@ -56,6 +56,7 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <FormTelefoneCliente idCliente={idCliente} />
+        <DialogHeader className="py-4 border-t border-solid border-secondary ">Telefones cadastrados</DialogHeader>
         <DialogFooter>
           {telefones && telefones.length > 0 ? (
             telefones.map((telefone) => (
