@@ -37,7 +37,7 @@ interface Service {
   id: string;
   nome: string;
   preco: string;
-  barbearia?: Barbearia;
+  barbearia: Barbearia;
 }
 
 interface Barbearia {
@@ -58,7 +58,7 @@ interface Booking {
   data: string;
   hora: string;
   service: Service;
-  barbearia?: Barbearia;
+  barbearia: Barbearia;
   endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
 }
@@ -78,7 +78,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
 
   // Busca a barbearia correspondente ao serviço
   const barbearia = booking.service?.barbearia;
-  console.log("barbearia", booking);
+  console.log("barbeariabooking", booking);
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;

@@ -28,10 +28,10 @@ interface Booking {
   id: string;
   data: string;
   hora: string;
-  servicoId: string;
+  servico: string;
   service: Service;
   barbearia: Barbearia;
-  endereco?: Endereco;
+  endereco: Endereco;
   status: "Confirmado" | "Finalizado";
 }
 
@@ -46,32 +46,46 @@ const Bookings = () => {
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
 
-  console.log(bookings);
+
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         if (!userId) return;
-
-        const response = await api.get<Booking[]>(
-          `/agendamento/cliente/${userId}`
-        );
-        console.log("API Response:", response.data);
+    
+        const response = await api.get<Booking[]>(`/agendamento/cliente/${userId}`);
         const bookingsData = response.data;
-
-        const bookingsWithServices = bookingsData.map((booking) => {
-          const bookingDate = new Date(`${booking.data}T${booking.hora}`);
-          const status: "Confirmado" | "Finalizado" = isFuture(bookingDate)
-            ? "Confirmado"
-            : "Finalizado";
-          return {
-            ...booking,
-            status,
-          };
-        });
-
+        console.log("oi", response.data)
+    
+        const bookingsWithServices = await Promise.all(
+          bookingsData.map(async (booking) => {
+            const serviceDetails = await fetchServiceDetails(booking.servico.id);
+            if (serviceDetails) {
+              booking.service = serviceDetails;
+            }
+            const bookingDate = new Date(`${booking.data}T${booking.hora}`);
+            const status: "Confirmado" | "Finalizado" = isFuture(bookingDate) ? "Confirmado" : "Finalizado";
+            return {
+              ...booking,
+              status,
+            };
+          })
+        );
+    
         setBookings(bookingsWithServices);
       } catch (error) {
         console.error("Error fetching bookings:", error);
+      }
+    };
+
+    const fetchServiceDetails = async (servico: string): Promise<Service | null> => {
+      try {
+        const response = await api.get<Service>(`/servico/${servico}`);
+        console.log("fetchServiceDetails", response.data)
+
+        return response.data;
+      } catch (error) {
+        console.error(`Error fetching service details for serviceId: ${servico}`, error);
+        return null;
       }
     };
 
