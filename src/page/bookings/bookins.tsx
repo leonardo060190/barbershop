@@ -28,7 +28,8 @@ interface Booking {
   id: string;
   data: string;
   hora: string;
-  servico: Service;
+  servicoId: string;
+  service: Service;
   barbearia: Barbearia;
   endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
@@ -36,7 +37,7 @@ interface Booking {
 
 interface bookingsWithServices extends Booking {
   status: "Confirmado" | "Finalizado";
-  servico: Service;
+  service: Service;
   barbearia: Barbearia;
 }
 
@@ -44,7 +45,7 @@ const Bookings = () => {
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
-  
+
   console.log(bookings);
   useEffect(() => {
     const fetchBookings = async () => {

@@ -57,7 +57,7 @@ interface Booking {
   id: string;
   data: string;
   hora: string;
-  servico: Service;
+  service: Service;
   barbearia?: Barbearia;
   endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
@@ -77,7 +77,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
 
   // Busca a barbearia correspondente ao serviço
-  const barbearia = booking.servico?.barbearia;
+  const barbearia = booking.service?.barbearia;
   console.log("barbearia", booking);
 
   const removeAgendamento = async (id: string) => {
@@ -110,8 +110,8 @@ const BookingItem: React.FC<BookingItemProps> = ({
               </div>
 
               <h2 className="font-bold">
-                {booking.servico?.nome}
-                <span className="p-12">R$: {booking.servico?.preco}</span>
+                {booking.service?.nome}
+                <span className="p-12">R$: {booking.service?.preco}</span>
               </h2>
 
               <div className="flex items-center gap-2">
@@ -182,12 +182,12 @@ const BookingItem: React.FC<BookingItemProps> = ({
             <CardContent className="px-0 py-0 ">
               <div className="px-6 py-5 flex flex-col gap-3">
                 <div className="flex justify-between ">
-                  <h2 className="font-bold">{booking.servico?.nome}</h2>
+                  <h2 className="font-bold">{booking.service?.nome}</h2>
                   <h3 className="font-bold text-sm">
                     {Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    }).format(Number(booking.servico?.preco))}
+                    }).format(Number(booking.service?.preco))}
                   </h3>
                 </div>
 
