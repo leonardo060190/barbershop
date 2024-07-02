@@ -32,6 +32,7 @@ import {
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/components/authProvider/AuthProvider";
 
 interface Service {
   id: string;
@@ -86,15 +87,18 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
   onRemoveBooking,
 }) => {
   console.log(bookingBarbershop);
+  const { user } = useAuth();
+  const barbeariaId = user?.barbearia?.id || null;
+
   const bookingDate = new Date(
     `${bookingBarbershop.data}T${bookingBarbershop.hora}`
   );
   const isBookingConfirmed = bookingBarbershop.status === "Confirmado";
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [telefones, setTelefones] = useState<Telefone[]>([]);
-  console.log("telefones", telefones);
-  // Busca a barbearia correspondente ao serviço
-  const barbearia = bookingBarbershop.servico.barbearia;
+  const [barbearia, setBarbearia] = useState<Barbearia | null>(null);
+
+  console.log("barbearia", barbearia);
 
   useEffect(() => {
     const fetchTelefones = async () => {
@@ -103,14 +107,25 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
           `/telefone/cliente/${bookingBarbershop.cliente.id}`
         );
         setTelefones(response.data);
-        console.log("telefonecliente", bookingBarbershop.cliente.id)
+        console.log("telefonecliente", bookingBarbershop.cliente.id);
+      } catch (error) {
+        console.error("Erro ao buscar os telefones:", error);
+      }
+    };
+
+    const fetchBarbearia = async () => {
+      try {
+        const response = await api.get(`/barbearia/${barbeariaId}`);
+        setBarbearia(response.data);
+        console.log("fetchBarbearia", response.data);
       } catch (error) {
         console.error("Erro ao buscar os telefones:", error);
       }
     };
 
     fetchTelefones();
-  }, [bookingBarbershop.cliente.id]);
+    fetchBarbearia();
+  }, [bookingBarbershop.cliente.id, barbeariaId]);
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;
@@ -181,16 +196,22 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
         </SheetHeader>
         <div className="px-4">
           <div className="relative h-[180] w-11/12 mt-4">
-            <img src="/BarberShopCard.png" alt={barbearia.nome} />
+            <img src="/BarberShopCard.png" alt={barbearia?.nome} />
             <div className="w-full absolute bottom-4 left-0 px-6">
               <Card>
                 <CardContent className="p-3 flex gap-2 items-center">
                   <Avatar>
-                    <AvatarImage src={barbearia.foto} />
+                    <AvatarImage
+                      src={barbearia?.foto}
+                      alt={barbearia?.nome.charAt(0) || ""}
+                      width={40}
+                      className="rounded-full"
+                    />
+                    <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="font-bold">{barbearia.nome}</h2>
-                    {barbearia.endereco ? (
+                    <h2 className="font-bold">{barbearia?.nome}</h2>
+                    {barbearia?.endereco ? (
                       <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.bairro}`}</h3>
                     ) : (
                       <h3>Endereço não disponível</h3>

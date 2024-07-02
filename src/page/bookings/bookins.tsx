@@ -44,7 +44,8 @@ const Bookings = () => {
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
-console.log(bookings)
+  
+  console.log(bookings);
   useEffect(() => {
     const fetchBookings = async () => {
       try {

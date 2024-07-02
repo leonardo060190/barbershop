@@ -23,15 +23,15 @@ interface Telefone {
 }
 
 const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
-  const [telefones, setTelefones] = useState<Telefone []>([]);
-  console.log("telefones",telefones);
+  const [telefones, setTelefones] = useState<Telefone[]>([]);
+  console.log("telefones", telefones);
 
   useEffect(() => {
     const obterTelefones = async () => {
       try {
         const response = await api.get(`/telefone/cliente/${idCliente}`);
         setTelefones(response.data);
-        console.log("telefone",response.data);
+        console.log("telefone", response.data);
       } catch (error) {
         alert(`Erro: Não foi possível obter os dados de login: ${error}`);
       }
@@ -56,8 +56,10 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <FormTelefoneCliente idCliente={idCliente} />
-        <DialogHeader className="py-4 border-t border-solid border-secondary ">Telefones cadastrados</DialogHeader>
-        <DialogFooter>
+        <DialogHeader className="py-4 border-t border-solid border-secondary ">
+          Telefones cadastrados
+        </DialogHeader>
+        <DialogFooter className="flex flex-col">
           {telefones && telefones.length > 0 ? (
             telefones.map((telefone) => (
               <div className="text-sm " key={telefone.id}>

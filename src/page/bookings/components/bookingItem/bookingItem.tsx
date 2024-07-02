@@ -78,7 +78,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
 
   // Busca a barbearia correspondente ao serviço
   const barbearia = booking.servico?.barbearia;
-  console.log("barbearia",booking)
+  console.log("barbearia", booking);
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;
@@ -150,7 +150,13 @@ const BookingItem: React.FC<BookingItemProps> = ({
               <Card>
                 <CardContent className="p-3 flex gap-2 items-center">
                   <Avatar>
-                    <AvatarImage src={barbearia?.foto} />
+                    <AvatarImage
+                      src={barbearia?.foto}
+                      alt={barbearia?.nome.charAt(0) || ""}
+                      width={40}
+                      className="rounded-full"
+                    />
+                    <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
                     <h2 className="font-bold">{barbearia?.nome}</h2>
@@ -176,12 +182,12 @@ const BookingItem: React.FC<BookingItemProps> = ({
             <CardContent className="px-0 py-0 ">
               <div className="px-6 py-5 flex flex-col gap-3">
                 <div className="flex justify-between ">
-                  <h2 className="font-bold">{booking.servico.nome}</h2>
+                  <h2 className="font-bold">{booking.servico?.nome}</h2>
                   <h3 className="font-bold text-sm">
                     {Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    }).format(Number(booking.servico.preco))}
+                    }).format(Number(booking.servico?.preco))}
                   </h3>
                 </div>
 
