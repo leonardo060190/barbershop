@@ -10,14 +10,14 @@ interface Cliente {
   id: string;
   nome: string;
   foto: string;
- 
- 
+  perfil: string;
 }
 
 interface Barbearia {
   id: string;
   nome: string;
   foto: string;
+  perfil: string;
   // Adicione outras propriedades de Barbearia aqui, se necessário
 }
 interface User {

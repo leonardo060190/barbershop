@@ -65,6 +65,7 @@ const MenuSettings: React.FC<MenuSettingsProps> = ({ idCliente }) => {
 
   return (
     <>
+    
       <div className="py-1 px-4">
         <TelefoneRender idCliente={idCliente} />
       </div>

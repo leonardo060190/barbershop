@@ -106,7 +106,7 @@ const AllBarbershopsDetails = () => {
           <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
             Todas as Barbearias
           </h2>
-          <div className="flex gap-4 justify-between flex-wrap">
+          <div className="flex gap-4  justify-between flex-wrap">
             {Array.isArray(barbershops) && barbershops.length > 0 ? (
               barbershops.map((barbershop) => (
                 <AllBarbershops

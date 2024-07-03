@@ -46,19 +46,21 @@ const SearchResults = () => {
             Resultados da Pesquisa:
           </span>
         </h2>
-        {barbershops.length > 0 ? (
-          barbershops.map((barbershop) => (
-            <AllBarbershops
-              key={barbershop.id}
-              id={barbershop.id}
-              foto={barbershop.foto}
-              nome={barbershop.nome}
-              rua={barbershop.endereco?.rua}
-            />
-          ))
-        ) : (
-          <p>Nenhuma barbearia encontrada.</p>
-        )}
+        <div className="flex justify-center gap-4">
+          {barbershops.length > 0 ? (
+            barbershops.map((barbershop) => (
+              <AllBarbershops
+                key={barbershop.id}
+                id={barbershop.id}
+                foto={barbershop.foto}
+                nome={barbershop.nome}
+                rua={barbershop.endereco?.rua}
+              />
+            ))
+          ) : (
+            <p>Nenhuma barbearia encontrada.</p>
+          )}
+        </div>
       </div>
     </>
   );

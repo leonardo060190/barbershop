@@ -36,7 +36,7 @@ const EditCliente: React.FC<ClienteEditProps> = ({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="gap-3  items-center border-solid border-gray-600 border"
+          className="gap-3 items-center border-solid border-gray-600 border"
         >
           <Edit size={18} />
           Editar Cliente

@@ -6,7 +6,8 @@ import {
 } from "@/components/ui/card";
 import Telefone from "../../page/splintBarbershop/components/telefone/Telefone";
 import React from "react";
-// import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+
 
 interface InformationTelefoneProps {
   telefones: { id: string; numero: string }[];
@@ -24,13 +25,33 @@ const Information: React.FC<InformationTelefoneProps> = ({
   return (
     <div>
       <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">
-        <div className="relative ">
-          <img
-            className="w-full h-full"
-            src="/BarberShopCard.png"
-            alt="barber"
-          />
-
+      <div className="px-4">
+          <div className="relative h-[180] w-11/12 mt-4">
+            <img src="/BarberShopCard.png" alt={"barbearia?.nome"} />
+            <div className="w-full absolute bottom-4 left-0 px-6">
+              <Card>
+                <CardContent className="p-3 flex gap-2 items-center">
+                  <Avatar>
+                    <AvatarImage
+                      src={"barbearia?.foto"}
+                      alt={"barbearia?.nome.charAt(0)" || ""}
+                      width={40}
+                      className="rounded-full"
+                    />
+                    <AvatarFallback>{"barbearia?.nome.charAt(0)"}</AvatarFallback>
+                  </Avatar>
+                  {/* <div>
+                    <h2 className="font-bold">{"barbearia?.nome"}</h2>
+                    {barbearia?.endereco ? (
+                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.bairro}`}</h3>
+                    ) : (
+                      <h3>Endereço não disponível</h3>
+                    )}
+                  </div> */}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
           <CardHeader>
             Sobre nós
             <CardDescription className="py-3 break-all border-b border-solid border-secondary">
@@ -96,7 +117,7 @@ const Information: React.FC<InformationTelefoneProps> = ({
               </div>
             </div>
           </CardContent>
-        </div>
+          </div>
       </Card>
     </div>
   );

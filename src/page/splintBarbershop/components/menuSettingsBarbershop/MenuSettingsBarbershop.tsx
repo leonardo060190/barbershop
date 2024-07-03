@@ -59,7 +59,6 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
   const [login, setLogin] = useState<Login | null>(null);
 
-
   useEffect(() => {
     const obterBarbearia = async () => {
       try {
@@ -99,44 +98,45 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
 
   return (
     <>
-      <div className="py-1 px-4">
-        {id && barberShop && (
-          <EditProfile
-            key={id}
-            id={id}
-            nome={barberShop.nome}
-            foto={barberShop.foto}
-            cnpj={barberShop.cnpj}
-            razaoSocial={barberShop.razaoSocial}
-            onProfileUpdated={atualizarSplintBarbershop}
-          />
-        )}
-      </div>
+      <div className=" grid gap-5  grid-cols-2  md:grid-cols-3 xl:grid-cols-4 ">
+        <div className="py-1 px-4 ">
+          {id && barberShop && (
+            <EditProfile
+              key={id}
+              id={id}
+              nome={barberShop.nome}
+              foto={barberShop.foto}
+              cnpj={barberShop.cnpj}
+              razaoSocial={barberShop.razaoSocial}
+              onProfileUpdated={atualizarSplintBarbershop}
+            />
+          )}
+        </div>
 
-      <div className="py-1 px-4">
-        {id && (
-          <TelefoneRender
-            idBarbershop={id}
-            onTelefoneRegistrado={atualizarSplintBarbershop}
-          />
-        )}
-      </div>
+        <div className="py-1 px-4">
+          {id && (
+            <TelefoneRender
+              idBarbershop={id}
+              onTelefoneRegistrado={atualizarSplintBarbershop}
+            />
+          )}
+        </div>
 
-      <div className="py-1 px-4">
-        <RegisterOpeningHours />
-      </div>
+        <div className="py-1 px-4">
+          <RegisterOpeningHours />
+        </div>
 
-      <div className="py-1 px-4">
-      {id && login && (
-          <EditLogin
-            key={login.id}
-            id={login.id}
-            idBarbershop={id}
-            email={login.email}
-            senha={login.senha}
-            
-          />
-        )}
+        <div className="py-1 px-4">
+          {id && login && (
+            <EditLogin
+              key={login.id}
+              id={login.id}
+              idBarbershop={id}
+              email={login.email}
+              senha={login.senha}
+            />
+          )}
+        </div>
       </div>
     </>
   );
