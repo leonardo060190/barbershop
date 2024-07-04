@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import EditProfile from "../../components/renderForms/EditProfile";
-import RegisterOpeningHours from "../../components/renderForms/RegisterOpeningHours";
+// import RenderHorarioFuncionamento from "../../components/cadastroHorarioFuncionamento/RenderHorarioFuncionamento";
 import TelefoneRender from "../../components/telefone/TelefoneRender";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
@@ -122,9 +122,9 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
           )}
         </div>
 
-        <div className="py-1 px-4">
-          <RegisterOpeningHours />
-        </div>
+        {/* <div className="py-1 px-4">
+          <RenderHorarioFuncionamento />
+        </div> */}
 
         <div className="py-1 px-4">
           {id && login && (

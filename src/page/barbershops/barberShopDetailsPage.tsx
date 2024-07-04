@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import Telefone from "../splintBarbershop/components/telefone/Telefone";
-import Information from "../../components/informações/information";
+import Information from "../splintBarbershop/components/informacoes/information";
 
 interface Telefone {
   id: string;

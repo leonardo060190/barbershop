@@ -4,12 +4,17 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
-import Telefone from "../../page/splintBarbershop/components/telefone/Telefone";
+import Telefone from "../telefone/Telefone";
 import React, { useEffect, useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useAuth } from "../authProvider/AuthProvider";
-import { api } from "../../../config/ConfigAxios";
-import { Separator } from "../ui/separator";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../../../components/ui/avatar";
+import { useAuth } from "../../../../components/authProvider/AuthProvider";
+import { api } from "../../../../../config/ConfigAxios";
+import { Separator } from "../../../../components/ui/separator";
+import RenderHorarioFuncionamento from "../cadastroHorarioFuncionamento/RenderHorarioFuncionamento"
 
 interface Endereco {
   rua: string;
@@ -31,8 +36,8 @@ interface DiaSemana {
 
 interface HorarioFuncionamento {
   id: string;
-  inicio: string;
-  fim: string;
+  abri: string;
+  fecha: string;
   diaSemana?: DiaSemana;
 }
 
@@ -135,7 +140,7 @@ const Information: React.FC<InformationTelefoneProps> = ({
                 <div>Nenhum telefone disponível</div>
               )}
             </div>
-
+            <RenderHorarioFuncionamento />
             <div className="mt-5 flex flex-col gap-3">
               <div className="flex justify-between ">
                 <h2 className="font-bold">Horario de funcionamento</h2>
@@ -144,8 +149,8 @@ const Information: React.FC<InformationTelefoneProps> = ({
               <Separator />
               <div className="flex justify-between ">
                 <h3 className="font-bold text-sm">dia Semana</h3>
-                <h3 className="font-bold text-sm">Inicio</h3>
-                <h3 className="font-bold text-sm">Fim</h3>
+                <h3 className="font-bold text-sm">Abre</h3>
+                <h3 className="font-bold text-sm">Fecha</h3>
               </div>
               <Separator />
               {horarioFuncionamento.length > 0 ? (
@@ -155,8 +160,8 @@ const Information: React.FC<InformationTelefoneProps> = ({
                       <h3 className="text-gray-400 text-sm">
                         {horario.diaSemana?.nome}
                       </h3>
-                      <h4 className="text-sm">{horario.inicio}</h4>
-                      <h4 className="text-sm">{horario.fim}</h4>
+                      <h4 className="text-sm">{horario.abri}</h4>
+                      <h4 className="text-sm">{horario.fecha}</h4>
                     </div>
                     <Separator />
                   </React.Fragment>
@@ -164,7 +169,6 @@ const Information: React.FC<InformationTelefoneProps> = ({
               ) : (
                 <div>Nenhum horário de funcionamento disponível</div>
               )}
-
             </div>
           </CardContent>
         </div>

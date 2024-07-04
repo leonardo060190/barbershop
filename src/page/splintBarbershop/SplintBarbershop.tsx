@@ -1,7 +1,7 @@
 import Header from "@/components/header/header";
 import EditServices from "./components/renderForms/EditServices";
 import RegisterServices from "./components/renderForms/RegisterServices";
-import Information from "../../components/informações/information";
+import Information from "./components/informacoes/information";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useParams } from "react-router-dom";
