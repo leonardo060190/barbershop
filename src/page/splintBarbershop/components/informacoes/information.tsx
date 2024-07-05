@@ -14,7 +14,7 @@ import {
 import { useAuth } from "../../../../components/authProvider/AuthProvider";
 import { api } from "../../../../../config/ConfigAxios";
 import { Separator } from "../../../../components/ui/separator";
-import RenderHorarioFuncionamento from "../cadastroHorarioFuncionamento/RenderHorarioFuncionamento"
+import RenderHorarioFuncionamento from "../cadastroHorarioFuncionamento/RenderHorarioFuncionamento";
 
 interface Endereco {
   rua: string;
@@ -140,35 +140,47 @@ const Information: React.FC<InformationTelefoneProps> = ({
                 <div>Nenhum telefone disponível</div>
               )}
             </div>
-            <RenderHorarioFuncionamento />
+
             <div className="mt-5 flex flex-col gap-3">
               <div className="flex justify-between ">
                 <h2 className="font-bold">Horario de funcionamento</h2>
-                <h3 className="font-bold text-sm">dia</h3>
               </div>
+              <RenderHorarioFuncionamento />
               <Separator />
-              <div className="flex justify-between ">
-                <h3 className="font-bold text-sm">dia Semana</h3>
-                <h3 className="font-bold text-sm">Abre</h3>
-                <h3 className="font-bold text-sm">Fecha</h3>
-              </div>
-              <Separator />
-              {horarioFuncionamento.length > 0 ? (
-                horarioFuncionamento.map((horario) => (
-                  <React.Fragment key={horario.id}>
-                    <div className="flex justify-between">
-                      <h3 className="text-gray-400 text-sm">
-                        {horario.diaSemana?.nome}
-                      </h3>
-                      <h4 className="text-sm">{horario.abri}</h4>
-                      <h4 className="text-sm">{horario.fecha}</h4>
-                    </div>
-                    <Separator />
-                  </React.Fragment>
-                ))
-              ) : (
-                <div>Nenhum horário de funcionamento disponível</div>
-              )}
+              <table className="min-w-full table-auto">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-bold">
+                      Dia Semana
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-bold">
+                      Abre
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-bold">
+                      Fecha
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {horarioFuncionamento.length > 0 ? (
+                    horarioFuncionamento.map((horario) => (
+                      <tr key={horario.id} className="border-b">
+                        <td className="px-4 py-2 text-sm text-gray-400">
+                          {horario.diaSemana?.nome}
+                        </td>
+                        <td className="px-4 py-2 text-sm">{horario.abri}</td>
+                        <td className="px-4 py-2 text-sm">{horario.fecha}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="3" className="px-4 py-2 text-center text-sm">
+                        Fechado
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </CardContent>
         </div>

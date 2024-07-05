@@ -1,5 +1,5 @@
 import Header from "@/components/header/header";
-import ServiceItem from "./components/ServiceItem";
+import ServiceItem from "./components/serviceItem";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPinIcon, StarIcon } from "lucide-react";
 import { useParams } from "react-router-dom";

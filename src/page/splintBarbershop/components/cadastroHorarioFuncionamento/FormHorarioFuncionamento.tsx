@@ -42,7 +42,7 @@ const FormHorarioFuncionamento = () => {
   const [isFormOpen, setIsFormOpen] = useState(true);
   const [diaSemana, setDiaSemana] = useState<DiaSemana[]>([]);
   const selectedDiaSemana = watch("diaSemana");
-console.log(selectedDiaSemana)
+  console.log(selectedDiaSemana)
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
 
@@ -104,13 +104,14 @@ console.log(selectedDiaSemana)
               <FormLabel>Dia Semana</FormLabel>
               <Select onValueChange={(value) => setValue("diaSemana", value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione o dia da semana">
-                    
+                  <SelectValue placeholder="Selecione o dia da semana" >
+                  {selectedDiaSemana ? diaSemana.find((dia) => dia.id === selectedDiaSemana)?.nome : "Selecione o dia da semana"}
+
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel>Selecione o dia da semana</SelectLabel>
+                    <SelectLabel >Selecione o dia da semana</SelectLabel>
                     {diaSemana.map((dia) => (
                       <SelectItem key={dia.id} value={dia.id}>
                         {dia.nome}

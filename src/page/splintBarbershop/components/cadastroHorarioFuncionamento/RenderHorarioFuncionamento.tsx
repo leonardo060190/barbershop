@@ -26,7 +26,7 @@ import FormHorarioFuncionamento from "./FormHorarioFuncionamento";
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader className=" border-b border-solid border-secondary ">
-            <DialogTitle className="pb-3"> Registre o telefone</DialogTitle>
+            <DialogTitle className="pb-3"> Registre o horario</DialogTitle>
             <DialogDescription></DialogDescription>
           </DialogHeader>
           <FormHorarioFuncionamento
