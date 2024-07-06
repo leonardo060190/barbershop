@@ -12,7 +12,7 @@ import { Button } from "../../../../components/ui/button";
 import FormTelefoneCliente from "./FormCadastroTelefoneCliente";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
-
+import { toast } from "sonner";
 
 interface IdClienteRegisterTelefone {
   idCliente: string;
@@ -25,7 +25,10 @@ interface Telefone {
 
 const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
   const [telefones, setTelefones] = useState<Telefone[]>([]);
-  console.log("telefones", telefones);
+
+  const onTelefoneRegistrado = () => {
+    window.location.reload();
+  };
 
   useEffect(() => {
     const obterTelefones = async () => {
@@ -39,6 +42,24 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
     };
     obterTelefones();
   }, [idCliente]);
+
+  const removeTelefone = async (id: string, numero: string) => {
+    if (!window.confirm(`Confirma a exclusão do Telefone ${numero} ?`)) {
+      return;
+    }
+    try {
+      await api.delete(`/telefone/${id}`);
+      setTelefones(telefones.filter((telefone) => telefone.id !== id));
+      toast.success("Telefone Deletado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
+    } catch (error) {
+      console.error("Erro ao deletar o serviço:", error);
+    }
+  };
 
   return (
     <Dialog>
@@ -56,7 +77,10 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
           <DialogTitle className="pb-3"> Registre o telefone</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
-        <FormTelefoneCliente idCliente={idCliente} />
+        <FormTelefoneCliente
+          idCliente={idCliente}
+          onTelefoneRegistrado={onTelefoneRegistrado}
+        />
         <DialogHeader className="py-4 border-t border-solid border-secondary ">
           Telefones cadastrados
         </DialogHeader>
@@ -64,12 +88,8 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
           <table className="min-w-full table-auto">
             <thead>
               <tr>
-                <th className="px-2  text-left text-sm font-bold">
-                  Telefones
-                </th>
-                <th className="px-2 text-left text-sm font-bold">
-                  Excluir
-                </th>
+                <th className="px-2  text-left text-sm font-bold">Telefones</th>
+                <th className="px-2 text-left text-sm font-bold">Excluir</th>
               </tr>
             </thead>
             <tbody>
@@ -80,11 +100,13 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
                     className="flex items-center justify-between"
                   >
                     <td className="px-2 text-sm ">{telefone.numero}</td>
-                    <td>
+                    <td className="px-2 py-2 text-sm text-left">
                       <Button
                         variant="transparent"
                         className="text-[#ff6666] gap-2 ml-auto "
-                        // onClick={() => handleDeleteTelefone(telefone.id)}
+                        onClick={() =>
+                          removeTelefone(telefone.id, telefone.numero)
+                        }
                       >
                         <X size={16} />
                       </Button>
@@ -92,7 +114,7 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
                   </tr>
                 ))
               ) : (
-                <p>Nenhum telefone cadastrado</p>
+                <p className="px-2 pt-3">Nenhum telefone cadastrado</p>
               )}
             </tbody>
           </table>

@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
+import { toast } from "sonner";
 
 type FormValues = {
   foto: string;
@@ -44,6 +45,12 @@ const FormEdit: React.FC<BarbershopEditProfileProps> = ({
       const response = await api.put(`/barbearia/${id}`, data);
       console.log(response.data)
       onProfileUpdated();
+      toast.success("Barbearia atualizada com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro ao atualizar o perfil:", error);
     }

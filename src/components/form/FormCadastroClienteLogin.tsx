@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { api } from "../../../config/ConfigAxios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 type FormValues = {
   email: string;
@@ -38,6 +39,12 @@ const FormCadastroClienteLogin = ({ cliente }: FormCadastroLoginProps) => {
       console.log(respose.data);
       limpaFormulario();
       navigate("/home");
+      toast.success("Login cadastrado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro cadastro", error);
     }

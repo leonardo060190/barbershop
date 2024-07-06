@@ -69,8 +69,15 @@ const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
         const response = await api.get(
           `/horarioFuncionamento/barbearia/${barbeariaId}`
         );
-        setHorarioFuncionamento(response.data);
-        console.log("fetchHorarioFuncionamento", response.data);
+        const sortedHorarios = response.data.sort(
+          (a: HorarioFuncionamento, b: HorarioFuncionamento) => {
+            const idA = a.diaSemana?.id?.toString() || "";
+            const idB = b.diaSemana?.id?.toString() || "";
+            return idA.localeCompare(idB);
+          }
+        );
+        setHorarioFuncionamento(sortedHorarios);
+        console.log("fetchHorarioFuncionamento", sortedHorarios);
       } catch (error) {
         console.error("Erro ao buscar os telefones:", error);
       }

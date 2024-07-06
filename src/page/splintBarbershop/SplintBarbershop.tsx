@@ -2,7 +2,7 @@ import Header from "@/components/header/header";
 import EditServices from "./components/renderForms/EditServices";
 import RegisterServices from "./components/renderForms/RegisterServices";
 import Information from "./components/informacoes/information";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useParams } from "react-router-dom";
 import MenuSettingsBarbershop from "./components/menuSettingsBarbershop/MenuSettingsBarbershop";
@@ -44,7 +44,7 @@ const SplintBarbershop = () => {
   const { id } = useParams<{ id: string }>();
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
 
-  const obterBarbearia = async () => {
+  const obterBarbearia = useCallback(async () => {
     try {
       const response = await api.get(`/barbearia/${id}`);
       setBarberShop(response.data);
@@ -52,13 +52,13 @@ const SplintBarbershop = () => {
     } catch (error) {
       alert(`Erro: Não foi possível obter os dados: ${error}`);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     if (id) {
       obterBarbearia();
     }
-  }, [id]);
+  }, [id, obterBarbearia]);
 
   const atualizarSplintBarbershop = async () => {
     try {

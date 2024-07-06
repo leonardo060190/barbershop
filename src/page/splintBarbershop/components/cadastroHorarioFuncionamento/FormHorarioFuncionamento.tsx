@@ -15,6 +15,7 @@ import {
 
 import { api } from "../../../../../config/ConfigAxios";
 import { useAuth } from "@/components/authProvider/AuthProvider";
+import { toast } from "sonner";
 
 interface FormValues {
   abri: string;
@@ -27,7 +28,11 @@ interface DiaSemana {
   nome: string;
 }
 
-const FormHorarioFuncionamento = () => {
+interface FormHorarioFuncionamentoProps {
+  onHorarioAdicionado: () => void;
+}
+
+const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({ onHorarioAdicionado }) => {
   const methods = useForm<FormValues>();
   const {
     handleSubmit,
@@ -42,7 +47,6 @@ const FormHorarioFuncionamento = () => {
   const [isFormOpen, setIsFormOpen] = useState(true);
   const [diaSemana, setDiaSemana] = useState<DiaSemana[]>([]);
   const selectedDiaSemana = watch("diaSemana");
-  console.log(selectedDiaSemana)
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
 
@@ -70,11 +74,18 @@ const FormHorarioFuncionamento = () => {
       const response = await api.post("/horarioFuncionamento", {
         ...data,
         barbearia: { id: barbeariaId },
-        diaSemana: {id:  data.diaSemana}
+        diaSemana: { id: data.diaSemana },
       });
       console.log(response.data);
       limparFormulario();
       setIsFormOpen(false);
+      onHorarioAdicionado();
+      toast.success("Horario cadastrado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -104,14 +115,16 @@ const FormHorarioFuncionamento = () => {
               <FormLabel>Dia Semana</FormLabel>
               <Select onValueChange={(value) => setValue("diaSemana", value)}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione o dia da semana" >
-                  {selectedDiaSemana ? diaSemana.find((dia) => dia.id === selectedDiaSemana)?.nome : "Selecione o dia da semana"}
-
+                  <SelectValue placeholder="Selecione o dia da semana">
+                    {selectedDiaSemana
+                      ? diaSemana.find((dia) => dia.id === selectedDiaSemana)
+                          ?.nome
+                      : "Selecione o dia da semana"}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectLabel >Selecione o dia da semana</SelectLabel>
+                    <SelectLabel>Selecione o dia da semana</SelectLabel>
                     {diaSemana.map((dia) => (
                       <SelectItem key={dia.id} value={dia.id}>
                         {dia.nome}

@@ -20,6 +20,7 @@ import { Edit, X } from "lucide-react";
 import FormEditService from "../forms/FormEditService";
 import { api } from "../../../../../config/ConfigAxios";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface BarbershopServicosProps {
   id: string;
@@ -52,6 +53,12 @@ const EditServices: React.FC<BarbershopServicosProps> = ({
       await api.delete(`/servico/${id}`);
       setServico(servico.filter((servico) => servico.id !== id));
       onServicoDeletado();
+      toast.success("Serviço Deletado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro ao deletar o serviço:", error);
     }

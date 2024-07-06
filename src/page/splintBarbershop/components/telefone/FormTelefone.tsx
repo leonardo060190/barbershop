@@ -51,7 +51,12 @@ const FormTelefone: React.FC<IdBarberShopRegisterTelefone> = ({
       limparFormulario();
       setIsFormOpen(false);
       onTelefoneRegistrado();
-      toast.success("Telefone cadastrado com sucesso!");
+      toast.success("Telefone cadastrado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro cadastro", error);
     }

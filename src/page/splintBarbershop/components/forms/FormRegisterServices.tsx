@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
+import { toast } from "sonner";
 
 type FormValues = {
   foto: string;
@@ -46,6 +47,12 @@ const FormRegisterServices: React.FC<IdBarberShopRegisterServices> = ({
       limparFormulario();
       setIsFormOpen(false);
       onServicoRegistrado();
+      toast.success("Serviço cadastrado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
       console.log(data);
     } catch (error) {
       console.error("Erro cadastro", error);

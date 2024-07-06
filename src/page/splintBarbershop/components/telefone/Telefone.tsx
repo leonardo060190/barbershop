@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Smartphone, X } from "lucide-react";
 import { api } from "../../../../../config/ConfigAxios";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface BarbershopTelefonesProps {
   id: string;
@@ -26,6 +27,12 @@ const Telefone: React.FC<BarbershopTelefonesProps> = ({
       await api.delete(`/telefone/${id}`);
       setTelefone(telefone.filter((telefone) => telefone.id !== id));
       onTelefoneDeletado();
+      toast.success("Telefone Deletado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro ao deletar o serviço:", error);
     }

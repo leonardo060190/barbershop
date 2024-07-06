@@ -196,7 +196,7 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
             )}
           </FormItem>
 
-          <Button type="submit">Finalizar</Button>
+          <Button type="submit">Continuar</Button>
         </form>
       </FormProvider>
     </div>

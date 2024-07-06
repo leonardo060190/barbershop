@@ -17,6 +17,7 @@ import { Separator } from "../../../../components/ui/separator";
 import RenderHorarioFuncionamento from "../cadastroHorarioFuncionamento/RenderHorarioFuncionamento";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 
 interface Endereco {
   rua: string;
@@ -78,12 +79,20 @@ const Information: React.FC<InformationTelefoneProps> = ({
         const response = await api.get(
           `/horarioFuncionamento/barbearia/${barbeariaId}`
         );
-        setHorarioFuncionamento(response.data);
-        console.log("fetchHorarioFuncionamento", response.data);
+        const sortedHorarios = response.data.sort(
+          (a: HorarioFuncionamento, b: HorarioFuncionamento) => {
+            const idA = a.diaSemana?.id?.toString() || "";
+            const idB = b.diaSemana?.id?.toString() || "";
+            return idA.localeCompare(idB);
+          }
+        );
+        setHorarioFuncionamento(sortedHorarios);
+        console.log("fetchHorarioFuncionamento", sortedHorarios);
       } catch (error) {
-        console.error("Erro ao buscar os telefones:", error);
+        console.error("Erro ao buscar os horários de funcionamento:", error);
       }
     };
+
     if (barbeariaId) {
       fetchHorarioFuncionamento();
       fetchBarbearia();
@@ -96,7 +105,17 @@ const Information: React.FC<InformationTelefoneProps> = ({
     }
     try {
       await api.delete(`/horarioFuncionamento/${id}`);
-      setHorarioFuncionamento(horarioFuncionamento.filter((horarioFuncionamento) => horarioFuncionamento.id !== id));
+      setHorarioFuncionamento(
+        horarioFuncionamento.filter(
+          (horarioFuncionamento) => horarioFuncionamento.id !== id
+        )
+      );
+      toast.success("Horario deletado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro ao deletar o horario funcionamento:", error);
     }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
+import { toast } from "sonner";
 // import { useState } from "react";
 
 type FormValues = {
@@ -51,6 +52,12 @@ const FormEditService: React.FC<FormEditServiceProps> = ({
       });
       console.log(response.data);
       onServicoUpdated();
+      toast.success("Serviço atualizado com sucesso!",{
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro ao atualizar o serviço:", error);
     }

@@ -245,7 +245,7 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
             </FormItem>
           </div>
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Continuar</Button>
         </form>
       </FormProvider>
     </div>
