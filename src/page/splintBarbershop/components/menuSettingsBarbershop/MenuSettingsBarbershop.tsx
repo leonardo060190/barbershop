@@ -122,10 +122,6 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
           )}
         </div>
 
-        {/* <div className="py-1 px-4">
-          <RenderHorarioFuncionamento />
-        </div> */}
-
         <div className="py-1 px-4">
           {id && login && (
             <EditLogin

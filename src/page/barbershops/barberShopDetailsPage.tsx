@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import Telefone from "../splintBarbershop/components/telefone/Telefone";
-import Information from "../splintBarbershop/components/informacoes/information";
+import InformationBarbershop from "../home/components/informationBarbershop/InformationBarbershop";
 
 interface Telefone {
   id: string;
@@ -30,6 +30,7 @@ interface Endereco {
 }
 
 interface BarberShop {
+  id: string;
   nome: string;
   foto: string;
   avaliacao: number;
@@ -63,12 +64,10 @@ const BarberShopDetailsPage = () => {
     return <div>Carregando...</div>;
   }
 
-
-
   return (
     <div>
       <Header />
-      <div className="px-12 max-w-[80rem] min-w-[32rem] flex flex-col md:flex-row">
+      <div className="px-12 justify-between flex flex-col md:flex-row">
         <div>
           <div className="pb-6">
             <div className=" pt-10 ">
@@ -131,10 +130,9 @@ const BarberShopDetailsPage = () => {
           </div>
         </div>
         <div className="pl-12 py-10">
-          <Information
+          <InformationBarbershop
+            barbeariaId={barberShop.id}
             telefones={barberShop.telefones}
-            onTelefoneDeletado={BarberShopDetailsPage}
-            showDeleteButton={false}
           />
         </div>
       </div>

@@ -4,19 +4,15 @@ import {
   CardDescription,
   CardHeader,
 } from "@/components/ui/card";
-import Telefone from "../telefone/Telefone";
+import Telefone from "../../../splintBarbershop/components/telefone/Telefone";
 import React, { useEffect, useState } from "react";
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "../../../../components/ui/avatar";
-import { useAuth } from "../../../../components/authProvider/AuthProvider";
 import { api } from "../../../../../config/ConfigAxios";
 import { Separator } from "../../../../components/ui/separator";
-import RenderHorarioFuncionamento from "../cadastroHorarioFuncionamento/RenderHorarioFuncionamento";
-import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 
 interface Endereco {
   rua: string;
@@ -45,22 +41,17 @@ interface HorarioFuncionamento {
 
 interface InformationTelefoneProps {
   telefones: { id: string; numero: string }[];
-  onTelefoneDeletado: () => void;
-  showDeleteButton: boolean;
+  barbeariaId: string;
 }
 
-const Information: React.FC<InformationTelefoneProps> = ({
+const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
   telefones,
-  onTelefoneDeletado,
-  showDeleteButton,
+  barbeariaId,
 }) => {
   const [barbearia, setBarbearia] = useState<Barbearia | null>(null);
   const [horarioFuncionamento, setHorarioFuncionamento] = useState<
     HorarioFuncionamento[]
   >([]);
-
-  const { user } = useAuth();
-  const barbeariaId = user?.barbearia?.id || null;
 
   useEffect(() => {
     const fetchBarbearia = async () => {
@@ -90,23 +81,11 @@ const Information: React.FC<InformationTelefoneProps> = ({
     }
   }, [barbeariaId]);
 
-  const removeHorario = async (id: string) => {
-    if (!window.confirm(`Confirma a exclusão do horario ?`)) {
-      return;
-    }
-    try {
-      await api.delete(`/horarioFuncionamento/${id}`);
-      setHorarioFuncionamento(horarioFuncionamento.filter((horarioFuncionamento) => horarioFuncionamento.id !== id));
-    } catch (error) {
-      console.error("Erro ao deletar o horario funcionamento:", error);
-    }
-  };
-
   return (
     <div>
       <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">
-        <div className="px-4">
-          <div className="relative h-[180] w-11/12 mt-4">
+        <div>
+          <div className="relative h-[180]">
             <img src="/BarberShopCard.png" alt={"barbearia?.nome"} />
             <div className="w-full absolute bottom-4 left-0 px-6">
               <Card>
@@ -146,8 +125,6 @@ const Information: React.FC<InformationTelefoneProps> = ({
                     key={telefone.id}
                     id={telefone.id}
                     numero={telefone.numero}
-                    onTelefoneDeletado={onTelefoneDeletado}
-                    showDeleteButton={showDeleteButton}
                   />
                 ))
               ) : (
@@ -159,7 +136,6 @@ const Information: React.FC<InformationTelefoneProps> = ({
               <div className="flex justify-between ">
                 <h2 className="font-bold">Horario de funcionamento</h2>
               </div>
-              <RenderHorarioFuncionamento />
               <Separator />
               <table className="min-w-full table-auto">
                 <thead>
@@ -183,15 +159,6 @@ const Information: React.FC<InformationTelefoneProps> = ({
                       </td>
                       <td className="px-2 py-2 text-sm">{horario.abri}</td>
                       <td className="px-2 py-2 text-sm">{horario.fecha}</td>
-                      <td>
-                        <Button
-                          variant="transparent"
-                          className="text-[#ff6666] gap-2  ml-auto"
-                          onClick={() => removeHorario(horario.id)}
-                        >
-                          <X size={16} />
-                        </Button>
-                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -204,4 +171,4 @@ const Information: React.FC<InformationTelefoneProps> = ({
   );
 };
 
-export default Information;
+export default InformationBarbershop;
