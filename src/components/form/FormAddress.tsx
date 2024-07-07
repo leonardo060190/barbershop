@@ -2,15 +2,16 @@ import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { FormItem, FormLabel, FormControl } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import {
@@ -37,35 +38,19 @@ type FormValues = {
   cidade: string;
 };
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
-
 const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
   const [open, setOpen] = React.useState(false);
-  const [cidade, setCidade] = React.useState("")
-
+  const [estados, setEstados] = React.useState<{ id: string; nome: string }[]>(
+    []
+  );
+  const [cidades, setCidades] = React.useState<{ id: string; nome: string }[]>(
+    []
+  );
+  const [selectedEstado, setSelectedEstado] = useState("");
+  const [selectedCidade, setSelectedCidade] = useState("");
+  console.log(estados, selectedCidade);
   const {
     handleSubmit,
     register,
@@ -73,6 +58,38 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
     setValue,
     formState: { errors },
   } = methods;
+
+  useEffect(() => {
+    const fetchEstados = async () => {
+      try {
+        const response = await api.get(`/estado`);
+        setEstados(response.data);
+        console.log("fetchEstados", response.data);
+      } catch (error) {
+        console.error("Erro ao buscar os estados:", error);
+      }
+    };
+
+    fetchEstados();
+  }, []);
+
+  useEffect(() => {
+    const fetchCidades = async () => {
+      try {
+        const response = await api.get(`/cidade/estado/${selectedEstado}`);
+        setCidades(response.data);
+        console.log("fetchCidades", response.data);
+      } catch (error) {
+        console.error("Erro ao buscar as cidades:", error);
+      }
+    };
+
+    if (selectedEstado) {
+      fetchCidades();
+    } else {
+      setCidades([]);
+    }
+  }, [selectedEstado]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data); // Aqui você pode acessar os dados do formulário
@@ -140,7 +157,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-3  grid gap-3 sm:grid-cols-1"
         >
-          <div className="grid grid-cols-1  gap-4">
+          <div className="grid grid-cols-2  gap-4">
             <FormItem>
               <FormLabel>Rua</FormLabel>
               <FormControl>
@@ -154,6 +171,24 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
               </FormControl>
               {errors.rua && (
                 <p className="text-red-500">{errors.rua.message}</p>
+              )}
+            </FormItem>
+
+            <FormItem>
+              <FormLabel>CEP</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Digite o cep"
+                  {...register("cep", {
+                    required: "O cep é requerido",
+                    validate: validateZipcode,
+                    onChange: (e) => setValue("cep", formatCep(e.target.value)),
+                    maxLength: 9,
+                  })}
+                />
+              </FormControl>
+              {errors.cep && (
+                <p className="text-red-500">{errors.cep.message}</p>
               )}
             </FormItem>
           </div>
@@ -190,25 +225,36 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
               )}
             </FormItem>
           </div>
-          <div className="grid grid-cols-2  gap-4">
-            <FormItem>
-              <FormLabel>CEP</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="Digite o cep"
-                  {...register("cep", {
-                    required: "O cep é requerido",
-                    validate: validateZipcode,
-                    onChange: (e) => setValue("cep", formatCep(e.target.value)),
-                    maxLength: 9,
-                  })}
-                />
-              </FormControl>
-              {errors.cep && (
-                <p className="text-red-500">{errors.cep.message}</p>
-              )}
-            </FormItem>
+          <div className="grid grid-cols-2 gap-4">
             <div className="grid grid-cols-2  gap-4">
+              <FormItem>
+                <FormLabel>Estado</FormLabel>
+                <Select
+                  onValueChange={(value) => {
+                    setSelectedEstado(value);
+                    setSelectedCidade("");
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Selecione um estado">
+                      {selectedEstado
+                        ? estados.find((estado) => estado.id === selectedEstado)
+                            ?.nome
+                        : "Selecione um estado"}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {estados.map((estado) => (
+                        <SelectItem key={estado.id} value={estado.id}>
+                          {estado.nome}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </FormItem>
+
               <FormItem>
                 <FormLabel>Cidade</FormLabel>
                 <Popover open={open} onOpenChange={setOpen}>
@@ -219,10 +265,9 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                       aria-expanded={open}
                       className="w-[200px] justify-between"
                     >
-                      {cidade
-                        ? frameworks.find(
-                            (framework) => framework.value === cidade
-                          )?.label
+                      {selectedCidade
+                        ? cidades.find((cidade) => cidade.id === selectedCidade)
+                            ?.nome
                         : "Selecione uma cidade..."}
                       <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                     </Button>
@@ -233,28 +278,27 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                       <CommandList>
                         <CommandEmpty>Cidade não encontrada.</CommandEmpty>
                         <CommandGroup>
-                          {frameworks.map((framework) => (
-                            <CommandItem
-                              key={framework.value}
-                              value={framework.value}
-                              onSelect={(currentValue) => {
-                                setCidade(
-                                  currentValue === cidade ? "" : currentValue
-                                );
-                                setOpen(false);
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  cidade === framework.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {framework.label}
-                            </CommandItem>
-                          ))}
+                          {cidades &&
+                            cidades.map((cidade) => (
+                              <CommandItem
+                                key={cidade.id}
+                                value={cidade.id}
+                                onSelect={(currentValue) => {
+                                  setSelectedCidade(currentValue);
+                                  setOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    cidade.id === selectedCidade
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {cidade.nome}
+                              </CommandItem>
+                            ))}
                         </CommandGroup>
                       </CommandList>
                     </Command>
@@ -263,7 +307,6 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
               </FormItem>
             </div>
           </div>
-
           <Button type="submit">Continuar</Button>
         </form>
       </FormProvider>

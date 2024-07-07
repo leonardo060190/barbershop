@@ -32,7 +32,9 @@ interface FormHorarioFuncionamentoProps {
   onHorarioAdicionado: () => void;
 }
 
-const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({ onHorarioAdicionado }) => {
+const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
+  onHorarioAdicionado,
+}) => {
   const methods = useForm<FormValues>();
   const {
     handleSubmit,
@@ -80,7 +82,7 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({ onH
       limparFormulario();
       setIsFormOpen(false);
       onHorarioAdicionado();
-      toast.success("Horario cadastrado com sucesso!",{
+      toast.success("Horario cadastrado com sucesso!", {
         style: {
           backgroundColor: "#4CAF50", // Cor de fundo
           color: "#FFFFFF", // Cor do texto
@@ -117,9 +119,9 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({ onH
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o dia da semana">
                     {selectedDiaSemana
-                      ? diaSemana.find((dia) => dia.id === selectedDiaSemana)
+                      ?(diaSemana.find((dia) => dia.id === selectedDiaSemana)
                           ?.nome
-                      : "Selecione o dia da semana"}
+                     ) : ("Selecione o dia da semana")}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
