@@ -9,6 +9,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -50,7 +51,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   );
   const [selectedEstado, setSelectedEstado] = useState("");
   const [selectedCidade, setSelectedCidade] = useState("");
-  console.log(estados, selectedCidade);
+  console.log(selectedCidade);
   const {
     handleSubmit,
     register,
@@ -92,13 +93,14 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   }, [selectedEstado]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data); // Aqui você pode acessar os dados do formulário
+    console.log(data);
     if (!window.confirm("Confirma o Casdastro ?")) {
       return;
     }
     try {
       const response = await api.post("/endereco", {
         ...data,
+        cidade: { id: selectedCidade },
       });
       console.log(response.data);
       limparFormulario();
@@ -149,6 +151,8 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
       cidade: "",
     });
   };
+
+  
 
   return (
     <div>
@@ -225,87 +229,92 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
               )}
             </FormItem>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="grid grid-cols-2  gap-4">
-              <FormItem>
-                <FormLabel>Estado</FormLabel>
-                <Select
-                  onValueChange={(value) => {
-                    setSelectedEstado(value);
-                    setSelectedCidade("");
-                  }}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione um estado">
-                      {selectedEstado
-                        ? estados.find((estado) => estado.id === selectedEstado)
-                            ?.nome
-                        : "Selecione um estado"}
-                    </SelectValue>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {estados.map((estado) => (
-                        <SelectItem key={estado.id} value={estado.id}>
-                          {estado.nome}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </FormItem>
 
-              <FormItem>
-                <FormLabel>Cidade</FormLabel>
-                <Popover open={open} onOpenChange={setOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={open}
-                      className="w-[200px] justify-between"
-                    >
-                      {selectedCidade
-                        ? cidades.find((cidade) => cidade.id === selectedCidade)
-                            ?.nome
-                        : "Selecione uma cidade..."}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Pesquisa Cidades" />
-                      <CommandList>
-                        <CommandEmpty>Cidade não encontrada.</CommandEmpty>
-                        <CommandGroup>
-                          {cidades &&
-                            cidades.map((cidade) => (
-                              <CommandItem
-                                key={cidade.id}
-                                value={cidade.id}
-                                onSelect={(currentValue) => {
-                                  setSelectedCidade(currentValue);
-                                  setOpen(false);
-                                }}
-                              >
-                                <Check
-                                  className={cn(
-                                    "mr-2 h-4 w-4",
-                                    cidade.id === selectedCidade
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                                {cidade.nome}
-                              </CommandItem>
-                            ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </FormItem>
-            </div>
+          <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>Estado</FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  setSelectedEstado(value);
+                  setSelectedCidade("");
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue>
+                    {selectedEstado
+                      ? estados.find((estado) => estado.id === selectedEstado)
+                          ?.nome
+                      : "Selecione um estado"}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Estados</SelectLabel>
+                    {estados.map((estado) => (
+                      <SelectItem key={estado.id} value={estado.id}>
+                        {estado.nome}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </FormItem>
+
+            <FormItem>
+              <FormLabel>Cidade</FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between"
+                    onClick={() => setOpen(!open)}
+                  >
+                    {selectedCidade
+                      ? cidades.find((cidade) => cidade.id === selectedCidade)
+                          ?.nome
+                      : "Selecione uma cidade..."}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Pesquisa Cidades" />
+                    <CommandList>
+                      <CommandEmpty>Cidade não encontrada.</CommandEmpty>
+                      <CommandGroup>
+                        {cidades &&
+                          cidades.map((cidade) => (
+                            <CommandItem
+                              key={cidade.id}
+                              value={cidade.id}
+                              onSelect={() => {
+                                setSelectedCidade(cidade.id);
+                                setOpen(false);
+                              }}
+                              onClick={() => {
+                                setSelectedCidade(cidade.id);
+                                setOpen(false);
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  cidade.id === selectedCidade
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {cidade.nome}
+                            </CommandItem>
+                          ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </FormItem>
           </div>
           <Button type="submit">Continuar</Button>
         </form>
