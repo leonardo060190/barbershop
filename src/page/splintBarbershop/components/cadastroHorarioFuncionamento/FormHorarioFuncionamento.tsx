@@ -57,7 +57,6 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
       try {
         const response = await api.get(`/diaSemana`);
         setDiaSemana(response.data);
-        console.log("fetchDiaSemana", response.data);
       } catch (error) {
         console.error("Erro ao buscar os dias das semana:", error);
       }
@@ -72,7 +71,6 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
       try {
         const response = await api.get(`/diaSemana/${selectedDiaSemana}`);
         setDiaSemanaNome(response.data.nome);
-        console.log("fetchDiaSemanaById", response.data);
       } catch (error) {
         console.error("Erro ao buscar o Dia pelo ID:", error);
       }

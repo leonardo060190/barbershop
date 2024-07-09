@@ -114,7 +114,6 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
     }
   }, [selectedEstado, setValue]);
 
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     if (!window.confirm("Confirma o Casdastro ?")) {
@@ -262,7 +261,9 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione um estado">{nomeEstado}</SelectValue>
+                  <SelectValue placeholder="Selecione um estado">
+                    {nomeEstado}
+                  </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -275,6 +276,17 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                   </SelectGroup>
                 </SelectContent>
               </Select>
+              <input
+                type="hidden"
+                {...register("estado", {
+                  required: "O estado é requerido",
+                  validate: (value) => value !== "" || "O estado é requerido",
+                })}
+              />
+
+              {errors.estado && (
+                <p className="text-red-500">{errors.estado.message}</p>
+              )}
             </FormItem>
 
             <FormItem>
@@ -333,6 +345,14 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                   </Command>
                 </PopoverContent>
               </Popover>
+              <input
+                type="hidden"
+                {...register("cidade", {
+                  required: "A cidade é requerida",
+                  validate: (value) => value !== "" || "A cidade é requerida",
+                })}
+              />
+
               {errors.cidade && (
                 <p className="text-red-500">{errors.cidade.message}</p>
               )}
