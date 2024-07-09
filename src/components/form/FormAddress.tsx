@@ -51,7 +51,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   );
   const [selectedEstado, setSelectedEstado] = useState("");
   const [selectedCidade, setSelectedCidade] = useState("");
-  console.log(selectedCidade);
+  console.log("selectedEstado", selectedEstado);
   const {
     handleSubmit,
     register,
@@ -151,8 +151,6 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
       cidade: "",
     });
   };
-
-  
 
   return (
     <div>
