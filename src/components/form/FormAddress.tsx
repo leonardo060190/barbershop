@@ -114,18 +114,6 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
     }
   }, [selectedEstado, setValue]);
 
-  useEffect(() => {
-    const estadoSelecionado = estados.find((estado) => estado.id === selectedEstado);
-    if (estadoSelecionado) {
-      setValue("estado", estadoSelecionado.nome);
-      setNomeEstado(estadoSelecionado.nome);
-    } else {
-      setValue("estado", "");
-      setNomeEstado("");
-    }
-  }, [selectedEstado, estados, setValue]);
-
- 
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
@@ -271,17 +259,10 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                 onValueChange={(value) => {
                   setSelectedEstado(value);
                   setSelectedCidade("");
-                  
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue>
-                    {selectedEstado
-                      ? estados.find((estado) => estado.id === selectedEstado)
-                          ?.nome
-                      : "Selecione um estado"}
-                      {nomeEstado}
-                  </SelectValue>
+                  <SelectValue placeholder="Selecione um estado">{nomeEstado}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -289,7 +270,6 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                     {estados.map((estado) => (
                       <SelectItem key={estado.id} value={estado.id}>
                         {estado.nome}
-                        
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -353,6 +333,9 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                   </Command>
                 </PopoverContent>
               </Popover>
+              {errors.cidade && (
+                <p className="text-red-500">{errors.cidade.message}</p>
+              )}
             </FormItem>
           </div>
           <Button type="submit">Continuar</Button>

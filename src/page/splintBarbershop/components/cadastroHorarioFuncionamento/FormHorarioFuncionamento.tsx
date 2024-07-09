@@ -49,9 +49,9 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
   const [isFormOpen, setIsFormOpen] = useState(true);
   const [diaSemana, setDiaSemana] = useState<DiaSemana[]>([]);
   const selectedDiaSemana = watch("diaSemana");
+  const[diaSemanaNome, setDiaSemanaNome] = useState("");
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
-
   useEffect(() => {
     const fetchDiaSemana = async () => {
       try {
@@ -66,6 +66,25 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
       fetchDiaSemana();
     }
   }, [barbeariaId]);
+
+  useEffect(() => {
+    const fetchDiaSemanaById = async () => {
+      try {
+        const response = await api.get(`/diaSemana/${selectedDiaSemana}`);
+        setDiaSemanaNome(response.data.nome);
+        console.log("fetchDiaSemanaById", response.data);
+      } catch (error) {
+        console.error("Erro ao buscar o Dia pelo ID:", error);
+      }
+    };
+
+    if (selectedDiaSemana) {
+      fetchDiaSemanaById();
+    } else {
+      setDiaSemanaNome("");
+      
+    }
+  }, [selectedDiaSemana]);
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data); // Aqui você pode acessar os dados do formulário
@@ -118,12 +137,7 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
               <Select onValueChange={(value) => setValue("diaSemana", value)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o dia da semana">
-                    {selectedDiaSemana
-                      ?(diaSemana.find((dia) => dia.id === selectedDiaSemana)
-                          ?.nome
-                     ) : ("Selecione o dia da semana")}
-
-                     {selectedDiaSemana}
+                    {diaSemanaNome}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
