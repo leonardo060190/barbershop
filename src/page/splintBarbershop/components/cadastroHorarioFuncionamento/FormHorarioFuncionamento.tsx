@@ -122,6 +122,8 @@ const FormHorarioFuncionamento: React.FC<FormHorarioFuncionamentoProps> = ({
                       ?(diaSemana.find((dia) => dia.id === selectedDiaSemana)
                           ?.nome
                      ) : ("Selecione o dia da semana")}
+
+                     {selectedDiaSemana}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>

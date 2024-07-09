@@ -37,6 +37,7 @@ type FormValues = {
   numero: string;
   cep: string;
   cidade: string;
+  estado: string;
 };
 
 const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
@@ -51,7 +52,8 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
   );
   const [selectedEstado, setSelectedEstado] = useState("");
   const [selectedCidade, setSelectedCidade] = useState("");
-  console.log("selectedEstado", selectedEstado);
+  const [nomeEstado, setNomeEstado] = useState("");
+
   const {
     handleSubmit,
     register,
@@ -92,6 +94,39 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
     }
   }, [selectedEstado]);
 
+  useEffect(() => {
+    const fetchEstadoById = async () => {
+      try {
+        const response = await api.get(`/estado/${selectedEstado}`);
+        setNomeEstado(response.data.nome);
+        setValue("estado", response.data.nome);
+        console.log("fetchEstadoById", response.data);
+      } catch (error) {
+        console.error("Erro ao buscar o estado pelo ID:", error);
+      }
+    };
+
+    if (selectedEstado) {
+      fetchEstadoById();
+    } else {
+      setNomeEstado("");
+      setValue("estado", "");
+    }
+  }, [selectedEstado, setValue]);
+
+  useEffect(() => {
+    const estadoSelecionado = estados.find((estado) => estado.id === selectedEstado);
+    if (estadoSelecionado) {
+      setValue("estado", estadoSelecionado.nome);
+      setNomeEstado(estadoSelecionado.nome);
+    } else {
+      setValue("estado", "");
+      setNomeEstado("");
+    }
+  }, [selectedEstado, estados, setValue]);
+
+ 
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
     if (!window.confirm("Confirma o Casdastro ?")) {
@@ -106,6 +141,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
       limparFormulario();
       setIsFormOpen(false);
       onSave(response.data.id);
+      localStorage.clear();
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -235,6 +271,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                 onValueChange={(value) => {
                   setSelectedEstado(value);
                   setSelectedCidade("");
+                  
                 }}
               >
                 <SelectTrigger>
@@ -243,6 +280,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                       ? estados.find((estado) => estado.id === selectedEstado)
                           ?.nome
                       : "Selecione um estado"}
+                      {nomeEstado}
                   </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
@@ -251,6 +289,7 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                     {estados.map((estado) => (
                       <SelectItem key={estado.id} value={estado.id}>
                         {estado.nome}
+                        
                       </SelectItem>
                     ))}
                   </SelectGroup>
@@ -289,10 +328,12 @@ const FormAddress = ({ onSave }: { onSave: (id: number) => void }) => {
                               value={cidade.id}
                               onSelect={() => {
                                 setSelectedCidade(cidade.id);
+                                setValue("cidade", cidade.nome);
                                 setOpen(false);
                               }}
                               onClick={() => {
                                 setSelectedCidade(cidade.id);
+                                setValue("cidade", cidade.nome);
                                 setOpen(false);
                               }}
                             >
