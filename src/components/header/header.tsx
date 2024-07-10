@@ -2,7 +2,7 @@ import { CircleUserRound } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent } from "../ui/card";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import SideMenu from "@/components/sideMenu/sideMenu";
 import { useState } from "react";
 import { useAuth } from "../authProvider/AuthProvider";
@@ -22,9 +22,9 @@ const Header = () => {
   return (
     <Card className="rounded-none border-none ">
       <CardContent className="p-9 py-8 justify-between items-center flex flex-row">
-        <Link to={"/"}>
+        {/* <Link to={"/"}> */}
           <img src="/Logo.png" alt="FSW Barber" width={130} height={22} />
-        </Link>
+        {/* </Link> */}
         <div className="flex gap-3 ">
           <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
             <SheetTrigger asChild>

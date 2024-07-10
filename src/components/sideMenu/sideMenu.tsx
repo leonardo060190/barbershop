@@ -38,6 +38,9 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
     user?.nome || user?.cliente?.nome || user?.barbearia?.nome || undefined;
 
   const userFoto = user?.cliente?.foto || user?.barbearia?.foto || undefined;
+
+  const isClienteLoggedIn = autenticado && user?.cliente;
+  const isBarbeariaLoggedIn = autenticado && user?.barbearia;
   return (
     <>
       {autenticado && userName ? (
@@ -57,32 +60,36 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
               Sair
             </Button>
           </div>
-          <div className=" justify-center text-left flex border-secondary px-3 pt-4 pb-4">
-            <Link
-              className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-              to={"/home"}
-            >
-              <Home size={16} className="me-2" /> Home
-            </Link>
-          </div>
-          <div className=" justify-center text-left border-solid flex border-secondary px-3 pb-4">
-            <Link
-              className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-              to={"/bookings"}
-            >
-              <CalendarDays size={16} className="me-2" /> Agendamentos
-            </Link>
-          </div>
-          
-          
-          <div className=" justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
-            <Link
-              className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-              to={"/bookingsBarbershop"}
-            >
-              <CalendarDays size={16} className="me-2" /> Agendamentos
-            </Link>
-          </div>
+          {isClienteLoggedIn && (
+            <div className=" justify-center text-left flex border-secondary px-3 pt-4 pb-4">
+              <Link
+                className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+                to={"/home"}
+              >
+                <Home size={16} className="me-2" /> Home
+              </Link>
+            </div>
+          )}
+          {isClienteLoggedIn && (
+            <div className=" justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+              <Link
+                className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+                to={"/bookings"}
+              >
+                <CalendarDays size={16} className="me-2" /> Agendamentos
+              </Link>
+            </div>
+          )}
+          {isBarbeariaLoggedIn && (
+            <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+              <Link
+                className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+                to={"/bookingsBarbershop"}
+              >
+                <CalendarDays size={16} className="me-2" /> Agendamentos
+              </Link>
+            </div>
+          )}
         </>
       ) : (
         <>
