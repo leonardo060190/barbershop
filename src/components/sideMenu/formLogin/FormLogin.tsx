@@ -6,6 +6,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { api } from "../../../../config/ConfigAxios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type FormValues = {
   email: string;
@@ -19,7 +20,7 @@ interface FormLoginProps {
 const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
   const methods = useForm<FormValues>();
   const { login } = useAuth();
- 
+ const navigate = useNavigate();
 
   const { handleSubmit, register, reset } = methods;
 
@@ -39,6 +40,14 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
         const user = response.data;
         login(user);
         limpaFormulario();
+
+         // Redirecionamento baseado no tipo de usuário
+         if (user.cliente) {
+          navigate("/home"); // Redireciona para o home se for cliente
+        } else if (user.barbearia) {
+          navigate(`/splintbarbershop/${user.barbearia.id}`); // Redireciona para a barbearia específica se for barbearia
+        }
+
         onLoginSuccess();
         console.log("oi", user)
       } else {

@@ -4,6 +4,7 @@ import RoutesWithAuth from "./components/routesWithAuth/RouterWithAuth";
 
 const App: React.FC = () => {
   return (
+    
     <AuthProvider>
       <RoutesWithAuth />
     </AuthProvider>
