@@ -10,10 +10,15 @@ type FormValues = {
   email: string;
   razaoSocial: string;
   cnpj: string;
- 
 };
 
-const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, onSave: (id: number) => void }) => {
+const FormCadastroBarbershop = ({
+  endereco,
+  onSave,
+}: {
+  endereco: number | null;
+  onSave: (id: number) => void;
+}) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const {
     handleSubmit,
@@ -30,12 +35,12 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
     try {
       const response = await api.post("/barbearia", {
         ...data,
-        endereco: {id: endereco},
+        endereco: { id: endereco },
       });
       console.log(response.data);
       limpaFormulario();
       onSave(response.data.id);
-      console.log("barber",response.data.id);
+      console.log("barber", response.data.id);
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -48,7 +53,7 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
     value = value.replace(/\D/g, "");
 
     value = value.slice(0, 14);
-    
+
     // Aplica a máscara de CNPJ (##.###.###/####-##)
     let formattedValue = "";
     for (let i = 0; i < value.length; i++) {
@@ -133,11 +138,10 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
         >
           <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>foto</FormLabel>
+              <FormLabel>Foto</FormLabel>
               <FormControl>
                 <Input
-                  className="w-full "
-                  placeholder="URL da foto"
+                  id="picture"
                   {...register("foto", { required: "Foto é requerido" })}
                 />
               </FormControl>
@@ -152,6 +156,7 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
               <FormLabel>Nome</FormLabel>
               <FormControl>
                 <Input
+                  id="nome"
                   placeholder="Digite o nome"
                   {...register("nome", { required: "Nome é requerido" })}
                 />
@@ -165,6 +170,7 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
               <FormLabel>CNPJ</FormLabel>
               <FormControl>
                 <Input
+                  id="cnpj"
                   placeholder="Digite o CNPJ"
                   {...register("cnpj", {
                     required: "CNPJ é requerido",
@@ -185,6 +191,7 @@ const FormCadastroBarbershop = ({endereco, onSave }: {endereco: number | null, o
             <FormLabel>Razão social</FormLabel>
             <FormControl>
               <Input
+                id="rezaoSocial"
                 placeholder="Digite a razão social"
                 {...register("razaoSocial", {
                   required: "Razão social é requerido",

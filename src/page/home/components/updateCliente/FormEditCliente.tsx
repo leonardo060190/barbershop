@@ -283,7 +283,7 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
             </FormItem>
           </div>
 
-          <Button type="submit">Submit</Button>
+          <Button type="submit">Confirmar</Button>
         </form>
       </FormProvider>
     </div>

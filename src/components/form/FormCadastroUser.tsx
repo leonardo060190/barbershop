@@ -12,7 +12,7 @@ type FormValues = {
   dataNascimento: string;
 };
 
-const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
+const FormCadastroUser = ({ onSave }: { onSave: (id: number) => void }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const {
     handleSubmit,
@@ -25,7 +25,9 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log(data);
 
-    const dataNascimentoFormatada = converterDataParaFormatoBanco(data.dataNascimento);
+    const dataNascimentoFormatada = converterDataParaFormatoBanco(
+      data.dataNascimento
+    );
 
     if (!window.confirm("Confirma o Casdastro ?")) {
       return;
@@ -33,13 +35,13 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
     try {
       const response = await api.post("/cliente", {
         ...data,
-      
-        dataNascimento: dataNascimentoFormatada
+
+        dataNascimento: dataNascimentoFormatada,
       });
       console.log(response.data);
       limparFormulario();
       onSave(response.data.id);
-      console.log("ola", response.data.id)
+      console.log("ola", response.data.id);
     } catch (error) {
       console.error("Erro cadastro", error);
     }
@@ -48,13 +50,13 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
   //função para formatar o cpf
   const formatCpf = (value: string) => {
     value = value.replace(/\D/g, "");
-    
+
     let formattedValue = "";
-    for (let i = 0; i < value.length; i++){
-      if (i === 3 || i === 6){
+    for (let i = 0; i < value.length; i++) {
+      if (i === 3 || i === 6) {
         formattedValue += ".";
-      }else if (i === 9){
-        formattedValue += "-"
+      } else if (i === 9) {
+        formattedValue += "-";
       }
       formattedValue += value[i];
     }
@@ -112,7 +114,6 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
     return;
   }
 
-
   // Função para formatar a data de nascimento enquanto o usuário digita
   const formatarDataNascimento = (value: string) => {
     // Remove todos os caracteres não numéricos
@@ -136,8 +137,6 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
     return formattedDate;
   };
 
-
-  
   const limparFormulario = () => {
     reset({
       foto: "",
@@ -157,11 +156,10 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
         >
           <div className="grid grid-cols-1 gap-4">
             <FormItem>
-              <FormLabel>foto</FormLabel>
+              <FormLabel>Foto</FormLabel>
               <FormControl>
                 <Input
-                  className="w-full "
-                  placeholder="URL da foto"
+                  id="picture"
                   {...register("foto", { required: "Foto é requerido" })}
                 />
               </FormControl>
@@ -176,6 +174,7 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
               <FormLabel>Nome</FormLabel>
               <FormControl>
                 <Input
+                  id="nome"
                   className="w-full "
                   placeholder="Digite o nome"
                   {...register("nome", { required: "Nome é requerido" })}
@@ -189,6 +188,7 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
               <FormLabel>Sobrenome</FormLabel>
               <FormControl>
                 <Input
+                  id="sobrenome"
                   className="w-full"
                   placeholder="Digite o sobrenome"
                   {...register("sobreNome", {
@@ -207,6 +207,7 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
               <FormLabel>CPF</FormLabel>
               <FormControl>
                 <Input
+                  id="cpf"
                   className="w-full"
                   placeholder="Digite o cpf"
                   {...register("cpf", {
@@ -225,6 +226,7 @@ const FormCadastroUser = ({onSave }: { onSave: (id: number) => void }) => {
               <FormLabel>Data de nascimento</FormLabel>
               <FormControl>
                 <Input
+                  id="dataNascimento"
                   className="w-full"
                   placeholder="Digite a data de nascimento"
                   {...register("dataNascimento", {

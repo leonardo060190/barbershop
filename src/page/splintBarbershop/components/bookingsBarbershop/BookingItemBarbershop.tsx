@@ -133,7 +133,12 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
     try {
       await api.delete(`/agendamento/${id}`);
       onRemoveBooking(id);
-      toast.success("Reserva cancelada com sucesso!");
+      toast.success("Reserva cancelada com sucesso!", {
+        style: {
+          backgroundColor: "#4CAF50", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
     } catch (error) {
       console.error("Erro ao deletar o agendamento:", error);
     } finally {
@@ -210,7 +215,9 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                     <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="font-bold">{barbearia?.nome}</h2>
+                    <h2 className="font-bold">
+                      {barbearia?.nome.toUpperCase()}
+                    </h2>
                     {barbearia?.endereco ? (
                       <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.bairro}`}</h3>
                     ) : (

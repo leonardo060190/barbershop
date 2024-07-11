@@ -66,7 +66,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
                 className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
                 to={"/home"}
               >
-                <Home size={16} className="me-2" /> Home
+                <Home size={16} className="me-2 text-primary" /> Home
               </Link>
             </div>
           )}
@@ -76,17 +76,29 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
                 className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
                 to={"/bookings"}
               >
-                <CalendarDays size={16} className="me-2" /> Agendamentos
+                <CalendarDays size={16} className="me-2 text-primary" /> Agendamentos
               </Link>
             </div>
           )}
+
+          {isBarbeariaLoggedIn && (
+            <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+              <Link
+                className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+                to={`/splintbarbershop/${user?.barbearia?.id}`} // Redireciona para a barbearia específica se for barbearia
+              >
+                <Home size={16} className="me-2 text-primary" /> Barbershop
+              </Link>
+            </div>
+          )}
+          
           {isBarbeariaLoggedIn && (
             <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
               <Link
                 className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
                 to={"/bookingsBarbershop"}
               >
-                <CalendarDays size={16} className="me-2" /> Agendamentos
+                <CalendarDays size={16} className="me-2 text-primary" /> Agendamentos
               </Link>
             </div>
           )}
@@ -105,23 +117,24 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
           <SheetHeader className="flex items-center text-left border-b border-solid border-secondary p-5">
             <SheetTitle>Faça seu cadastro no app Aqui!</SheetTitle>
             <SheetDescription className="flex items-center">
-              Cadastre sua conta nos links abaixo, Usuario ou Barbearia!
+              Cadastre sua conta nos links abaixo, Usuário ou Barbearia!
             </SheetDescription>
           </SheetHeader>
           <SheetFooter className="text-left border-b border-solid border-secondary p-5 ">
-            <div className=" flex flex-col  justify-between gap-8">
+            <div className="w-full justify-between text-left  gap-4 border-solid flex flex-col border-secondary px-3 ">
               <Link
                 to={"/RegistrationUser"}
-                className="flex items-center justify-center gap-2"
+                className="h-11 w-full hover:bg-[rgba(24,24,25,0.84)] gap-4 flex items-center justify-center border rounded-md border-solid border-secondary px-3"
               >
-                <CircleUserRound size={16} />
+                <CircleUserRound size={18} className="text-primary"/>
                 Cadastro de Usuários
               </Link>
+
               <Link
                 to={"/RegistrationBarbershop"}
-                className="flex items-center justify-center gap-2"
+                className="h-11 w-full hover:bg-[rgba(24,24,25,0.84)] gap-4 flex items-center justify-center border rounded-md border-solid border-secondary px-3"
               >
-                <Scissors size={16} />
+                <Scissors size={18} className="text-primary"/>
                 Cadastro de Barbearias
               </Link>
             </div>

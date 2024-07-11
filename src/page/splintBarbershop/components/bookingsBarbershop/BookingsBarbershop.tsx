@@ -64,7 +64,6 @@ const BookingsBarbershop = () => {
   const [bookingsBarbershop, setBookingsBarbershop] = useState<
     bookingsBarbershopServices[] | null
   >(null);
-  console.log("aki", bookingsBarbershop);
 
   useEffect(() => {
     const fetchBookingsBarbershop = async () => {
@@ -93,9 +92,6 @@ const BookingsBarbershop = () => {
             };
           }
         );
-
-        console.log("Processed bookings:", BookingsBarbershopServices);
-
         setBookingsBarbershop(BookingsBarbershopServices);
       } catch (error) {
         console.error("Error fetching bookings:", error);
