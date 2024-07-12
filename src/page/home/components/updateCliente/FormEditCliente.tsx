@@ -16,7 +16,6 @@ type FormValues = {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
-  
 };
 
 interface ClienteEditProfileProps {
@@ -26,8 +25,7 @@ interface ClienteEditProfileProps {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
-  onClienteUpdated: ()=> void;
-
+  onClienteUpdated: () => void;
 }
 
 const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
@@ -66,7 +64,7 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
       });
       onClienteUpdated();
       console.log(response.data);
-      toast.success("Cliente atualizado com sucesso!",{
+      toast.success("Cliente atualizado com sucesso!", {
         style: {
           backgroundColor: "#4CAF50", // Cor de fundo
           color: "#FFFFFF", // Cor do texto

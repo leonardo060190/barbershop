@@ -23,7 +23,7 @@ const RenderHorarioFuncionamento = () => {
           variant="secondary"
           className="gap-3  items-center border-solid border-gray-600 border"
         >
-          <Edit size={18} />
+          <Edit size={18} className="text-primary"/>
           Registre o Horario Funcionamento
         </Button>
       </DialogTrigger>

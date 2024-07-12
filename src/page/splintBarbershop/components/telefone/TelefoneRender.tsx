@@ -25,9 +25,9 @@ const TelefoneRender: React.FC<IdBarberShopRegisterTelefone> = ({
       <DialogTrigger asChild>
         <Button
           variant="secondary"
-          className="gap-3  items-center border-solid border-gray-600 border"
+          className="gap-3  items-center border-solid border-gray-600 border hover:text-primary"
         >
-          <Edit size={18} />
+          <Edit size={18} className="text-primary"/>
           Registre o telefone
         </Button>
       </DialogTrigger>

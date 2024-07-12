@@ -27,7 +27,6 @@ const SearchResults = () => {
         const response = await api.get(`/barbearia/search/${nome}`);
         const data = response.data;
         console.log(data);
-
         setBarbershops(data);
       } catch (error) {
         alert(`Erro: Não foi possível obter os dados`);

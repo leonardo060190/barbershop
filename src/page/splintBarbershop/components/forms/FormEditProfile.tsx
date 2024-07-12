@@ -42,7 +42,7 @@ const FormEdit: React.FC<BarbershopEditProfileProps> = ({
   const onSubmit: SubmitHandler<FormValues> =async (data) => {
     setIsFormOpen(false);
     try {
-      const response = await api.put(`/barbearia/${id}`, data);
+      const response = await api.patch(`/barbearia/${id}`, data);
       console.log(response.data)
       onProfileUpdated();
       toast.success("Barbearia atualizada com sucesso!",{
