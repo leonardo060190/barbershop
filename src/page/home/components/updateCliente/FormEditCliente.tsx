@@ -60,7 +60,7 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
       return;
     }
     try {
-      const response = await api.put(`/cliente/${id}`, {
+      const response = await api.patch(`/cliente/${id}`, {
         ...data,
         dataNascimento: dataNascimentoFormatada,
       });
