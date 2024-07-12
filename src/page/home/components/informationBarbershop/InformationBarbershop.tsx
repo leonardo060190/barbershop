@@ -14,17 +14,10 @@ import {
 import { api } from "../../../../../config/ConfigAxios";
 import { Separator } from "../../../../components/ui/separator";
 
-interface Endereco {
-  rua: string;
-  bairro: string;
-  numero: string;
-}
-
 interface Barbearia {
   id: string;
   nome: string;
   foto: string;
-  endereco?: Endereco;
 }
 
 interface DiaSemana {
@@ -37,16 +30,25 @@ interface HorarioFuncionamento {
   abri: string;
   fecha: string;
   diaSemana?: DiaSemana;
+}  
+
+interface Endereco {
+  bairro: string;
+  cep: string;
+  rua: string;
+  numero: string;
 }
 
 interface InformationTelefoneProps {
   telefones: { id: string; numero: string }[];
   barbeariaId: string;
+  endereco: Endereco | null;
 }
 
 const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
   telefones,
   barbeariaId,
+  endereco,
 }) => {
   const [barbearia, setBarbearia] = useState<Barbearia | null>(null);
   const [horarioFuncionamento, setHorarioFuncionamento] = useState<
@@ -90,7 +92,7 @@ const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
 
   return (
     <div>
-      <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">
+      <Card className="px-3 py-3 max-w-[25rem] min-w-[20rem] break-all">
         <div>
           <div className="relative h-[180]">
             <img src="/BarberShopCard.png" alt={"barbearia?.nome"} />
@@ -108,8 +110,8 @@ const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
                   </Avatar>
                   <div>
                     <h2 className="font-bold">{barbearia?.nome}</h2>
-                    {barbearia?.endereco ? (
-                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia?.endereco.rua}, ${barbearia?.endereco.bairro} -  ${barbearia?.endereco.numero}`}</h3>
+                    {endereco ? (
+                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${endereco.rua}, ${endereco.bairro} -  ${endereco.numero}`}</h3>
                     ) : (
                       <h3>Endereço não disponível</h3>
                     )}

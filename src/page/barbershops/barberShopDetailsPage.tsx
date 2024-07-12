@@ -44,7 +44,7 @@ interface BarberShop {
 const BarberShopDetailsPage = () => {
   const { id } = useParams();
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
-
+console.log("barberShop", barberShop)
   useEffect(() => {
     const obterBarbearia = async () => {
       try {
@@ -55,8 +55,11 @@ const BarberShopDetailsPage = () => {
         alert(`Erro: Não foi possível obter os dados: ${error}`);
       }
     };
+    
+
     if (id) {
       obterBarbearia();
+    
     }
   }, [id]);
 
@@ -74,9 +77,8 @@ const BarberShopDetailsPage = () => {
               <img
                 src={barberShop.foto}
                 alt={barberShop.nome}
-                className="object-cover rounded-2xl"
-                width={958}
-                height={687}
+                className="object-cover rounded-2xl Fullscreen"
+             
               />
             </div>
             <div className="flex justify-between pb-6 border-b border-solid border-secondary">
@@ -85,9 +87,9 @@ const BarberShopDetailsPage = () => {
 
                 <div className="flex gap-1 mt-3">
                   <MapPinIcon className="text-primary" size={18} />
-                  <p className="text-sm">
-                    {barberShop.endereco?.bairro || "Endereço indisponivel"}{" "}
-                    {barberShop.endereco?.rua} {barberShop.endereco?.numero}
+                  <p className="text-sm ">
+                    {barberShop.endereco?.bairro || "Endereço indisponivel"}{", "}
+                    {barberShop.endereco?.rua} {"-  "}{barberShop.endereco?.numero}
                   </p>
                 </div>
               </div>
@@ -129,10 +131,11 @@ const BarberShopDetailsPage = () => {
             </div>
           </div>
         </div>
-        <div className="pl-12 py-10">
+        <div className="pl-12 py-10 flex justify-center">
           <InformationBarbershop
             barbeariaId={barberShop.id}
             telefones={barberShop.telefones}
+            endereco={barberShop.endereco}
           />
         </div>
       </div>

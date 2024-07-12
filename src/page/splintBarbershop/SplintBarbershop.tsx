@@ -79,16 +79,15 @@ const SplintBarbershop = () => {
       <div className=" py-2 flex bg-dark px-4 font-bold items-center justify-center shadow-lg">
         <MenuSettingsBarbershop onUpdate={obterBarbearia} />
       </div>
-      <div className="px-12 max-w-[100rem] min-w-[32rem] flex flex-col md:flex-row">
+      <div className="px-12 flex flex-col md:flex-row">
         <div>
           <div className="pb-6">
             <div className=" pt-10 ">
               <img
                 src={barberShop.foto}
                 alt={barberShop.nome}
-                className="object-cover rounded-2xl"
-                width={958}
-                height={687}
+                className="object-cover rounded-2xl Fullscreen"
+                
               />
             </div>
 

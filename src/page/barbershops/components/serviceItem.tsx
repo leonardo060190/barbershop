@@ -191,10 +191,8 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
               <img
                 src={foto}
                 alt={nome}
-                height={0}
-                width={0}
                 sizes="100vw"
-                className=" rounded-2xl min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px]"
+                className=" Fullscreen rounded-2xl min-h-[110px] min-w-[110px] max-h-[110px] max-w-[110px]"
               />
             </div>
 
