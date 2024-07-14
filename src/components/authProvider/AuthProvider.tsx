@@ -4,6 +4,7 @@ import React, {
   useContext,
   ReactNode,
   useEffect,
+  useCallback,
 } from "react";
 
 interface Cliente {
@@ -58,10 +59,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
-
+  const [isTabClosed, setIsTabClosed] = useState(false);
   const [sessionTimer, setSessionTimer] = useState<NodeJS.Timeout | null>(null);
 
-  const startSessionTimer = () => {
+  const logout = useCallback(() => {
+    setAutenticado(false);
+    setUser(null);
+    localStorage.removeItem("autenticado");
+    localStorage.removeItem("user");
+    if (sessionTimer) {
+      clearTimeout(sessionTimer);
+      setSessionTimer(null);
+    }
+  }, [sessionTimer]);
+
+  const startSessionTimer = useCallback(() => {
     const sessionTimeout = 18000000; //5 horas
 
     const timer = setTimeout(() => {
@@ -69,9 +81,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, sessionTimeout);
 
     setSessionTimer(timer);
-  };
-
-
+  }, [logout]);
 
   useEffect(() => {
     localStorage.setItem("autenticado", JSON.stringify(autenticado));
@@ -81,30 +91,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.removeItem("user");
     }
   }, [autenticado, user]);
-  
 
+  const login = useCallback(
+    (user: User) => {
+      setAutenticado(true);
+      setUser(user);
+      startSessionTimer();
+    },
+    [startSessionTimer]
+  );
 
-  const login = (user: User) => {
-    setAutenticado(true);
-    setUser(user);
-    startSessionTimer();
-  };
-
-  const logout = () => {
-    setAutenticado(false);
-    setUser(null);
-    localStorage.removeItem("autenticado");
-    localStorage.removeItem("user");
-    if (sessionTimer) {
-      clearTimeout(sessionTimer);
-      setSessionTimer(null);
-    }
-  };
-
-  const updateUser = (updateUser: User) => {
+  const updateUser = useCallback((updateUser: User) => {
     setUser(updateUser);
     localStorage.setItem("user", JSON.stringify(updateUser));
-  };
+  }, []);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      // Verifica se a página está sendo descarregada por fechar a aba
+      setIsTabClosed(true);
+    };
+
+    window.addEventListener("unload", handleUnload);
+
+    return () => {
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isTabClosed) {
+      logout();
+    }
+  }, [isTabClosed, logout]);
 
   return (
     <AuthContext.Provider

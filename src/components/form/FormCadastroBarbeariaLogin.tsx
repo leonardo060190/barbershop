@@ -5,6 +5,8 @@ import { Button } from "../ui/button";
 import { api } from "../../../config/ConfigAxios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState } from "react";
 
 type FormValues = {
   email: string;
@@ -12,13 +14,14 @@ type FormValues = {
 };
 
 interface FormCadastroLoginProps {
-
   barbearia?: number | null;
 }
 
-const FormCadastroBarbeariaLogin = ({  barbearia }: FormCadastroLoginProps) => {
+const FormCadastroBarbeariaLogin = ({ barbearia }: FormCadastroLoginProps) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     handleSubmit,
     register,
@@ -38,7 +41,7 @@ const FormCadastroBarbeariaLogin = ({  barbearia }: FormCadastroLoginProps) => {
       console.log(respose.data);
       limpaFormulario();
       navigate("/home");
-      toast.success("Login cadastrado com sucesso!",{
+      toast.success("Login cadastrado com sucesso!", {
         style: {
           backgroundColor: "#4CAF50", // Cor de fundo
           color: "#FFFFFF", // Cor do texto
@@ -56,6 +59,11 @@ const FormCadastroBarbeariaLogin = ({  barbearia }: FormCadastroLoginProps) => {
       senha: "",
     });
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="items-center">
       <FormProvider {...methods}>
@@ -88,17 +96,30 @@ const FormCadastroBarbeariaLogin = ({  barbearia }: FormCadastroLoginProps) => {
           <FormItem>
             <FormLabel>Senha</FormLabel>
             <FormControl>
-              <Input
-                type="password"
-                placeholder="Crie uma senha com mais de 6 caracteres!"
-                {...register("senha", {
-                  required: "A senha é requerido",
-                  minLength: {
-                    value: 6,
-                    message: "A senha deve conter mais de 6 caracteres",
-                  },
-                })}
-              />
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Crie uma senha com mais de 6 caracteres!"
+                  {...register("senha", {
+                    required: "A senha é requerido",
+                    minLength: {
+                      value: 6,
+                      message: "A senha deve conter mais de 6 caracteres",
+                    },
+                  })}
+                  className="pr-10"
+                />
+                <div
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                >
+                  {showPassword ? (
+                    <EyeOffIcon size={20} />
+                  ) : (
+                    <EyeIcon size={20} />
+                  )}
+                </div>
+              </div>
             </FormControl>
             {errors.senha && (
               <p className="text-red-500">{errors.senha.message}</p>
