@@ -9,6 +9,7 @@ import { Button } from "../../../../components/ui/button";
 import { api } from "../../../../../config/ConfigAxios";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useAuth } from "@/components/authProvider/AuthProvider";
 
 type FormValues = {
   foto: string;
@@ -39,6 +40,7 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
 }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
+  const { user, updateUser } = useAuth();
   const {
     handleSubmit,
     register,
@@ -64,6 +66,18 @@ const FormEditCliente: React.FC<ClienteEditProfileProps> = ({
       });
       onClienteUpdated();
       console.log(response.data);
+          // Atualize os dados do usuário no AuthProvider
+          if (user) {
+            const updatedUser = {
+              ...user,
+              cliente: {
+                ...user.cliente,
+                ...data,
+                dataNascimento: dataNascimentoFormatada,
+              },
+            };
+            updateUser(updatedUser);
+          }
       toast.success("Cliente atualizado com sucesso!", {
         style: {
           backgroundColor: "#4CAF50", // Cor de fundo

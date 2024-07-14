@@ -7,7 +7,7 @@ import React, {
 } from "react";
 
 interface Cliente {
-  id: string;
+  id?: string;
   nome: string;
   foto: string;
   perfil: string;
@@ -22,7 +22,7 @@ interface Barbearia {
 }
 interface User {
   nome?: string;
-  cliente?: Cliente;
+  cliente: Cliente;
   barbearia?: Barbearia;
 }
 interface AuthContextType {
@@ -30,6 +30,7 @@ interface AuthContextType {
   user: User | null;
   login: (user: User) => void;
   logout: () => void;
+  updateUser: (user: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -70,6 +71,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setSessionTimer(timer);
   };
 
+
+
   useEffect(() => {
     localStorage.setItem("autenticado", JSON.stringify(autenticado));
     if (user) {
@@ -78,6 +81,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.removeItem("user");
     }
   }, [autenticado, user]);
+  
+
 
   const login = (user: User) => {
     setAutenticado(true);
@@ -96,8 +101,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const updateUser = (updateUser: User) => {
+    setUser(updateUser);
+    localStorage.setItem("user", JSON.stringify(updateUser));
+  };
+
   return (
-    <AuthContext.Provider value={{ autenticado, user, login, logout }}>
+    <AuthContext.Provider
+      value={{ autenticado, user, login, logout, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

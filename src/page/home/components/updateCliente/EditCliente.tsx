@@ -8,9 +8,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-
 import { Edit } from "lucide-react";
 import FormEditCliente from "../updateCliente/FormEditCliente";
+import { useAuth } from "@/components/authProvider/AuthProvider";
 
 interface ClienteEditProps {
   id: string;
@@ -19,7 +19,7 @@ interface ClienteEditProps {
   cpf: string;
   sobreNome: string;
   dataNascimento: string;
-  onClienteUpdated: ()=> void;
+  onClienteUpdated: () => void;
 }
 
 const EditCliente: React.FC<ClienteEditProps> = ({
@@ -31,6 +31,7 @@ const EditCliente: React.FC<ClienteEditProps> = ({
   dataNascimento,
   onClienteUpdated,
 }) => {
+  const { updateUser, user } = useAuth();
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -38,7 +39,7 @@ const EditCliente: React.FC<ClienteEditProps> = ({
           variant="secondary"
           className="gap-3 items-center border-solid border-gray-600 border hover:text-primary"
         >
-          <Edit size={18} className="text-primary"/>
+          <Edit size={18} className="text-primary" />
           Editar Cliente
         </Button>
       </DialogTrigger>
@@ -54,7 +55,25 @@ const EditCliente: React.FC<ClienteEditProps> = ({
           cpf={cpf}
           sobreNome={sobreNome}
           dataNascimento={dataNascimento}
-          onClienteUpdated={onClienteUpdated}
+          onClienteUpdated={() => {
+            onClienteUpdated();
+            // Atualizar o contexto do usuário após editar o cliente
+            if (user) {
+              const updatedUser = {
+                ...user,
+                cliente: {
+                  ...user.cliente,
+                  id, // Atualize ou mantenha a id
+                  nome,
+                  foto,
+                  cpf,
+                  sobreNome,
+                  dataNascimento,
+                },
+              };
+              updateUser(updatedUser);
+            }
+          }}
         />
       </DialogContent>
     </Dialog>
