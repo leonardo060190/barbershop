@@ -27,7 +27,7 @@ const AllBarbershopsDetails = () => {
   const [barbershopReload, setBarbershopReload] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const itemsPerPage = 20;
+  const itemsPerPage = 18;
 
   const obterLista = async (page: number) => {
     try {

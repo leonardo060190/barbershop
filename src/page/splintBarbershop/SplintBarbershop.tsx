@@ -86,8 +86,7 @@ const SplintBarbershop = () => {
               <img
                 src={barberShop.foto}
                 alt={barberShop.nome}
-                className="object-cover rounded-2xl Fullscreen"
-                
+                className="object-cover  w-full h-full  rounded-2xl "
               />
             </div>
 

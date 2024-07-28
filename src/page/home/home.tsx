@@ -15,6 +15,7 @@ import { api } from "../../../config/ConfigAxios";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { Link } from "react-router-dom";
 import MenuSettings from "./components/menuSettings/MenuSettings";
+import _ from "lodash";
 
 interface Endereco {
   bairro: string;
@@ -32,6 +33,8 @@ interface Barbershop {
 const Home = () => {
   const { autenticado, user } = useAuth();
   const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
+  const [recommendedBarbershops, setRecommendedBarbershops] = useState<Barbershop[]>([]);
+  const [popularBarbershops, setPopularBarbershops] = useState<Barbershop[]>([]);
   const [barbershopReload, setBarbershopReload] = useState(false);
 
   const obterLista = async () => {
@@ -40,7 +43,10 @@ const Home = () => {
       const lista = response.data;
       console.log("lista:", lista);
       if (Array.isArray(lista)) {
-        setBarbershops(lista);
+        const shuffledList = _.shuffle(lista);
+        setBarbershops(shuffledList);
+        setRecommendedBarbershops(_.shuffle(shuffledList));
+        setPopularBarbershops(_.shuffle(shuffledList));
       } else {
         console.error("Dados de barbearia não são um array:", lista);
         alert("Erro: Os dados retornados não são uma lista válida.");
@@ -113,7 +119,7 @@ const Home = () => {
             className="max-w-[54rem]"
           >
             <CarouselContent className="flex">
-              {barbershops.slice(0, 5).map((barbershop, index) => (
+              {recommendedBarbershops.slice(0, 5).map((barbershop, index) => (
                 <CarouselItem
                   key={index}
                   style={{ width: "180px" }}
@@ -146,7 +152,7 @@ const Home = () => {
           className="w-full max-w-full	"
         >
           <CarouselContent>
-            {barbershops.slice(0, 10).map((barbershop, index) => (
+            {popularBarbershops.slice(0, 10).map((barbershop, index) => (
               <CarouselItem
                 key={index}
                 style={{ width: "180px" }}

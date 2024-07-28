@@ -30,7 +30,7 @@ interface HorarioFuncionamento {
   abri: string;
   fecha: string;
   diaSemana?: DiaSemana;
-}  
+}
 
 interface Endereco {
   bairro: string;
@@ -111,7 +111,12 @@ const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
                   <div>
                     <h2 className="font-bold">{barbearia?.nome}</h2>
                     {endereco ? (
-                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${endereco.rua}, ${endereco.bairro} -  ${endereco.numero}`}</h3>
+                      <div className="text-xs">
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${endereco.rua} -  ${endereco.numero}`}</h3>
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">
+                          {endereco.bairro}
+                        </h3>
+                      </div>
                     ) : (
                       <h3>Endereço não disponível</h3>
                     )}

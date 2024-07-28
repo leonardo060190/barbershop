@@ -29,6 +29,7 @@
     "cmdk": "^1.0.0",
     "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.0.2",
+    "lodash": "^4.17.21",
     "lucide-react": "^0.365.0",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
@@ -44,6 +45,7 @@
     "zod": "^3.22.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.7",
     "@types/node": "^20.12.5",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

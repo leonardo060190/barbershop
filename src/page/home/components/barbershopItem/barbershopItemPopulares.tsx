@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/components/authProvider/AuthProvider";
 
 interface BarbershopItemProps {
   id: string;
@@ -19,10 +20,12 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
 }) => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const navigate = useNavigate();
-
+  const { autenticado } = useAuth();
 
   const hadleBookingClick = () => {
-    navigate(`/barberShops/${id}`);
+    if (autenticado) {
+      navigate(`/barberShops/${id}`);
+    }
   };
 
   return (
@@ -56,6 +59,7 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
               className=" w-full mt-3 rounded-2xl hover:text-primary"
               variant="secondary"
               onClick={hadleBookingClick}
+              disabled={!autenticado}
             >
               Reservar
             </Button>

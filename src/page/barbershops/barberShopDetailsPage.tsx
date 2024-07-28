@@ -37,7 +37,7 @@ interface BarberShop {
   numAvaliacoes: number;
   descricao: string;
   servicos: Service[];
-  endereco?: Endereco;
+  endereco: Endereco;
   telefones: Telefone[];
 }
 
@@ -70,14 +70,14 @@ console.log("barberShop", barberShop)
   return (
     <div>
       <Header />
-      <div className="px-12 justify-between flex flex-col md:flex-row">
+      <div className="px-12  flex flex-col md:flex-row">
         <div>
           <div className="pb-6">
             <div className=" pt-10 ">
               <img
                 src={barberShop.foto}
                 alt={barberShop.nome}
-                className="object-cover rounded-2xl Fullscreen"
+                className="object-cover rounded-2xl w-full h-full "
              
               />
             </div>

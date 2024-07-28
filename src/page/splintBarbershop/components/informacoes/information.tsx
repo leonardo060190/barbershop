@@ -110,7 +110,7 @@ const Information: React.FC<InformationTelefoneProps> = ({
           (horarioFuncionamento) => horarioFuncionamento.id !== id
         )
       );
-      toast.success("Horario deletado com sucesso!",{
+      toast.success("Horario deletado com sucesso!", {
         style: {
           backgroundColor: "#4CAF50", // Cor de fundo
           color: "#FFFFFF", // Cor do texto
@@ -123,9 +123,9 @@ const Information: React.FC<InformationTelefoneProps> = ({
 
   return (
     <div>
-      <Card className="px-3 py-3 max-w-[24rem] min-w-[18rem] break-all">
-        <div className="px-4">
-          <div className="relative h-[180] w-11/12 mt-4">
+      <Card className="px-3 py-3 max-w-[25rem] min-w-[20rem] break-all">
+        <div>
+          <div className="relative h-[180]">
             <img src="/BarberShopCard.png" alt={"barbearia?.nome"} />
             <div className="w-full absolute bottom-4 left-0 px-6">
               <Card>
@@ -142,7 +142,10 @@ const Information: React.FC<InformationTelefoneProps> = ({
                   <div>
                     <h2 className="font-bold">{barbearia?.nome}</h2>
                     {barbearia?.endereco ? (
-                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia?.endereco.rua}, ${barbearia?.endereco.bairro} -  ${barbearia?.endereco.numero}`}</h3>
+                      <div className="text-xs">
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia?.endereco.rua} -  ${barbearia?.endereco.numero}`}</h3>
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{barbearia?.endereco.bairro}</h3>
+                      </div>
                     ) : (
                       <h3>Endereço não disponível</h3>
                     )}
