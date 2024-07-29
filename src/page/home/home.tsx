@@ -32,10 +32,15 @@ interface Barbershop {
 
 const Home = () => {
   const { autenticado, user } = useAuth();
-  const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
-  const [recommendedBarbershops, setRecommendedBarbershops] = useState<Barbershop[]>([]);
-  const [popularBarbershops, setPopularBarbershops] = useState<Barbershop[]>([]);
+  // const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
+  const [recommendedBarbershops, setRecommendedBarbershops] = useState<
+    Barbershop[]
+  >([]);
+  const [popularBarbershops, setPopularBarbershops] = useState<Barbershop[]>(
+    []
+  );
   const [barbershopReload, setBarbershopReload] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const obterLista = async () => {
     try {
@@ -44,7 +49,7 @@ const Home = () => {
       console.log("lista:", lista);
       if (Array.isArray(lista)) {
         const shuffledList = _.shuffle(lista);
-        setBarbershops(shuffledList);
+        // setBarbershops(shuffledList);
         setRecommendedBarbershops(_.shuffle(shuffledList));
         setPopularBarbershops(_.shuffle(shuffledList));
       } else {
@@ -53,6 +58,8 @@ const Home = () => {
       }
     } catch (error) {
       alert(`Erro: ..Não foi possível obter os dados: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,7 +78,7 @@ const Home = () => {
     <div>
       <Header />
       <div className="py-2 flex bg-dark px-4 font-bold items-center justify-center shadow-lg">
-        {autenticado && userid && <MenuSettings idCliente={userid}/>}
+        {autenticado && userid && <MenuSettings idCliente={userid} />}
       </div>
       <div className="justify-between flex flex-col md:flex-row">
         <div className="ps-12 py-12 flex gap-20 items-center  justify-between flex-col md:flex-row">
@@ -112,20 +119,64 @@ const Home = () => {
           <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
             Recomendados
           </h2>
+          {loading ? (
+            <div className="flex items-center justify-center h-48">
+              <span>Carregando...</span>
+            </div>
+          ) : (
+            <Carousel
+              opts={{
+                align: "start",
+              }}
+              className="max-w-[54rem]"
+            >
+              <CarouselContent className="flex">
+                {recommendedBarbershops.slice(0, 5).map((barbershop, index) => (
+                  <CarouselItem
+                    key={index}
+                    style={{ width: "180px" }}
+                    className="basis-48"
+                  >
+                    <BarbershopItemRecomendados
+                      id={barbershop.id}
+                      foto={barbershop.foto}
+                      nome={barbershop.nome}
+                      rua={barbershop.endereco?.rua}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          )}
+        </div>
+      </div>
+
+      {/* populares */}
+      <div className="px-12  mb-[4.5rem]">
+        <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
+          Populares
+        </h2>
+        {loading ? (
+          <div className="flex items-center justify-center h-48">
+            <span>Carregando...</span>
+          </div>
+        ) : (
           <Carousel
             opts={{
               align: "start",
             }}
-            className="max-w-[54rem]"
+            className="w-full max-w-full	"
           >
-            <CarouselContent className="flex">
-              {recommendedBarbershops.slice(0, 5).map((barbershop, index) => (
+            <CarouselContent>
+              {popularBarbershops.slice(0, 10).map((barbershop, index) => (
                 <CarouselItem
                   key={index}
                   style={{ width: "180px" }}
                   className="basis-48"
                 >
-                  <BarbershopItemRecomendados
+                  <BarbershopItemPopulares
                     id={barbershop.id}
                     foto={barbershop.foto}
                     nome={barbershop.nome}
@@ -137,39 +188,7 @@ const Home = () => {
             <CarouselPrevious />
             <CarouselNext />
           </Carousel>
-        </div>
-      </div>
-
-      {/* populares */}
-      <div className="px-12  mb-[4.5rem]">
-        <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
-          Populares
-        </h2>
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-full max-w-full	"
-        >
-          <CarouselContent>
-            {popularBarbershops.slice(0, 10).map((barbershop, index) => (
-              <CarouselItem
-                key={index}
-                style={{ width: "180px" }}
-                className="basis-48"
-              >
-                <BarbershopItemPopulares
-                  id={barbershop.id}
-                  foto={barbershop.foto}
-                  nome={barbershop.nome}
-                  rua={barbershop.endereco?.rua}
-                />
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+        )}
       </div>
     </div>
   );

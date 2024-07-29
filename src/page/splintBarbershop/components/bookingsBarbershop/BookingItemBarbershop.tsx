@@ -44,6 +44,7 @@ interface Service {
 interface Endereco {
   id: string;
   bairro: string;
+  numero:string;
   rua: string;
 }
 
@@ -219,7 +220,10 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                       {barbearia?.nome.toUpperCase()}
                     </h2>
                     {barbearia?.endereco ? (
-                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.bairro}`}</h3>
+                      <div className="text-sm">
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.numero}`}</h3>
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia.endereco.bairro}`}</h3>
+                      </div>
                     ) : (
                       <h3>Endereço não disponível</h3>
                     )}

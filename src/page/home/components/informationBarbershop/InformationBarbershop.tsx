@@ -111,8 +111,8 @@ const InformationBarbershop: React.FC<InformationTelefoneProps> = ({
                   <div>
                     <h2 className="font-bold">{barbearia?.nome}</h2>
                     {endereco ? (
-                      <div className="text-xs">
-                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${endereco.rua} -  ${endereco.numero}`}</h3>
+                      <div className="text-sm">
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${endereco.rua} - ${endereco.numero}`}</h3>
                         <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">
                           {endereco.bairro}
                         </h3>

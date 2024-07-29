@@ -27,6 +27,7 @@ const AllBarbershopsDetails = () => {
   const [barbershopReload, setBarbershopReload] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 18;
 
   const obterLista = async (page: number) => {
@@ -48,6 +49,8 @@ const AllBarbershopsDetails = () => {
       console.log("totalPages", totalPages);
     } catch (error) {
       alert(`Erro: ..Não foi possível obter os dados: ${error}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -106,21 +109,27 @@ const AllBarbershopsDetails = () => {
           <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
             Todas as Barbearias
           </h2>
-          <div className="flex gap-4  justify-between flex-wrap">
-            {Array.isArray(barbershops) && barbershops.length > 0 ? (
-              barbershops.map((barbershop) => (
-                <AllBarbershops
-                  key={barbershop.id} // Adicionando a key aqui
-                  id={barbershop.id}
-                  foto={barbershop.foto}
-                  nome={barbershop.nome}
-                  rua={barbershop.endereco?.rua}
-                />
-              ))
-            ) : (
-              <p>Nenhuma barbearia encontrada.</p>
-            )}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center h-48">
+              <span>Carregando...</span>
+            </div>
+          ) : (
+            <div className="flex gap-4  justify-between flex-wrap">
+              {Array.isArray(barbershops) && barbershops.length > 0 ? (
+                barbershops.map((barbershop) => (
+                  <AllBarbershops
+                    key={barbershop.id} // Adicionando a key aqui
+                    id={barbershop.id}
+                    foto={barbershop.foto}
+                    nome={barbershop.nome}
+                    rua={barbershop.endereco?.rua}
+                  />
+                ))
+              ) : (
+                <p>Nenhuma barbearia encontrada.</p>
+              )}
+            </div>
+          )}
           <div className="flex justify-between mt-6">
             <Button onClick={handlePreviousPage} disabled={currentPage === 1}>
               Anterior

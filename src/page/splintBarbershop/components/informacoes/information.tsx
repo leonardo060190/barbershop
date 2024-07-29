@@ -142,8 +142,8 @@ const Information: React.FC<InformationTelefoneProps> = ({
                   <div>
                     <h2 className="font-bold">{barbearia?.nome}</h2>
                     {barbearia?.endereco ? (
-                      <div className="text-xs">
-                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia?.endereco.rua} -  ${barbearia?.endereco.numero}`}</h3>
+                      <div className="text-sm">
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia?.endereco.rua} - ${barbearia?.endereco.numero}`}</h3>
                         <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{barbearia?.endereco.bairro}</h3>
                       </div>
                     ) : (
