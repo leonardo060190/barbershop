@@ -19,19 +19,82 @@ import FormLogin from "./formLogin/FormLogin";
 import { useAuth } from "../authProvider/AuthProvider";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
+import EditCliente from "@/page/home/components/updateCliente/EditCliente";
+import { useCallback, useEffect, useState } from "react";
+import { api } from "../../../config/ConfigAxios";
+import TelefoneRender from "@/page/home/components/cadastroTelefoneCliente/TelefoneRender";
+import EditLoginCliente from "@/page/home/components/updateLoginCliente/EdilLoginCliente";
 
 interface SideMenuProps {
   onClose: () => void;
 }
 
+interface Login {
+  id: string;
+  email: string;
+  senha: string;
+  dataCriacao: string;
+  cliente: Cliente;
+}
+
+interface Cliente {
+  id: string;
+  nome: string;
+  foto: string;
+  cpf: string;
+  sobreNome: string;
+  dataNascimento: string;
+  login: Login;
+}
+
 const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
   const { autenticado, user, logout } = useAuth();
   const navigate = useNavigate();
+  const [cliente, setCliente] = useState<Cliente | null>(null);
+  const [login, setLogin] = useState<Login | null>(null);
 
   const handleLogout = () => {
     logout();
     onClose();
     navigate("/");
+  };
+
+  const idCliente = user?.cliente?.id || null;
+
+  const fetchCliente = useCallback(async () => {
+    try {
+      const response = await api.get(`/cliente/${idCliente}`);
+      setCliente(response.data);
+      console.log("ooi", response.data);
+    } catch (error) {
+      console.error("Error fetching client data:", error);
+    }
+  }, [idCliente]);
+
+  const obterLogin = useCallback(async () => {
+    try {
+      const response = await api.get(`/login/cliente/${idCliente}`);
+      setLogin(response.data);
+      console.log(response.data);
+    } catch (error) {
+      alert(`Erro: Não foi possível obter os dados de login: ${error}`);
+    }
+  }, [idCliente]);
+
+  useEffect(() => {
+    if (idCliente) {
+      fetchCliente();
+      obterLogin();
+    }
+  }, [fetchCliente, idCliente, obterLogin]);
+
+  const atualizarEditCliente = async () => {
+    try {
+      const response = await api.get(`/cliente/${idCliente}`);
+      setCliente(response.data);
+    } catch (error) {
+      console.error("Erro ao atualizar os serviços:", error);
+    }
   };
 
   const userName =
@@ -76,8 +139,43 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
                 className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
                 to={"/bookings"}
               >
-                <CalendarDays size={16} className="me-2 text-primary" /> Agendamentos
+                <CalendarDays size={16} className="me-2 text-primary" />{" "}
+                Agendamentos
               </Link>
+            </div>
+          )}
+
+          {isClienteLoggedIn && (
+            <div className=" pt-4 justify-center text-left flex px-3 pb-4">
+              {cliente && (
+                <EditCliente
+                  id={cliente.id}
+                  nome={cliente.nome}
+                  foto={cliente.foto}
+                  cpf={cliente.cpf}
+                  sobreNome={cliente.sobreNome}
+                  dataNascimento={cliente.dataNascimento}
+                  onClienteUpdated={atualizarEditCliente}
+                />
+              )}
+            </div>
+          )}
+          {isClienteLoggedIn && (
+            <div className=" justify-center text-left flex px-3 pb-4">
+              {idCliente && <TelefoneRender idCliente={idCliente} />}
+            </div>
+          )}
+          {isClienteLoggedIn && (
+            <div className=" justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+              {idCliente && login && (
+                <EditLoginCliente
+                  key={login.id}
+                  id={login.id}
+                  idCliente={idCliente}
+                  email={login.email}
+                  senha={login.senha}
+                />
+              )}
             </div>
           )}
 
@@ -91,14 +189,15 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
               </Link>
             </div>
           )}
-          
+
           {isBarbeariaLoggedIn && (
             <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
               <Link
                 className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
                 to={"/bookingsBarbershop"}
               >
-                <CalendarDays size={16} className="me-2 text-primary" /> Agendamentos
+                <CalendarDays size={16} className="me-2 text-primary" />{" "}
+                Agendamentos
               </Link>
             </div>
           )}
@@ -126,7 +225,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
                 to={"/RegistrationUser"}
                 className="h-11 w-full hover:bg-[rgba(24,24,25,0.84)] gap-4 flex items-center justify-center border rounded-md border-solid border-secondary px-3"
               >
-                <CircleUserRound size={18} className="text-primary"/>
+                <CircleUserRound size={18} className="text-primary" />
                 Cadastro de Usuários
               </Link>
 
@@ -134,7 +233,7 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
                 to={"/RegistrationBarbershop"}
                 className="h-11 w-full hover:bg-[rgba(24,24,25,0.84)] gap-4 flex items-center justify-center border rounded-md border-solid border-secondary px-3"
               >
-                <Scissors size={18} className="text-primary"/>
+                <Scissors size={18} className="text-primary" />
                 Cadastro de Barbearias
               </Link>
             </div>

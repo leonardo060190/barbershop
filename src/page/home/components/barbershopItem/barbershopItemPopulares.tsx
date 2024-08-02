@@ -30,8 +30,8 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
 
   return (
     <div key={id}>
-      <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
-        <CardContent className="p-0 pt-1 ">
+      <Card className="min-w-[167px] max-w-[167px] h-[300px]  rounded-2xl">
+        <CardContent className="p-0 pt-1 h-full flex flex-col justify-between">
           <div className="px-1 relative">
             <Badge
               variant="secondary"
@@ -46,12 +46,12 @@ const BarbershopItemPopulares: React.FC<BarbershopItemProps> = ({
               height={0}
               width={0}
               sizes="100vw"
-              className="h-[159px] w-full rounded-2xl"
+              className="h-[159px] w-full rounded-2xl object-cover"
             />
           </div>
 
           <div className="px-3 pb-3">
-            <h2 className="font-bold mt-2">{nome}</h2>
+            <h2 className="font-bold mt-2 text-ellipsis overflow-hidden whitespace-nowrap">{nome}</h2>
             <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
               {rua || "Endereço indisponivel"}
             </p>

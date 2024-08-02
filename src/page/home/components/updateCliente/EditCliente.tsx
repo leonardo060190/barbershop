@@ -36,16 +36,16 @@ const EditCliente: React.FC<ClienteEditProps> = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
-          className="gap-3 items-center border-solid border-gray-600 border hover:text-primary"
-        >
-          <Edit size={18} className="text-primary" />
+          variant="outline"
+          className="h-11 w-11/12 text-left hover:bg-[rgba(24,24,25,0.84)] flex "
+          >
+          <Edit size={16} className="me-2 text-primary" />
           Editar Cliente
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader className=" border-b border-solid border-secondary ">
-          <DialogTitle className="pb-3">Editar Cliente</DialogTitle>
+      <DialogContent>
+        <DialogHeader >
+          <DialogTitle>Editar Cliente</DialogTitle>
           <DialogDescription></DialogDescription>
         </DialogHeader>
         <FormEditCliente

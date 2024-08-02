@@ -14,7 +14,6 @@ import { useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { Link } from "react-router-dom";
-import MenuSettings from "./components/menuSettings/MenuSettings";
 import _ from "lodash";
 
 interface Endereco {
@@ -72,14 +71,12 @@ const Home = () => {
   }, [barbershopReload]);
 
   const userName = user?.nome || user?.cliente?.nome || null;
-  const userid = user?.cliente?.id || null;
+
 
   return (
     <div>
       <Header />
-      <div className="py-2 flex bg-dark px-4 font-bold items-center justify-center shadow-lg">
-        {autenticado && userid && <MenuSettings idCliente={userid} />}
-      </div>
+      
       <div className="justify-between flex flex-col md:flex-row">
         <div className="ps-12 py-12 flex gap-20 items-center  justify-between flex-col md:flex-row">
           <div className="w-80 justify-center">

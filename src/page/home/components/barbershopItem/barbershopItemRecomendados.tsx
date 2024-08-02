@@ -51,7 +51,7 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
           </div>
 
           <div className="px-3 pb-3">
-            <h2 className="font-bold mt-2">{nome}</h2>
+            <h2 className="font-bold mt-2 text-ellipsis overflow-hidden whitespace-nowrap">{nome}</h2>
             <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
               {rua || "Endereço indisponivel"}
             </p>

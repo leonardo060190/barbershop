@@ -65,10 +65,10 @@ const TelefoneRender: React.FC<IdClienteRegisterTelefone> = ({ idCliente }) => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
-          className="gap-3  items-center border-solid border-gray-600 border hover:text-primary"
+        variant="outline"
+        className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center px-3"
         >
-          <Edit size={18} className="text-primary"/>
+          <Edit size={18} className="me-2 text-primary"/>
           Registre o telefone
         </Button>
       </DialogTrigger>
