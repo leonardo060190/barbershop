@@ -20,6 +20,7 @@ interface Barbershop {
 const SearchResults = () => {
   const { nome } = useParams<{ nome: string }>();
   const [barbershops, setBarbershops] = useState<Barbershop[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBarbershops = async () => {
@@ -30,6 +31,8 @@ const SearchResults = () => {
         setBarbershops(data);
       } catch (error) {
         alert(`Erro: Não foi possível obter os dados`);
+      } finally {
+        setLoading(false);
       }
     };
     fetchBarbershops();
@@ -45,21 +48,27 @@ const SearchResults = () => {
             Resultados da Pesquisa:
           </span>
         </h2>
-        <div className="flex justify-center gap-4">
-          {barbershops.length > 0 ? (
-            barbershops.map((barbershop) => (
-              <AllBarbershops
-                key={barbershop.id}
-                id={barbershop.id}
-                foto={barbershop.foto}
-                nome={barbershop.nome}
-                rua={barbershop.endereco?.rua}
-              />
-            ))
-          ) : (
-            <p>Nenhuma barbearia encontrada.</p>
-          )}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center h-48">
+            <span>Carregando...</span>
+          </div>
+        ) : (
+          <div className="flex justify-center gap-4">
+            {barbershops.length > 0 ? (
+              barbershops.map((barbershop) => (
+                <AllBarbershops
+                  key={barbershop.id}
+                  id={barbershop.id}
+                  foto={barbershop.foto}
+                  nome={barbershop.nome}
+                  rua={barbershop.endereco?.rua}
+                />
+              ))
+            ) : (
+              <p>Nenhuma barbearia encontrada.</p>
+            )}
+          </div>
+        )}
       </div>
     </>
   );

@@ -28,10 +28,10 @@ const EditLogin: React.FC<BarbershopEditLoginProps> = ({
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="secondary"
-          className="gap-3  items-center border-solid border-gray-600 border hover:text-primary"
-        >
-          <Edit size={18} className="text-primary"/>
+          variant="outline"
+          className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex justify-start items-center px-3"
+          >
+          <Edit size={16} className=" me-2 text-primary"/>
           Editar Login
         </Button>
       </DialogTrigger>

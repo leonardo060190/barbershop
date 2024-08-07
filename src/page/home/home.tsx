@@ -42,6 +42,7 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
 
   const obterLista = async () => {
+    setLoading(true);
     try {
       const response = await api.get("/barbearia");
       const lista = response.data;
@@ -72,11 +73,10 @@ const Home = () => {
 
   const userName = user?.nome || user?.cliente?.nome || null;
 
-
   return (
     <div>
       <Header />
-      
+
       <div className="justify-between flex flex-col md:flex-row">
         <div className="ps-12 py-12 flex gap-20 items-center  justify-between flex-col md:flex-row">
           <div className="w-80 justify-center">
@@ -103,16 +103,24 @@ const Home = () => {
             <div className=" mt-6">
               <Search />
             </div>
-            <Link
-              className="h-10 mt-4 text-xl hover:text-primary hover:bg-[rgba(24,24,25,0.84)] flex items-center justify-center border rounded-md border-solid border-secondary px-3"
-              to={"/allbarbershopsdetails"}
-            >
-              Todas as Barbearias
-            </Link>
+
+            {autenticado ? (
+              <Link
+                className="h-10 mt-4 text-xl hover:text-primary hover:bg-[rgba(24,24,25,0.84)] flex items-center justify-center border rounded-md border-solid border-secondary px-3"
+                to={"/allbarbershopsdetails"}
+              >
+                Todas as Barbearias
+              </Link>
+            ) : (
+              <span className="h-10 mt-4 text-xl  hover:bg-[rgba(24,24,25,0.84)] flex items-center justify-center border rounded-md border-solid border-secondary px-3">
+                Todas as Barbearias
+              </span>
+            )}
           </div>
         </div>
+
         {/* Recomendados */}
-        <div className="px-12 py-12">
+        <div className="px-16 py-12 flex-1">
           <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
             Recomendados
           </h2>

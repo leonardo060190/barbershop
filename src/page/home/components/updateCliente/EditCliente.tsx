@@ -37,7 +37,7 @@ const EditCliente: React.FC<ClienteEditProps> = ({
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="h-11 w-11/12 text-left hover:bg-[rgba(24,24,25,0.84)] flex "
+          className="h-11 w-11/12 justify-start hover:bg-[rgba(24,24,25,0.84)] flex px-3"
           >
           <Edit size={16} className="me-2 text-primary" />
           Editar Cliente

@@ -5,7 +5,7 @@ import Information from "./components/informacoes/information";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useParams } from "react-router-dom";
-import MenuSettingsBarbershop from "./components/menuSettingsBarbershop/MenuSettingsBarbershop";
+// import MenuSettingsBarbershop from "./components/menuSettingsBarbershop/MenuSettingsBarbershop";
 
 interface Telefone {
   id: string;
@@ -70,15 +70,16 @@ const SplintBarbershop = () => {
   };
 
   if (!barberShop) {
-    return <div>Carregando...</div>;
+    return <div className="flex justify-center items-center h-screen">
+      Carregando...</div>;
   }
 
   return (
     <>
       <Header />
-      <div className=" py-2 flex bg-dark px-4 font-bold items-center justify-center shadow-lg">
+      {/* <div className=" py-2 flex bg-dark px-4 font-bold items-center justify-center shadow-lg">
         <MenuSettingsBarbershop onUpdate={obterBarbearia} />
-      </div>
+      </div> */}
       <div className="px-12 flex flex-col md:flex-row">
         <div>
           <div className="pb-6">

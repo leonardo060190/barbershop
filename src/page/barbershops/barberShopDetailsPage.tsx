@@ -64,7 +64,8 @@ console.log("barberShop", barberShop)
   }, [id]);
 
   if (!barberShop) {
-    return <div>Carregando...</div>;
+    return <div className="flex justify-center items-center h-screen">
+      Carregando...</div>;
   }
 
   return (

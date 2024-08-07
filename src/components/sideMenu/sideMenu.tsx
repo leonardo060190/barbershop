@@ -24,6 +24,7 @@ import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import TelefoneRender from "@/page/home/components/cadastroTelefoneCliente/TelefoneRender";
 import EditLoginCliente from "@/page/home/components/updateLoginCliente/EdilLoginCliente";
+import MenuSettingsBarbershop from "@/page/splintBarbershop/components/menuSettingsBarbershop/MenuSettingsBarbershop";
 
 interface SideMenuProps {
   onClose: () => void;
@@ -65,7 +66,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
     try {
       const response = await api.get(`/cliente/${idCliente}`);
       setCliente(response.data);
-      console.log("ooi", response.data);
     } catch (error) {
       console.error("Error fetching client data:", error);
     }
@@ -75,7 +75,6 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
     try {
       const response = await api.get(`/login/cliente/${idCliente}`);
       setLogin(response.data);
-      console.log(response.data);
     } catch (error) {
       alert(`Erro: Não foi possível obter os dados de login: ${error}`);
     }
@@ -180,26 +179,30 @@ const SideMenu: React.FC<SideMenuProps> = ({ onClose }) => {
           )}
 
           {isBarbeariaLoggedIn && (
-            <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
-              <Link
-                className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-                to={`/splintbarbershop/${user?.barbearia?.id}`} // Redireciona para a barbearia específica se for barbearia
-              >
-                <Home size={16} className="me-2 text-primary" /> Barbershop
-              </Link>
-            </div>
-          )}
+            <>
+              <div className=" pt-4 justify-center text-left flex px-3 ">
+                <Link
+                  className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+                  to={`/splintbarbershop/${user?.barbearia?.id}`} // Redireciona para a barbearia específica se for barbearia
+                >
+                  <Home size={16} className="me-2 text-primary" /> Barbershop
+                </Link>
+              </div>
 
-          {isBarbeariaLoggedIn && (
-            <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
-              <Link
-                className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-                to={"/bookingsBarbershop"}
-              >
-                <CalendarDays size={16} className="me-2 text-primary" />{" "}
-                Agendamentos
-              </Link>
-            </div>
+              <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+                <Link
+                  className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+                  to={"/bookingsBarbershop"}
+                >
+                  <CalendarDays size={16} className="me-2 text-primary" />{" "}
+                  Agendamentos
+                </Link>
+              </div>
+
+              <div className=" pt-4 justify-center text-left border-b border-solid flex border-secondary px-3 pb-4">
+                <MenuSettingsBarbershop onUpdate={atualizarEditCliente} />
+              </div>
+            </>
           )}
         </>
       ) : (

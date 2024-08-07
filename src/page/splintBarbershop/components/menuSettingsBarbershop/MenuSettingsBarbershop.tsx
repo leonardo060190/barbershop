@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import EditProfile from "../../components/renderForms/EditProfile";
 // import RenderHorarioFuncionamento from "../../components/cadastroHorarioFuncionamento/RenderHorarioFuncionamento";
 import TelefoneRender from "../../components/telefone/TelefoneRender";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
 import EditLogin from "../renderForms/EditLogin";
 
@@ -59,47 +59,45 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
   const [login, setLogin] = useState<Login | null>(null);
 
+  const obterBarbearia = useCallback(async () => {
+    try {
+      const response = await api.get(`/barbearia/${id}`);
+      setBarberShop(response.data);
+    } catch (error) {
+      alert(`Erro: Não foi possível obter os dados: ${error}`);
+    }
+  }, [id]);
+
+  const obterLogin = useCallback(async () => {
+    try {
+      const response = await api.get(`/login/barbearia/${id}`);
+      setLogin(response.data);
+    } catch (error) {
+      alert(`Erro: Não foi possível obter os dados de login: ${error}`);
+    }
+  }, [id]);
   useEffect(() => {
-    const obterBarbearia = async () => {
-      try {
-        const response = await api.get(`/barbearia/${id}`);
-        setBarberShop(response.data);
-        console.log(response.data);
-      } catch (error) {
-        alert(`Erro: Não foi possível obter os dados: ${error}`);
-      }
-    };
-
-    const obterLogin = async () => {
-      try {
-        const response = await api.get(`/login/barbearia/${id}`);
-        setLogin(response.data);
-        console.log(response.data);
-      } catch (error) {
-        alert(`Erro: Não foi possível obter os dados de login: ${error}`);
-      }
-    };
-
     if (id) {
       obterBarbearia();
       obterLogin();
     }
-  }, [id]);
+  }, [id, obterBarbearia, obterLogin]);
 
-  const atualizarSplintBarbershop = async () => {
+  const atualizarSplintBarbershop = useCallback(async () => {
     try {
       const response = await api.get(`/barbearia/${id}`);
       setBarberShop(response.data);
       onUpdate();
+      window.location.reload(); 
     } catch (error) {
       console.error("Erro ao atualizar os serviços:", error);
     }
-  };
+  }, [id, onUpdate]);
 
   return (
     <>
-      <div className=" grid gap-5  grid-cols-2  md:grid-cols-3 xl:grid-cols-4 ">
-        <div className="py-1 px-4 ">
+      <div className="w-full ">
+        <div className=" justify-center text-left flex  pb-4">
           {id && barberShop && (
             <EditProfile
               key={id}
@@ -113,7 +111,7 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
           )}
         </div>
 
-        <div className="py-1 px-4">
+        <div className=" justify-center text-left flex pb-4">
           {id && (
             <TelefoneRender
               idBarbershop={id}
@@ -122,7 +120,7 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
           )}
         </div>
 
-        <div className="py-1 px-4">
+        <div className=" justify-center text-left flex pb-4">
           {id && login && (
             <EditLogin
               key={login.id}
