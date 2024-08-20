@@ -22,6 +22,7 @@ interface Barbearia {
 interface Endereco {
   id: string;
   bairro: string;
+  numero: string;
   rua: string;
 }
 

@@ -1,10 +1,12 @@
 import Header from "@/components/header/header";
-import EditServices from "./components/renderForms/EditServices";
-import RegisterServices from "./components/renderForms/RegisterServices";
+// import EditServices from "./components/renderForms/EditServices";
+// import RegisterServices from "./components/renderForms/RegisterServices";
 import Information from "./components/informacoes/information";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../config/ConfigAxios";
 import { useParams } from "react-router-dom";
+import RegisterProfissional from "./components/profissional/components/RegisterProfissional";
+import CardProfissionais from "./components/profissional/components/CardProfissionais";
 // import MenuSettingsBarbershop from "./components/menuSettingsBarbershop/MenuSettingsBarbershop";
 
 interface Telefone {
@@ -18,6 +20,13 @@ interface Service {
   foto: string;
   preco: number;
   descricao: string;
+  barbeariaId: string;
+}
+interface Profissional {
+  id: string;
+  nome: string;
+  sobreNome: string;
+  foto: string;
   barbeariaId: string;
 }
 
@@ -43,6 +52,7 @@ interface BarberShop {
 const SplintBarbershop = () => {
   const { id } = useParams<{ id: string }>();
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
+  const [profissional, setProfissional] = useState<Profissional[]>([]);
 
   const obterBarbearia = useCallback(async () => {
     try {
@@ -54,11 +64,25 @@ const SplintBarbershop = () => {
     }
   }, [id]);
 
+  const obterProfissionais = useCallback(async () => {
+    // setLoading(true);
+    try {
+      const response = await api.get(`/profissional/barbearia/${id}`);
+      setProfissional(response.data);
+      console.log("profissional", response.data);
+    } catch (error) {
+      alert(`Erro: ..Não foi possível obter os dados: ${error}`);
+    } finally {
+      // setLoading(false);
+    }
+  }, [id]);
+
   useEffect(() => {
     if (id) {
       obterBarbearia();
+      obterProfissionais();
     }
-  }, [id, obterBarbearia]);
+  }, [id, obterBarbearia, obterProfissionais]);
 
   const atualizarSplintBarbershop = async () => {
     try {
@@ -70,8 +94,11 @@ const SplintBarbershop = () => {
   };
 
   if (!barberShop) {
-    return <div className="flex justify-center items-center h-screen">
-      Carregando...</div>;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Carregando...
+      </div>
+    );
   }
 
   return (
@@ -100,33 +127,30 @@ const SplintBarbershop = () => {
 
           <div className=" pb-6 flex-wrap justify-center">
             <div className="grid py-6 gap-2 grid-cols-2 ">
-              <h1 className="text-xl font-bold ">Serviços Regitrados</h1>
+              <h1 className="text-xl font-bold ">Profissionais Cadastrados</h1>
               <div className="flex justify-end">
                 {id && (
-                  <RegisterServices
+                  <RegisterProfissional
                     idBarbershop={id}
-                    onServicoRegistrado={atualizarSplintBarbershop}
+                    onProfissionalCadastrado={atualizarSplintBarbershop}
                   />
                 )}
               </div>
             </div>
             <div className=" grid gap-5  grid-cols-1  xl:grid-cols-2">
-              {barberShop.servicos?.length > 0 ? (
-                barberShop.servicos.map((servico) => (
-                  <EditServices
-                    key={servico.id} // Use um identificador único se disponível
-                    id={servico.id}
+              {profissional.length > 0 ? (
+                profissional.map((profissionais) => (
+                  <CardProfissionais
+                    key={profissionais.id} // Use um identificador único se disponível
+                    id={profissionais.id}
                     barbeariaId={id || ""}
-                    nome={servico.nome}
-                    foto={servico.foto}
-                    descricao={servico.descricao}
-                    preco={servico.preco}
-                    onServicoDeletado={atualizarSplintBarbershop}
-                    onServicoUpdated={atualizarSplintBarbershop}
+                    nome={profissionais.nome}
+                    foto={profissionais.foto}
+                    sobreNome={profissionais.sobreNome}
                   />
                 ))
               ) : (
-                <div>Nenhum serviço disponível</div>
+                <div>Não há profissional cadastrado</div>
               )}
             </div>
           </div>

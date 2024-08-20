@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import "../../index.css";
 
@@ -18,10 +14,10 @@ import BookingBarbershop from "../../page/splintBarbershop/components/bookingsBa
 import Footer from "../layout/footer/footer";
 import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "../protectedRoute/ProtectedRouter";
+import ServicosPage from "@/page/splintBarbershop/components/servicos/ServicosPage";
+import ProfissionalDetailsPage from "@/page/splintBarbershop/components/profissional/ProfissionalDetailsPage";
 
 const RoutesWithAuth: React.FC = () => {
-  
-
   return (
     <Router>
       <Routes>
@@ -85,7 +81,23 @@ const RoutesWithAuth: React.FC = () => {
           }
         />
 
-     
+        <Route
+          path="/profissionalDetails/:id"
+          element={
+            <ProtectedRoute>
+              <ProfissionalDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/servicosPage"
+          element={
+            <ProtectedRoute>
+              <ServicosPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
       <Toaster />
       <Footer />

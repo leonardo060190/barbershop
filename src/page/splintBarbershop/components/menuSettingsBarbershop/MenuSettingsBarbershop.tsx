@@ -1,10 +1,12 @@
-import { useParams } from "react-router-dom";
 import EditProfile from "../../components/renderForms/EditProfile";
 // import RenderHorarioFuncionamento from "../../components/cadastroHorarioFuncionamento/RenderHorarioFuncionamento";
 import TelefoneRender from "../../components/telefone/TelefoneRender";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
 import EditLogin from "../renderForms/EditLogin";
+import { useAuth } from "@/components/authProvider/AuthProvider";
+import { Link } from "react-router-dom";
+import { SquareScissors } from "lucide-react";
 
 interface Telefone {
   id: string;
@@ -55,7 +57,8 @@ interface MenuSettingsBarbershopProps {
 const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
   onUpdate,
 }) => {
-  const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+  const id = user?.barbearia?.id || null;
   const [barberShop, setBarberShop] = useState<BarberShop | null>(null);
   const [login, setLogin] = useState<Login | null>(null);
 
@@ -88,7 +91,7 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
       const response = await api.get(`/barbearia/${id}`);
       setBarberShop(response.data);
       onUpdate();
-      window.location.reload(); 
+      window.location.reload();
     } catch (error) {
       console.error("Erro ao atualizar os serviços:", error);
     }
@@ -97,6 +100,24 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
   return (
     <>
       <div className="w-full ">
+        <div className=" justify-center text-left flex pb-4">
+          <Link
+            className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+            to={"/servicosPage"}
+          >
+            <SquareScissors size={16} className="me-2 text-primary" /> Serviços
+          </Link>
+        </div>
+
+        <div className=" justify-center text-left flex pb-4">
+          {id && (
+            <TelefoneRender
+              idBarbershop={id}
+              onTelefoneRegistrado={atualizarSplintBarbershop}
+            />
+          )}
+        </div>
+
         <div className=" justify-center text-left flex  pb-4">
           {id && barberShop && (
             <EditProfile
@@ -107,15 +128,6 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
               cnpj={barberShop.cnpj}
               razaoSocial={barberShop.razaoSocial}
               onProfileUpdated={atualizarSplintBarbershop}
-            />
-          )}
-        </div>
-
-        <div className=" justify-center text-left flex pb-4">
-          {id && (
-            <TelefoneRender
-              idBarbershop={id}
-              onTelefoneRegistrado={atualizarSplintBarbershop}
             />
           )}
         </div>

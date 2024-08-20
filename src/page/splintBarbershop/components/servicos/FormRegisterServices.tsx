@@ -16,12 +16,12 @@ type FormValues = {
 
 interface IdBarberShopRegisterServices {
   idBarbershop: string;
-  onServicoRegistrado: () => void;
+  // onServicoRegistrado: () => void;
 }
 
 const FormRegisterServices: React.FC<IdBarberShopRegisterServices> = ({
   idBarbershop,
-  onServicoRegistrado,
+  // onServicoRegistrado,
 }) => {
   const methods = useForm<FormValues>(); // Obter métodos e estado do formulário
   const [isFormOpen, setIsFormOpen] = useState(true);
@@ -46,7 +46,7 @@ const FormRegisterServices: React.FC<IdBarberShopRegisterServices> = ({
       console.log("Aki", response);
       limparFormulario();
       setIsFormOpen(false);
-      onServicoRegistrado();
+      // onServicoRegistrado();
       toast.success("Serviço cadastrado com sucesso!",{
         style: {
           backgroundColor: "#4CAF50", // Cor de fundo

@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Edit } from "lucide-react";
+import { Phone } from "lucide-react";
 import { DialogHeader } from "../../../../components/ui/dialog";
 import { Button } from "../../../../components/ui/button";
 import FormTelefone from "./FormTelefone";
@@ -27,7 +27,7 @@ const TelefoneRender: React.FC<IdBarberShopRegisterTelefone> = ({
           variant="outline"
           className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex justify-start items-center px-3"
           >
-          <Edit size={16} className="me-2 text-primary"/>
+          <Phone size={16} className="me-2 text-primary"/>
           Registre o telefone
         </Button>
       </DialogTrigger>
