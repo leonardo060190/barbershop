@@ -25,8 +25,10 @@ interface BarbershopServicosProps {
   foto: string;
   preco: number;
   descricao: string;
+  profissionalId: string;
   barbeariaId: string;
-  nomeBarbershop: string;
+  nomeBarbearia: string;
+  nomeProfissional: string;
 }
 interface Booking {
   date: string;
@@ -39,7 +41,9 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
   preco,
   descricao,
   barbeariaId,
-  nomeBarbershop,
+  profissionalId,
+  nomeBarbearia,
+  nomeProfissional,
 }) => {
   const { user } = useAuth();
   const userId = user?.cliente?.id || null;
@@ -52,23 +56,27 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
-  const [dayBookings, setDayBookings] = useState<Booking[]>([]);
+  const [dayBookings, setDayBookings] = useState<Booking[]>([])
+  
 
-  const getDayBookings = useCallback(async (barbeariaId: string, date: Date): Promise<Booking[]> => {
-    try {
-      const response = await api.get("/agendamento", {
-        params: {
-          barbeariaId,
-          date: date.toISOString().split("T")[0], // Enviar a data no formato yyyy-MM-dd
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching day bookings:", error);
-      return [];
-    }
-  }, []);
-
+  
+  const getDayBookings = useCallback(
+    async (barbeariaId: string, date: Date): Promise<Booking[]> => {
+      try {
+        const response = await api.get("/agendamento", {
+          params: {
+            barbeariaId,
+            date: date.toISOString().split("T")[0], // Enviar a data no formato yyyy-MM-dd
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching day bookings:", error);
+        return [];
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     if (!date) {
@@ -110,13 +118,11 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       console.log(formattedDate);
 
       await saveBooking({
-        // barbearia: barbeariaId,
-        servico: id,
+        profissionalServico: profissionalId,
         data: formattedDate, // "yyyy-MM-dd"
-        hora: format(newDate, "HH:mm"),// "HH:mm"
+        hora: format(newDate, "HH:mm"), // "HH:mm"
         cliente: userId,
       });
-
 
       setSheetISOpen(false);
       setHour(undefined);
@@ -145,7 +151,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       const timeHour = Number(time.split(":")[0]);
       const timeMinutes = Number(time.split(":")[1]);
 
-      const isTimeBooked  = dayBookings.find((booking) => {
+      const isTimeBooked = dayBookings.find((booking) => {
         const bookingDate = new Date(booking.date);
         const bookingHour = bookingDate.getHours();
         const bookingMinutes = bookingDate.getMinutes();
@@ -161,8 +167,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
 
   // Função para salvar a reserva
   async function saveBooking(bookingData: {
-    // barbearia: string;
-    servico: string;
+    profissionalServico: string;
     data: string; // Formato yyyy-MM-dd
     hora: string; // Formato HH:mm
     cliente: string;
@@ -171,7 +176,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       const response = await api.post("/agendamento", {
         ...bookingData,
         cliente: { id: bookingData.cliente },
-        servico: { id: bookingData.servico },
+        profissionalServico: { id: bookingData.profissionalServico },
       });
       return response.data;
     } catch (error) {
@@ -300,9 +305,11 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
 
                             <div className="flex justify-between">
                               <h3 className="text-gray-400 text-sm">
-                                Barbearia
+                                Profissional
                               </h3>
-                              <h4 className="text-sm ">{nomeBarbershop}</h4>
+                              <h4 className="text-sm ">{nomeProfissional}</h4>
+                              <h4 className="text-sm ">{nomeBarbearia}</h4>
+
                             </div>
                           </div>
                         </CardContent>

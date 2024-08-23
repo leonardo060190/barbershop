@@ -37,7 +37,7 @@ const ServicosProfissional = () => {
     try {
       // Obter IDs dos serviços
       const response = await api.get<ServicoResponse[]>(
-        `/profissionalServico/profissional/${id}`
+        `/profissionalServico/profissionalServico/${id}`
       );
       console.log("Resposta da API:", response.data);
 

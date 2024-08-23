@@ -34,17 +34,24 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 
-interface Service {
+interface Servico {
   id: string;
   nome: string;
   preco: string;
   barbearia: Barbearia;
 }
 
+interface Profissional {
+  id: string;
+  nome: string;
+  sobreNome: string;
+  // Adicione outras propriedades relevantes do profissional, se necessário
+}
+
 interface Endereco {
   id: string;
   bairro: string;
-  numero:string;
+  numero: string;
   rua: string;
 }
 
@@ -67,13 +74,20 @@ interface Telefone {
   numero: string;
 }
 
+interface ProfissionalServico {
+  id: string;
+  profissional: Profissional;
+  servico: Servico;
+}
+
 interface BookingBarbershop {
   id: string;
   data: string;
   hora: string;
-  servico: Service;
+  servico: Servico;
   cliente: Cliente;
   barbearia: Barbearia;
+  profissionalServico: ProfissionalServico;
   endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
 }
@@ -87,7 +101,8 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
   bookingBarbershop,
   onRemoveBooking,
 }) => {
-  console.log(bookingBarbershop);
+  console.log("servicoProfissonal", bookingBarbershop);
+
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
 
@@ -98,8 +113,8 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [telefones, setTelefones] = useState<Telefone[]>([]);
   const [barbearia, setBarbearia] = useState<Barbearia | null>(null);
-
-  console.log("barbearia", barbearia);
+  const { servico, profissional } = bookingBarbershop.profissionalServico;
+  console.log("profissionalServico", servico, profissional);
 
   useEffect(() => {
     const fetchTelefones = async () => {
@@ -161,12 +176,13 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                   {isBookingConfirmed ? "Confirmado" : "Finalizado"}
                 </Badge>
               </div>
+              <h2 className="font-semibold capitalize">
+                Profissional: {profissional.nome} {profissional.sobreNome}
+              </h2>
 
-              <h2 className="font-bold">
-                {bookingBarbershop.servico.nome}{" "}
-                <span className="p-12">
-                  R$: {bookingBarbershop.servico.preco}
-                </span>
+              <h2 className="font-semibold capitalize">
+                Serviço: {servico.nome}{" "}
+                <span className="p-10">Valor R$: {servico.preco}</span>
               </h2>
 
               <div className="flex items-center gap-2">
@@ -182,7 +198,10 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                   </AvatarFallback>
                 </Avatar>
 
-                <h3 className="text-sm">{bookingBarbershop.cliente.nome}</h3>
+                <h3 className="capitalize">
+                  {bookingBarbershop.cliente.nome}{" "}
+                  {bookingBarbershop.cliente.sobreNome}
+                </h3>
               </div>
             </div>
 
@@ -244,15 +263,20 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
             <CardContent className="px-0 py-0 ">
               <div className="px-6 py-5 flex flex-col gap-3">
                 <div className="flex justify-between ">
-                  <h2 className="font-bold">
-                    {bookingBarbershop.servico.nome}
-                  </h2>
-                  <h3 className="font-bold text-sm">
+                  <h2 className="font-semibold capitalize">{servico.nome}</h2>
+                  <h3 className="font-semibold text-sm">
                     {Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    }).format(Number(bookingBarbershop.servico.preco))}
+                    }).format(Number(servico.preco))}
                   </h3>
+                </div>
+
+                <div className="flex justify-between">
+                  <h3 className="text-gray-400 text-sm">Profissional</h3>
+                  <h4 className="text-sm capitalize">
+                    {profissional.nome} {profissional.sobreNome}
+                  </h4>
                 </div>
 
                 <div className="flex justify-between">
@@ -271,7 +295,7 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
 
                 <div className="flex justify-between">
                   <h3 className="text-gray-400 text-sm">Cliente</h3>
-                  <h4 className="text-sm ">
+                  <h4 className="text-sm capitalize">
                     {bookingBarbershop.cliente.nome}{" "}
                     {bookingBarbershop.cliente.sobreNome}
                   </h4>

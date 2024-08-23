@@ -16,6 +16,8 @@ import { Toaster } from "@/components/ui/sonner";
 import ProtectedRoute from "../protectedRoute/ProtectedRouter";
 import ServicosPage from "@/page/splintBarbershop/components/servicos/ServicosPage";
 import ProfissionalDetailsPage from "@/page/splintBarbershop/components/profissional/ProfissionalDetailsPage";
+import MeusAgendamentos from "@/page/splintBarbershop/components/profissional/components/MeusAgendamentos";
+import ProfissionalReservaServicoPage from "@/page/barbershops/components/ProfissionalReservaServicoPage";
 
 const RoutesWithAuth: React.FC = () => {
   return (
@@ -95,6 +97,24 @@ const RoutesWithAuth: React.FC = () => {
           element={
             <ProtectedRoute>
               <ServicosPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/meus_agendamentos/:id"
+          element={
+            <ProtectedRoute>
+              <MeusAgendamentos />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="profissional_Reserva_Servico_Page/:id"
+          element={
+            <ProtectedRoute>
+              <ProfissionalReservaServicoPage />
             </ProtectedRoute>
           }
         />

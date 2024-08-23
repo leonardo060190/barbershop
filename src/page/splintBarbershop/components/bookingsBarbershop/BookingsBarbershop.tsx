@@ -5,11 +5,18 @@ import { useEffect, useState } from "react";
 import BookingItemBarbershop from "./BookingItemBarbershop";
 import { api } from "../../../../../config/ConfigAxios";
 
-interface Service {
+interface Servico {
   id: string;
   nome: string;
   preco: string;
   barbearia: Barbearia;
+}
+
+interface Profissional {
+  id: string;
+  nome: string;
+  sobreNome: string;
+  // Adicione outras propriedades relevantes do profissional, se necessário
 }
 
 interface Barbearia {
@@ -30,7 +37,6 @@ interface Telefone {
   id: string;
   numero: string;
   cliente: Cliente;
-
 }
 
 interface Cliente {
@@ -39,15 +45,20 @@ interface Cliente {
   foto: string;
   sobreNome: string;
   telefones?: Telefone[];
+}
 
-
+interface ProfissionalServico {
+  id: string;
+  profissional: Profissional;
+  servico: Servico;
 }
 
 interface BookingBarbershop {
   id: string;
   data: string;
   hora: string;
-  servico: Service;
+  servico: Servico;
+  profissionalServico: ProfissionalServico;
   barbearia: Barbearia;
   cliente: Cliente;
   endereco?: Endereco;
@@ -56,7 +67,7 @@ interface BookingBarbershop {
 
 interface bookingsBarbershopServices extends BookingBarbershop {
   status: "Confirmado" | "Finalizado";
-  servico: Service;
+  servico: Servico;
   barbearia: Barbearia;
 }
 const BookingsBarbershop = () => {
@@ -74,26 +85,37 @@ const BookingsBarbershop = () => {
         console.log(`Fetching bookings for barbershop ID: ${barbeariaId}`);
 
         const response = await api.get<BookingBarbershop[]>(
-          `/agendamento/servico/barbearia/${barbeariaId}`
+          `/agendamento/profissionalservico/barbearia/${barbeariaId}`
         );
 
         const bookingsBarbershopData = response.data;
         console.log("Response data:", response.data);
-        const BookingsBarbershopServices = bookingsBarbershopData.map(
-          (bookingBarbershop) => {
+
+   // Função auxiliar para buscar detalhes do profissional e serviço
+   const fetchProfissionalServicoDetails = async (profissionalServicoId: string) => {
+    const response = await api.get<ProfissionalServico>(`/profissionalServico/${profissionalServicoId}`);
+    return response.data;
+  };
+
+
+          // Obter detalhes adicionais para cada agendamento
+        const bookingsWithDetails = await Promise.all(bookingsBarbershopData.map(async (booking) => {
+          const profissionalServicoDetails = await fetchProfissionalServicoDetails(booking.profissionalServico.id);
+
             const bookingDate = new Date(
-              `${bookingBarbershop.data}T${bookingBarbershop.hora}`
+              `${booking.data}T${booking.hora}`
             );
             const status: "Confirmado" | "Finalizado" = isFuture(bookingDate)
               ? "Confirmado"
               : "Finalizado";
-            return {
-              ...bookingBarbershop,
-              status,
-            };
+              return {
+                ...booking,
+                status,
+                profissionalServico: profissionalServicoDetails,
+              };
           }
-        );
-        setBookingsBarbershop(BookingsBarbershopServices);
+        ));
+        setBookingsBarbershop(bookingsWithDetails);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }

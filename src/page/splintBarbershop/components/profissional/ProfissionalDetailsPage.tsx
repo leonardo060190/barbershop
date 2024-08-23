@@ -1,10 +1,10 @@
 import Header from "@/components/header/header";
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "../../../../../config/ConfigAxios";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
+import { CalendarDays, X } from "lucide-react";
 import { toast } from "sonner";
 import TelefoneProfissional from "./components/TelefoneProfissional";
 import SelectServicos from "./components/SelectServicos";
@@ -169,6 +169,25 @@ const ProfissionalDetailsPage = () => {
             </div>
           </CardContent>
         </Card>
+        <div className="pt-3">
+          <Card>
+            <CardContent className="p-0">
+              <div className="px-12 p-3 flex justify-between  ">
+                <h1 className="p-1 font-semibold text-xl">Meus agendamentos</h1>
+                {profissional && (
+                  <Link
+                  
+                  className="h-10  flex items-center bg-secondary border-gray-500 hover:text-primary border border-b rounded-md border-solid border-secondary px-3"
+                  to={`/meus_agendamentos/${id}`}
+                  >
+                    <CalendarDays size={18} className="me-2 text-primary" />{" "}
+                    Agendamentos
+                  </Link>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         <div className="pt-3">
           <Card>
             <CardContent className="p-0">
