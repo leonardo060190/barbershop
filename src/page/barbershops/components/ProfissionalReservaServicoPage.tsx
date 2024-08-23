@@ -1,6 +1,6 @@
 import Header from "@/components/header/header";
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { api } from "../../../../config/ConfigAxios";
 import ServiceItem from "./serviceItem";
@@ -45,8 +45,9 @@ const ProfissionalReservaServicoPage = () => {
   const [telefones, setTelefones] = useState<Telefone[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [barbearia, setBarbearia] = useState<Barbearia>();
+  const location = useLocation();
 
-  console.log("idbarbearia", barbearia);
+  const barbeariaId = location.state?.barbeariaId;
 
   const obterProfissionais = useCallback(async () => {
     setLoading(true);
@@ -77,23 +78,24 @@ const ProfissionalReservaServicoPage = () => {
     }
   }, [id]);
 
-  const obterBarbearia = useCallback(async (id: string)=>{
+  const obterBarbearia = useCallback(async () => {
     try {
-      const response = await api.get<Barbearia>(`/profissional/${id}`);
+      const response = await api.get<Barbearia>(`/barbearia/${barbeariaId}`);
       setBarbearia(response.data);
     } catch (error) {
       alert(`Erro: Não foi possível obter os dados da barbearia: ${error}`);
     }
-  }, []);
-  
+  }, [barbeariaId]);
 
   useEffect(() => {
     if (id) {
       obterProfissionais();
       obterTelefones();
-      obterBarbearia(id);
+      if (barbeariaId) {
+        obterBarbearia();
+      }
     }
-  }, [id, obterProfissionais, obterTelefones, obterBarbearia]);
+  }, [id, barbeariaId, obterProfissionais, obterTelefones, obterBarbearia]);
 
   if (loading) {
     return (
@@ -176,7 +178,6 @@ const ProfissionalReservaServicoPage = () => {
                 nomeProfissional={profissional.nome}
                 nomeBarbearia={barbearia.nome}
                 barbeariaId={barbearia.id}
-                
               />
             ))
           ) : (

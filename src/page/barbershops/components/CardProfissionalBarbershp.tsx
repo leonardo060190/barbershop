@@ -14,11 +14,12 @@ const CardProfissionaLBarbershop: React.FC<BarbershopProfissionaisProps> = ({
   foto,
   nome,
   sobreNome,
+  barbeariaId,
 }) => {
   const navigate = useNavigate();
-
+console.log(barbeariaId)
   const handleCardClick = () => {
-    navigate(`/profissional_Reserva_Servico_Page/${id}`);
+    navigate(`/profissional_Reserva_Servico_Page/${id}`, {state: {barbeariaId: barbeariaId}});
   };
 
   return (

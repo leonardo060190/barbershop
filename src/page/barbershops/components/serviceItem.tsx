@@ -56,10 +56,8 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
-  const [dayBookings, setDayBookings] = useState<Booking[]>([])
-  
+  const [dayBookings, setDayBookings] = useState<Booking[]>([]);
 
-  
   const getDayBookings = useCallback(
     async (barbeariaId: string, date: Date): Promise<Booking[]> => {
       try {
@@ -243,22 +241,23 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                             width: "100%",
                           },
                           nav_button_previous: {
-                            width: "32",
-                            height: "32",
+                            width: "24",
+                            height: "24",
                           },
                           nav_button_next: {
-                            width: "32",
-                            height: "32",
+                            width: "24",
+                            height: "24",
                           },
                           caption: {
                             textTransform: "capitalize",
                           },
                         }}
+                        
                       />
                     </div>
                     {/* Mostarlista de hor´rios apenas se alguma data estaver selecionada */}
                     {date && (
-                      <div className="flex gap-3 overflow-x-auto py-6 px-5 border-y border-solid border-secondary [&::-webkit-scrollbar]:hidden">
+                      <div className="flex gap-3 overflow-x-auto py-3 px-5 border-y border-solid border-secondary [&::-webkit-scrollbar]:hidden">
                         {timeList.map((time) => (
                           <Button
                             onClick={() => handleHourClick(time)}
@@ -271,10 +270,10 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                         ))}
                       </div>
                     )}
-                    <div className="py-5 px-5 border-solid border-secondary">
+                    <div className="py-3 px-5 border-solid border-secondary">
                       <Card>
                         <CardContent className="px-0 py-0">
-                          <div className="px-6 py-5 flex flex-col gap-3">
+                          <div className="px-6 py-2 flex flex-col gap-3">
                             <div className="flex justify-between ">
                               <h2 className="font-bold">{nome}</h2>
                               <h3 className="font-bold text-sm">
@@ -302,14 +301,17 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                                 <h4 className="text-sm ">{hour}</h4>
                               </div>
                             )}
-
                             <div className="flex justify-between">
                               <h3 className="text-gray-400 text-sm">
                                 Profissional
                               </h3>
                               <h4 className="text-sm ">{nomeProfissional}</h4>
+                            </div>
+                            <div className="flex justify-between">
+                              <h3 className="text-gray-400 text-sm">
+                                Barbearia
+                              </h3>
                               <h4 className="text-sm ">{nomeBarbearia}</h4>
-
                             </div>
                           </div>
                         </CardContent>
