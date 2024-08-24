@@ -29,7 +29,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -38,6 +38,13 @@ interface Service {
   nome: string;
   preco: string;
   barbearia: Barbearia;
+}
+
+interface Profissional {
+  id: string;
+  nome: string;
+  sobreNome: string;
+  // Adicione outras propriedades relevantes do profissional, se necessário
 }
 
 interface Barbearia {
@@ -51,6 +58,13 @@ interface Endereco {
   id: string;
   bairro: string;
   rua: string;
+  numero: string;
+}
+
+interface ProfissionalServico {
+  id: string;
+  profissional: Profissional;
+  servico: Service;
 }
 
 interface Booking {
@@ -58,8 +72,9 @@ interface Booking {
   data: string;
   hora: string;
   service: Service;
+  profissionalServico: ProfissionalServico;
   barbearia: Barbearia;
-  endereco?: Endereco;
+  endereco: Endereco;
   status: "Confirmado" | "Finalizado";
 }
 
@@ -72,13 +87,37 @@ const BookingItem: React.FC<BookingItemProps> = ({
   booking,
   onRemoveBooking,
 }) => {
+  console.log("booking", booking);
+
   const bookingDate = new Date(`${booking.data}T${booking.hora}`);
   const isBookingConfirmed = booking.status === "Confirmado";
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const { servico, profissional } = booking.profissionalServico;
+  const [barbearia, setBarbearia] = useState<Barbearia | null>(null);
+  const [endereco, setEndereco] = useState<Endereco | null>(null);
 
-  // Busca a barbearia correspondente ao serviço
-  const barbearia = booking.service?.barbearia;
-  console.log("barbeariabooking", booking);
+  const fetchBarbearia = useCallback(async () => {
+    try {
+      const response = await api.get<Service>(`/servico/${servico.id}`);
+      setBarbearia(response.data.barbearia);
+    } catch (error) {
+      console.error("Erro ao buscar a barbearia:", error);
+    }
+  }, [servico.id]);
+
+  const fetchEndereco = useCallback(async () => {
+    try {
+      const response = await api.get<Barbearia>(`/barbearia/${barbearia?.id}`);
+      setEndereco(response.data.endereco);
+    } catch (error) {
+      console.error("Erro ao buscar a Endereço:", error);
+    }
+  }, [barbearia?.id]);
+
+  useEffect(() => {
+    fetchBarbearia();
+    fetchEndereco();
+  }, [servico.id, fetchBarbearia, fetchEndereco]);
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;
@@ -114,11 +153,28 @@ const BookingItem: React.FC<BookingItemProps> = ({
                 </Badge>
               </div>
 
-              <h2 className="font-bold">
-                {booking.service?.nome}
-                <span className="p-12">R$: {booking.service?.preco}</span>
-              </h2>
-
+              <div className="flex gap-2">
+                <h1 className=" font-bold capitalize" style={{ color: "#555" }}>
+                  Profissional:
+                </h1>
+                <h2 className="font-semibold capitalize">
+                  {profissional.nome} {profissional.sobreNome}
+                </h2>
+              </div>
+              <div className="flex gap-2">
+                <h2 className="font-bold capitalize" style={{ color: "#555" }}>
+                  Serviço:
+                </h2>
+                <h2 className="font-semibold capitalize flex gap-5">
+                  {servico.nome}
+                  <p>
+                    <span className="font-bold" style={{ color: "#555" }}>
+                      Valor:{" "}
+                    </span>
+                    R$ {parseFloat(servico.preco).toFixed(2)}{" "}
+                  </p>
+                </h2>
+              </div>
               <div className="flex items-center gap-2">
                 <Avatar>
                   <AvatarImage
@@ -130,7 +186,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
                   <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                 </Avatar>
 
-                <h3 className="text-sm">{barbearia?.nome}</h3>
+                <h3 className="capitalize ">{barbearia?.nome}</h3>
               </div>
             </div>
 
@@ -164,9 +220,12 @@ const BookingItem: React.FC<BookingItemProps> = ({
                     <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="font-bold">{barbearia?.nome}</h2>
-                    {barbearia?.endereco ? (
-                      <h3 className="Text-xs overflow-hidden text-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.bairro}`}</h3>
+                    <h2 className="font-bold capitalize">{barbearia?.nome}</h2>
+                    {endereco ? (
+                      <div className="text-sm">
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis capitalize">{`${endereco.rua}, ${endereco.numero}`}</h3>
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis capitalize">{`${endereco.bairro}`}</h3>
+                      </div>
                     ) : (
                       <h3>Endereço não disponível</h3>
                     )}
@@ -187,12 +246,12 @@ const BookingItem: React.FC<BookingItemProps> = ({
             <CardContent className="px-0 py-0 ">
               <div className="px-6 py-5 flex flex-col gap-3">
                 <div className="flex justify-between ">
-                  <h2 className="font-bold">{booking.service?.nome}</h2>
+                  <h2 className="font-bold">{servico.nome}</h2>
                   <h3 className="font-bold text-sm">
                     {Intl.NumberFormat("pt-BR", {
                       style: "currency",
                       currency: "BRL",
-                    }).format(Number(booking.service?.preco))}
+                    }).format(Number(servico.preco))}
                   </h3>
                 </div>
 
@@ -212,7 +271,11 @@ const BookingItem: React.FC<BookingItemProps> = ({
 
                 <div className="flex justify-between">
                   <h3 className="text-gray-400 text-sm">Barbearia</h3>
-                  <h4 className="text-sm ">{barbearia?.nome}</h4>
+                  <h4 className="text-sm capitalize ">{barbearia?.nome}</h4>
+                </div>
+                <div className="flex justify-between">
+                  <h3 className="text-gray-400 text-sm">Profissional</h3>
+                  <h4 className="text-sm capitalize ">{profissional.nome}</h4>
                 </div>
               </div>
             </CardContent>

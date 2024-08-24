@@ -176,15 +176,29 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                   {isBookingConfirmed ? "Confirmado" : "Finalizado"}
                 </Badge>
               </div>
-              <h2 className="font-semibold capitalize">
-                Profissional: {profissional.nome} {profissional.sobreNome}
-              </h2>
+              <div className="flex gap-2">
+                <h1 className=" font-bold capitalize" style={{ color: "#555" }}>
+                  Profissional:
+                </h1>
+                <h2 className="font-semibold capitalize">
+                  {profissional.nome} {profissional.sobreNome}
+                </h2>
+              </div>
 
-              <h2 className="font-semibold capitalize">
-                Serviço: {servico.nome}{" "}
-                <span className="p-10">Valor R$: {servico.preco}</span>
-              </h2>
-
+              <div className="flex gap-2">
+                <h2 className="font-bold capitalize" style={{ color: "#555" }}>
+                  Serviço:
+                </h2>
+                <h2 className="font-semibold capitalize flex gap-5">
+                  {servico.nome}
+                  <p>
+                    <span className="font-bold" style={{ color: "#555" }}>
+                      Valor:{" "}
+                    </span>
+                    R$ {parseFloat(servico.preco).toFixed(2)}{" "}
+                  </p>
+                </h2>
+              </div>
               <div className="flex items-center gap-2">
                 <Avatar>
                   <AvatarImage
@@ -235,13 +249,13 @@ const BookingItemBarbershop: React.FC<BookingItemBarbershopProps> = ({
                     <AvatarFallback>{barbearia?.nome.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <h2 className="font-bold">
-                      {barbearia?.nome.toUpperCase()}
+                    <h2 className="font-bold capitalize">
+                      {barbearia?.nome}
                     </h2>
                     {barbearia?.endereco ? (
                       <div className="text-sm">
-                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia.endereco.rua}, ${barbearia.endereco.numero}`}</h3>
-                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis">{`${barbearia.endereco.bairro}`}</h3>
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis capitalize">{`${barbearia.endereco.rua}, ${barbearia.endereco.numero}`}</h3>
+                        <h3 className="overflow-hidden whitespace-nowrap text-ellipsis capitalize">{`${barbearia.endereco.bairro}`}</h3>
                       </div>
                     ) : (
                       <h3>Endereço não disponível</h3>

@@ -12,10 +12,18 @@ interface Service {
   barbearia: Barbearia;
 }
 
+interface Profissional {
+  id: string;
+  nome: string;
+  sobreNome: string;
+  // Adicione outras propriedades relevantes do profissional, se necessário
+}
+
 interface Endereco {
   id: string;
   bairro: string;
   rua: string;
+  numero: string;
 }
 
 interface Barbearia {
@@ -24,12 +32,21 @@ interface Barbearia {
   foto: string;
   endereco: Endereco;
 }
+
+interface ProfissionalServico {
+  id: string;
+  profissional: Profissional;
+  servico: Service;
+}
+
+
 interface Booking {
   id: string;
   data: string;
   hora: string;
   servico: string;
   service: Service;
+  profissionalServico: ProfissionalServico;
   barbearia: Barbearia;
   endereco: Endereco;
   status: "Confirmado" | "Finalizado";
@@ -56,17 +73,25 @@ const Bookings = () => {
         const bookingsData = response.data;
         console.log("oi", response.data)
     
+          // Função auxiliar para buscar detalhes do profissional e serviço
+     const fetchProfissionalServicoDetails = async (profissionalServicoId: string) => {
+      const response = await api.get<ProfissionalServico>(`/profissionalServico/${profissionalServicoId}`);
+      return response.data;
+    };
+
         const bookingsWithServices = await Promise.all(
           bookingsData.map(async (booking) => {
-            const serviceDetails = await fetchServiceDetails(booking.servico.id);
+            const serviceDetails = await fetchProfissionalServicoDetails(booking.profissionalServico.id);
             if (serviceDetails) {
-              booking.service = serviceDetails;
+              booking.profissionalServico = serviceDetails;
             }
             const bookingDate = new Date(`${booking.data}T${booking.hora}`);
             const status: "Confirmado" | "Finalizado" = isFuture(bookingDate) ? "Confirmado" : "Finalizado";
             return {
               ...booking,
               status,
+              profissionalServico: serviceDetails,
+
             };
           })
         );
@@ -77,17 +102,7 @@ const Bookings = () => {
       }
     };
 
-    const fetchServiceDetails = async (servico: string): Promise<Service | null> => {
-      try {
-        const response = await api.get<Service>(`/servico/${servico}`);
-        console.log("fetchServiceDetails", response.data)
 
-        return response.data;
-      } catch (error) {
-        console.error(`Error fetching service details for serviceId: ${servico}`, error);
-        return null;
-      }
-    };
 
     if (userId) {
       fetchBookings();
