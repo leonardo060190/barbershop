@@ -31,7 +31,9 @@ interface BarbershopServicosProps {
   nomeProfissional: string;
 }
 interface Booking {
-  date: string;
+  data: string;
+  hora: string;
+  profissionalServico: { id: string };
 }
 
 const ServiceItem: React.FC<BarbershopServicosProps> = ({
@@ -57,19 +59,31 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
+  console.log("dayBookings", dayBookings);
 
   const getDayBookings = useCallback(
-    async (barbeariaId: string, date: Date): Promise<Booking[]> => {
+    async (
+      barbeariaId: string,
+      profissionalId: string,
+      date: Date
+    ): Promise<Booking[]> => {
       try {
         const response = await api.get("/agendamento", {
           params: {
             barbeariaId,
+            profissionalId,
             date: date.toISOString().split("T")[0], // Enviar a data no formato yyyy-MM-dd
           },
         });
+
         return response.data;
       } catch (error) {
-        console.error("Error fetching day bookings:", error);
+        toast.error("Ocorreu um erro ao obter as reservas dop dia.", {
+          style: {
+            backgroundColor: "#ff0000", // Cor de fundo
+            color: "#FFFFFF", // Cor do texto
+          },
+        });
         return [];
       }
     },
@@ -82,15 +96,23 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
     }
     const refreshAvailableHours = async (): Promise<void> => {
       try {
-        const bookings = await getDayBookings(barbeariaId, date);
+        const bookings = await getDayBookings(
+          barbeariaId,
+          profissionalId,
+          date
+        );
         setDayBookings(bookings);
       } catch (error) {
-        console.error("Error fetching day bookings:", error);
-        // Tratar o erro de forma apropriada (toast, mensagem de erro, etc.)
+        toast.error("Ocorreu um erro ao obter as reservas dop dia.", {
+          style: {
+            backgroundColor: "#ff0000", // Cor de fundo
+            color: "#FFFFFF", // Cor do texto
+          },
+        });
       }
     };
     refreshAvailableHours();
-  }, [date, barbeariaId, getDayBookings]);
+  }, [date, barbeariaId, profissionalId, getDayBookings]);
 
   const handleDateClick = (date: Date | undefined) => {
     setDate(date);
@@ -146,20 +168,23 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       return [];
     }
     return generateDayTimeList(date).filter((time) => {
-      const timeHour = Number(time.split(":")[0]);
-      const timeMinutes = Number(time.split(":")[1]);
+      const [timeHour, timeMinutes] = time.split(":").map(Number);
 
-      const isTimeBooked = dayBookings.find((booking) => {
-        const bookingDate = new Date(booking.date);
-        const bookingHour = bookingDate.getHours();
-        const bookingMinutes = bookingDate.getMinutes();
 
-        return bookingHour === timeHour && bookingMinutes === timeMinutes;
+      const isTimeBooked = dayBookings.some((booking) => {
+        const bookingHour = Number(booking.hora?.split(":")[0]);
+        const bookingMinutes = Number(booking.hora?.split(":")[1]);
+
+        return (
+          bookingHour === timeHour &&
+          bookingMinutes === timeMinutes &&
+          booking.profissionalServico.id === profissionalId &&
+          booking.data === date.toISOString().split("T")[0]        );
       });
 
       return !isTimeBooked;
     });
-  }, [date, dayBookings]);
+  }, [date, dayBookings, profissionalId]);
 
   console.log(timeList);
 
@@ -178,7 +203,12 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
       });
       return response.data;
     } catch (error) {
-      console.error("Error saving booking:", error);
+      toast.error("Ocorreu um erro ao salvar a reserva.", {
+        style: {
+          backgroundColor: "#ff0000", // Cor de fundo
+          color: "#FFFFFF", // Cor do texto
+        },
+      });
       throw error;
     } finally {
       SetSubmitIsLoading(false);
@@ -252,7 +282,6 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                             textTransform: "capitalize",
                           },
                         }}
-                        
                       />
                     </div>
                     {/* Mostarlista de hor´rios apenas se alguma data estaver selecionada */}

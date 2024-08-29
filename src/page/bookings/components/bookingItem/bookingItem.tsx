@@ -106,6 +106,7 @@ const BookingItem: React.FC<BookingItemProps> = ({
   }, [servico.id]);
 
   const fetchEndereco = useCallback(async () => {
+    if (!barbearia?.id) return;
     try {
       const response = await api.get<Barbearia>(`/barbearia/${barbearia?.id}`);
       setEndereco(response.data.endereco);
@@ -116,8 +117,13 @@ const BookingItem: React.FC<BookingItemProps> = ({
 
   useEffect(() => {
     fetchBarbearia();
-    fetchEndereco();
-  }, [servico.id, fetchBarbearia, fetchEndereco]);
+  }, [servico.id, fetchBarbearia]);
+
+  useEffect(() => {
+    if (barbearia) {
+      fetchEndereco();
+    }
+  }, [barbearia, fetchEndereco]);
 
   const removeAgendamento = async (id: string) => {
     if (!isBookingConfirmed) return;

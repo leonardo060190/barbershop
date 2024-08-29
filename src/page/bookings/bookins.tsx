@@ -39,7 +39,6 @@ interface ProfissionalServico {
   servico: Service;
 }
 
-
 interface Booking {
   id: string;
   data: string;
@@ -63,46 +62,52 @@ const Bookings = () => {
   const userId = user?.cliente?.id || null;
   const [bookings, setBookings] = useState<bookingsWithServices[] | null>(null);
 
-
   useEffect(() => {
     const fetchBookings = async () => {
       try {
         if (!userId) return;
-    
-        const response = await api.get<Booking[]>(`/agendamento/cliente/${userId}`);
+
+        const response = await api.get<Booking[]>(
+          `/agendamento/cliente/${userId}`
+        );
         const bookingsData = response.data;
-        console.log("oi", response.data)
-    
-          // Função auxiliar para buscar detalhes do profissional e serviço
-     const fetchProfissionalServicoDetails = async (profissionalServicoId: string) => {
-      const response = await api.get<ProfissionalServico>(`/profissionalServico/${profissionalServicoId}`);
-      return response.data;
-    };
+        console.log("oi", response.data);
+
+        // Função auxiliar para buscar detalhes do profissional e serviço
+        const fetchProfissionalServicoDetails = async (
+          profissionalServicoId: string
+        ) => {
+          const response = await api.get<ProfissionalServico>(
+            `/profissionalServico/${profissionalServicoId}`
+          );
+          return response.data;
+        };
 
         const bookingsWithServices = await Promise.all(
           bookingsData.map(async (booking) => {
-            const serviceDetails = await fetchProfissionalServicoDetails(booking.profissionalServico.id);
+            const serviceDetails = await fetchProfissionalServicoDetails(
+              booking.profissionalServico.id
+            );
             if (serviceDetails) {
               booking.profissionalServico = serviceDetails;
             }
             const bookingDate = new Date(`${booking.data}T${booking.hora}`);
-            const status: "Confirmado" | "Finalizado" = isFuture(bookingDate) ? "Confirmado" : "Finalizado";
+            const status: "Confirmado" | "Finalizado" = isFuture(bookingDate)
+              ? "Confirmado"
+              : "Finalizado";
             return {
               ...booking,
               status,
               profissionalServico: serviceDetails,
-
             };
           })
         );
-    
+
         setBookings(bookingsWithServices);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
     };
-
-
 
     if (userId) {
       fetchBookings();
@@ -110,7 +115,11 @@ const Bookings = () => {
   }, [userId]);
 
   if (!bookings) {
-    return <div>Loading...</div>; // ou qualquer indicador de carregamento
+    return (
+      <div className="flex justify-center items-center h-screen">
+        Carregando...
+      </div>
+    ); // ou qualquer indicador de carregamento
   }
 
   const confirmedBookings = bookings.filter(
