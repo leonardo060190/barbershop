@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Calendar } from "@/components/ui/calendar";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ptBR } from "date-fns/locale";
 import { generateDayTimeList } from "./hours";
 import { format, setHours, setMinutes } from "date-fns";
@@ -59,7 +59,36 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [hour, setHour] = useState<string | undefined>();
   const [dayBookings, setDayBookings] = useState<Booking[]>([]);
-  console.log("dayBookings", dayBookings);
+
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
+
+    scrollContainer.style.cursor = "grabbing";
+    scrollContainer.style.userSelect = "none";
+
+    const startX = e.pageX - scrollContainer.offsetLeft;
+    const scrollLeft = scrollContainer.scrollLeft;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const x = e.pageX - scrollContainer.offsetLeft;
+      const walk = (x - startX) * 1; // Ajuste a velocidade do scroll aqui
+      scrollContainer.scrollLeft = scrollLeft - walk;
+    };
+
+    const handleMouseUp = () => {
+      scrollContainer.style.cursor = "grab";
+      scrollContainer.style.removeProperty("user-select");
+
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
 
   const getDayBookings = useCallback(
     async (
@@ -94,6 +123,7 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
     if (!date) {
       return;
     }
+
     const refreshAvailableHours = async (): Promise<void> => {
       try {
         const bookings = await getDayBookings(
@@ -167,9 +197,23 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
     if (!date) {
       return [];
     }
+
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinutes = now.getMinutes();
+
     return generateDayTimeList(date).filter((time) => {
       const [timeHour, timeMinutes] = time.split(":").map(Number);
 
+      // Verificar se o horário já passou no dia atual
+      const isPastTime =
+        date.toDateString() === now.toDateString() &&
+        (timeHour < currentHour ||
+          (timeHour === currentHour && timeMinutes < currentMinutes));
+
+      if (isPastTime) {
+        return false;
+      }
 
       const isTimeBooked = dayBookings.some((booking) => {
         const bookingHour = Number(booking.hora?.split(":")[0]);
@@ -179,7 +223,8 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
           bookingHour === timeHour &&
           bookingMinutes === timeMinutes &&
           booking.profissionalServico.id === profissionalId &&
-          booking.data === date.toISOString().split("T")[0]        );
+          booking.data === date.toISOString().split("T")[0]
+        );
       });
 
       return !isTimeBooked;
@@ -284,20 +329,33 @@ const ServiceItem: React.FC<BarbershopServicosProps> = ({
                         }}
                       />
                     </div>
-                    {/* Mostarlista de hor´rios apenas se alguma data estaver selecionada */}
+                    {/* Mostra lista de horários apenas se alguma data estaver selecionada */}
                     {date && (
-                      <div className="flex gap-3 overflow-x-auto py-3 px-5 border-y border-solid border-secondary [&::-webkit-scrollbar]:hidden">
-                        {timeList.map((time) => (
-                          <Button
-                            onClick={() => handleHourClick(time)}
-                            variant={hour === time ? "default" : "outline"}
-                            className="rounded-full"
-                            key={time}
+                      <>
+                        {timeList.length === 0 ? (
+                          <div className="py-3 px-5 text-center text-gray-500 border-y border-solid border-secondary ">
+                            Todos os horários já estão reservados para esta
+                            data.
+                          </div>
+                        ) : (
+                          <div
+                            ref={scrollRef}
+                            onMouseDown={handleMouseDown}
+                            className="flex gap-3 overflow-x-auto py-3 px-5 border-y border-solid border-secondary cursor-grab [&::-webkit-scrollbar]:hidden"
                           >
-                            {time}
-                          </Button>
-                        ))}
-                      </div>
+                            {timeList.map((time) => (
+                              <Button
+                                onClick={() => handleHourClick(time)}
+                                variant={hour === time ? "default" : "outline"}
+                                className="rounded-full"
+                                key={time}
+                              >
+                                {time}
+                              </Button>
+                            ))}
+                          </div>
+                        )}
+                      </>
                     )}
                     <div className="py-3 px-5 border-solid border-secondary">
                       <Card>
