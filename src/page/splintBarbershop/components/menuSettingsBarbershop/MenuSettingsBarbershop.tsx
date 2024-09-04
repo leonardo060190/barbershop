@@ -6,7 +6,7 @@ import { api } from "../../../../../config/ConfigAxios";
 import EditLogin from "../renderForms/EditLogin";
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { Link } from "react-router-dom";
-import { SquareScissors } from "lucide-react";
+import { BarChart2, SquareScissors } from "lucide-react";
 
 interface Telefone {
   id: string;
@@ -106,6 +106,16 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
             to={"/servicosPage"}
           >
             <SquareScissors size={16} className="me-2 text-primary" /> Serviços
+          </Link>
+        </div>
+
+        <div className=" justify-center text-left flex pb-4">
+          <Link
+            className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
+            to={"/GraficosPage"}
+          >
+            <BarChart2 size={16} className="me-2 text-primary" /> Graficos
+            Barbearia
           </Link>
         </div>
 

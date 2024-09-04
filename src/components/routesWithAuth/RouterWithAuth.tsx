@@ -18,6 +18,7 @@ import ServicosPage from "@/page/splintBarbershop/components/servicos/ServicosPa
 import ProfissionalDetailsPage from "@/page/splintBarbershop/components/profissional/ProfissionalDetailsPage";
 import MeusAgendamentos from "@/page/splintBarbershop/components/profissional/components/MeusAgendamentos";
 import ProfissionalReservaServicoPage from "@/page/barbershops/components/ProfissionalReservaServicoPage";
+import GraficosBarbearia from "@/page/splintBarbershop/components/graficosBarbearia/GraficosBarbearia";
 
 const RoutesWithAuth: React.FC = () => {
   return (
@@ -115,6 +116,15 @@ const RoutesWithAuth: React.FC = () => {
           element={
             <ProtectedRoute>
               <ProfissionalReservaServicoPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/graficosPage"
+          element={
+            <ProtectedRoute>
+              <GraficosBarbearia />
             </ProtectedRoute>
           }
         />

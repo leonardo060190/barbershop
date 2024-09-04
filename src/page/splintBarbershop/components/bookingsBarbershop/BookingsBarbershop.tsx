@@ -91,30 +91,35 @@ const BookingsBarbershop = () => {
         const bookingsBarbershopData = response.data;
         console.log("Response data:", response.data);
 
-   // Função auxiliar para buscar detalhes do profissional e serviço
-   const fetchProfissionalServicoDetails = async (profissionalServicoId: string) => {
-    const response = await api.get<ProfissionalServico>(`/profissionalServico/${profissionalServicoId}`);
-    return response.data;
-  };
+        // Função auxiliar para buscar detalhes do profissional e serviço
+        const fetchProfissionalServicoDetails = async (
+          profissionalServicoId: string
+        ) => {
+          const response = await api.get<ProfissionalServico>(
+            `/profissionalServico/${profissionalServicoId}`
+          );
+          return response.data;
+        };
 
+        // Obter detalhes adicionais para cada agendamento
+        const bookingsWithDetails = await Promise.all(
+          bookingsBarbershopData.map(async (booking) => {
+            const profissionalServicoDetails =
+              await fetchProfissionalServicoDetails(
+                booking.profissionalServico.id
+              );
 
-          // Obter detalhes adicionais para cada agendamento
-        const bookingsWithDetails = await Promise.all(bookingsBarbershopData.map(async (booking) => {
-          const profissionalServicoDetails = await fetchProfissionalServicoDetails(booking.profissionalServico.id);
-
-            const bookingDate = new Date(
-              `${booking.data}T${booking.hora}`
-            );
+            const bookingDate = new Date(`${booking.data}T${booking.hora}`);
             const status: "Confirmado" | "Finalizado" = isFuture(bookingDate)
               ? "Confirmado"
               : "Finalizado";
-              return {
-                ...booking,
-                status,
-                profissionalServico: profissionalServicoDetails,
-              };
-          }
-        ));
+            return {
+              ...booking,
+              status,
+              profissionalServico: profissionalServicoDetails,
+            };
+          })
+        );
         setBookingsBarbershop(bookingsWithDetails);
       } catch (error) {
         console.error("Error fetching bookings:", error);
