@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/components/authProvider/AuthProvider";
+// import { BackgroundGradient } from "@/components/ui/background-gradient";
 
 interface BarbershopItemProps {
   id: string;
@@ -30,6 +31,7 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
 
   return (
     <div key={id}>
+      {/* <BackgroundGradient> */}
       <Card className="min-w-[167px] max-w-[167px] rounded-2xl">
         <CardContent className="p-0 pt-1 ">
           <div className="px-1 relative">
@@ -51,7 +53,9 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
           </div>
 
           <div className="px-3 pb-3">
-            <h2 className="font-bold mt-2 text-ellipsis overflow-hidden whitespace-nowrap">{nome}</h2>
+            <h2 className="font-bold mt-2 text-ellipsis overflow-hidden whitespace-nowrap">
+              {nome}
+            </h2>
             <p className="text-sm text-gray-400 overflow-hidden text-ellipsis text-nowrap">
               {rua || "Endereço indisponivel"}
             </p>
@@ -66,6 +70,7 @@ const BarbershopItemRecomendados: React.FC<BarbershopItemProps> = ({
           </div>
         </CardContent>
       </Card>
+      {/* </BackgroundGradient> */}
     </div>
   );
 };

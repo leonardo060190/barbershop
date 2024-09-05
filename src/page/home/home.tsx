@@ -159,7 +159,7 @@ const Home = () => {
       </div>
 
       {/* populares */}
-      <div className="px-12  mb-[4.5rem]">
+      <div className="px-16  mb-[4.5rem]">
         <h2 className=" text-xs mb-3 uppercase text-gray-400 font-bold">
           Populares
         </h2>

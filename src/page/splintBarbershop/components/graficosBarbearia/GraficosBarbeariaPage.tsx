@@ -1,25 +1,11 @@
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis } from "recharts";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-
 import { useAuth } from "@/components/authProvider/AuthProvider";
 import { useEffect, useState } from "react";
 import { api } from "../../../../../config/ConfigAxios";
 import { format, isFuture } from "date-fns";
 import Header from "@/components/header/header";
 import { ptBR } from "date-fns/locale";
+import GraficoLucroPorMes from "./components/GraficoLucroPorMes";
+import GraficoLucroPorProfissional from "./components/GraficoLucroPorProfissional";
 
 interface Servico {
   id: string;
@@ -86,14 +72,7 @@ interface bookingsBarbershopServices extends BookingBarbershop {
   barbearia: Barbearia;
 }
 
-const chartConfig = {
-  lucro: {
-    label: "Lucro",
-    color: "#2563eb",
-  },
-} satisfies ChartConfig;
-
-const GraficosBarbearia = () => {
+const GraficosBarbeariaPage = () => {
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
   const [bookingsBarbershop, setBookingsBarbershop] = useState<
@@ -103,6 +82,10 @@ const GraficosBarbearia = () => {
   const [lucroMes, setLucroMes] = useState<{ month: string; lucro: number }[]>(
     []
   );
+
+  const [lucroMesProfissional, setLucroMesProfissional] = useState<
+    { profissionalNome: string; month: string; lucro: number }[]
+  >([]);
 
   useEffect(() => {
     const fetchBookingsBarbershop = async () => {
@@ -179,28 +162,73 @@ const GraficosBarbearia = () => {
         );
 
         // Cria uma lista de todos os meses do ano com valor inicial 0
-        // const todosMeses = [
-        //   "Janeiro",
-        //   "Fevereiro",
-        //   "Março",
-        //   "Abril",
-        //   "Maio",
-        //   "Junho",
-        //   "Julho",
-        //   "Agosto",
-        //   "Setembro",
-        //   "Outubro",
-        //   "Novembro",
-        //   "Dezembro",
-        // ];
+        const todosMeses = [
+          "janeiro",
+          "fevereiro",
+          "março",
+          "abril",
+          "maio",
+          "junho",
+          "julho",
+          "agosto",
+          "setembro",
+          "outubro",
+          "novembro",
+          "dezembro",
+        ];
 
         // Inicializa lucroMes com todos os meses e valor 0
-        const lucroMesInicial = Object.keys(lucroDoMes).map((month) => ({
+        const lucroMesInicial = todosMeses.map((month) => ({
           month,
           lucro: lucroDoMes[month] || 0,
         }));
+
+        // Debug: Verificar os valores de lucroMesInicial
+        console.log("lucroMesInicial:", lucroMesInicial);
         // Atualiza a lista de lucroMes para garantir que os valores corretos sejam exibidos
         setLucroMes(lucroMesInicial);
+
+        // Calcula lucro por profissiola por mês
+        const lucroPorProfissional = FinalizedBookings.reduce(
+          (acc, booking) => {
+            const month = format(new Date(booking.data), "MMMM", {
+              locale: ptBR,
+            });
+            const profissionalNome =
+              booking.profissionalServico.profissional.nome;
+
+            const preco: number = booking.profissionalServico.servico
+              ? parseFloat(booking.profissionalServico.servico.preco)
+              : 0;
+
+            if (!acc[profissionalNome]) {
+              acc[profissionalNome] = {};
+            }
+
+            acc[profissionalNome][month] = acc[profissionalNome][month]
+              ? acc[profissionalNome][month] + preco
+              : preco;
+
+            return acc;
+          },
+
+          {} as Record<string, Record<string, number>>
+        );
+
+        const lucroDoMesProfissional = Object.entries(
+          lucroPorProfissional
+        ).flatMap(([profissionalNome, meses]) =>
+          todosMeses.map((month) => ({
+            profissionalNome,
+            month,
+            lucro: meses[month] || 0,
+          }))
+        );
+        // Debug: Verificar os valores calculados
+        console.log("Lucro por profissional por mês:", lucroPorProfissional);
+        setLucroMesProfissional(lucroDoMesProfissional);
+
+
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -221,53 +249,18 @@ const GraficosBarbearia = () => {
   return (
     <>
       <Header />
-      <Card>
-        <CardHeader>
-          <CardTitle>Lucro Mensal</CardTitle>
-          <CardDescription>Janeiro - Desembro 2024</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ChartContainer config={chartConfig}>
-            <BarChart
-              accessibilityLayer
-              data={lucroMes}
-              margin={{
-                top: 20,
-              }}
-            >
-              <CartesianGrid vertical={false} />
-              <XAxis
-                dataKey="month"
-                tickLine={false}
-                tickMargin={10}
-                axisLine={false}
-                className="capitalize"
-                tickFormatter={(value) => value.slice(0, 3)}
-              />
-              <ChartTooltip
-                cursor={false}
-                labelClassName="capitalize"
-                content={<ChartTooltipContent />}
-              />
-              <Bar dataKey="lucro" fill="var(--color-lucro)" radius={5}>
-                <LabelList
-                  position="top"
-                  offset={12}
-                  className="fill-foreground"
-                  fontSize={12}
-                />
-              </Bar>
-            </BarChart>
-          </ChartContainer>
-        </CardContent>
-        <CardFooter className="flex-col items-start gap-2 text-sm">
-          <div className="flex gap-2 font-medium leading-none">
-            Lucro por mês durante o ano
-          </div>
-        </CardFooter>
-      </Card>
+      <h1 className="font-semibold px-12 py-6 text-4xl">Graficos Gerais</h1>
+      <div className=" px-5 py-5 flex flex-col md:flex-row">
+        <div className="w-full grid grid-cols-1  xl:grid-cols-2 gap-3">
+          <GraficoLucroPorMes lucroMes={lucroMes} />
+
+          <GraficoLucroPorProfissional
+            lucroMesProfissional={lucroMesProfissional}
+          />
+        </div>
+      </div>
     </>
   );
 };
 
-export default GraficosBarbearia;
+export default GraficosBarbeariaPage;

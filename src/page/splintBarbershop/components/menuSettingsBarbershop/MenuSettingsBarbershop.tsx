@@ -112,7 +112,7 @@ const MenuSettingsBarbershop: React.FC<MenuSettingsBarbershopProps> = ({
         <div className=" justify-center text-left flex pb-4">
           <Link
             className="h-11 w-11/12 hover:bg-[rgba(24,24,25,0.84)] flex items-center border rounded-md border-solid border-secondary px-3"
-            to={"/GraficosPage"}
+            to={"/graficosPage"}
           >
             <BarChart2 size={16} className="me-2 text-primary" /> Graficos
             Barbearia

@@ -1,14 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-
-export default {
+module.exports = {
+  darkMode: ["class"],
   content: [
-    "./index.html",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./src/**/*.{js,ts,jsx,tsx}",
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
   ],
-  darkMode: ["media"],
+  prefix: "",
   theme: {
     container: {
       center: true,
@@ -74,5 +73,5 @@ export default {
       },
     },
   },
-  plugins: ["prettier-plugin-tailwindcss"],
-};
+  plugins: [require("tailwindcss-animate")],
+}
