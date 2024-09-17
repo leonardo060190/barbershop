@@ -71,7 +71,6 @@ const GraficoLucroPorProfissional: React.FC<
   const cores = chroma.scale(['yellow', 'lightgreen', '008ae5'])
   .domain([0,0.25,1]).colors(profissionais.length);
   // Verificar se as cores são distintas
-  console.log(cores);
   const corMapa: Record<string, string> = profissionais.reduce(
     (map, profissional, index) => {
       map[profissional] = cores[index];
@@ -79,7 +78,6 @@ const GraficoLucroPorProfissional: React.FC<
     },
     {} as Record<string, string>
   );
-  console.log(corMapa);
   return (
     <>
       <Card>
@@ -117,12 +115,7 @@ const GraficoLucroPorProfissional: React.FC<
                   fill={corMapa[profissional] || "#2E3AEB"} // Alternar cores para cada profissional
                   radius={2}
                 >
-                  {/* <LabelList
-                    position="top"
-                    offset={12}
-                    className="fill-foreground"
-                    fontSize={12}
-                  /> */}
+                
                 </Bar>
               ))}
             </BarChart>

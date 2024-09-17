@@ -30,7 +30,7 @@ const GraficoLucroPorMes: React.FC<GraficoLucroPorMesProps> = ({
 }) => {
   return (
     <>
-      <Card className="">
+      <Card >
         <CardHeader>
           <CardTitle>Lucro Mensal</CardTitle>
           <CardDescription>Janeiro - Desembro 2024</CardDescription>

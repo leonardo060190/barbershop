@@ -6,6 +6,7 @@ import Header from "@/components/header/header";
 import { ptBR } from "date-fns/locale";
 import GraficoLucroPorMes from "./components/GraficoLucroPorMes";
 import GraficoLucroPorProfissional from "./components/GraficoLucroPorProfissional";
+import GraficoDeServicoAgendadoMes from "./components/GraficoDeServicoAgendadoMes";
 
 interface Servico {
   id: string;
@@ -75,6 +76,7 @@ interface bookingsBarbershopServices extends BookingBarbershop {
 const GraficosBarbeariaPage = () => {
   const { user } = useAuth();
   const barbeariaId = user?.barbearia?.id || null;
+
   const [bookingsBarbershop, setBookingsBarbershop] = useState<
     bookingsBarbershopServices[] | null
   >(null);
@@ -85,6 +87,10 @@ const GraficosBarbeariaPage = () => {
 
   const [lucroMesProfissional, setLucroMesProfissional] = useState<
     { profissionalNome: string; month: string; lucro: number }[]
+  >([]);
+
+  const [agendamentosPorServico, setAgendamentosPorServico] = useState<
+    { servicoNome: string; totalAgendamentos: number; month: string }[]
   >([]);
 
   useEffect(() => {
@@ -228,7 +234,38 @@ const GraficosBarbeariaPage = () => {
         console.log("Lucro por profissional por mês:", lucroPorProfissional);
         setLucroMesProfissional(lucroDoMesProfissional);
 
+        const agendamentosPorServico = FinalizedBookings.reduce(
+          (acc, booking) => {
+            const month = format(new Date(booking.data), "MMMM", {
+              locale: ptBR,
+            });
+            const servicoNome = booking.profissionalServico.servico.nome;
+            // Se ainda não existe um array para este serviço, inicializa um
+            if (!acc[servicoNome]) {
+              acc[servicoNome] = {};
+            }
 
+            // Incrementa o contador de agendamentos para o mês atual
+            acc[servicoNome][month] = (acc[servicoNome][month] || 0) + 1;
+
+            return acc;
+          },
+          {} as Record<string, Record<string, number>>
+        );
+
+        // Formatando os dados para o gráfico
+        const dadosGrafico = Object.entries(agendamentosPorServico).flatMap(
+          ([servicoNome, meses]) =>
+            todosMeses.map((month) => ({
+              servicoNome,
+              totalAgendamentos: meses[month] || 0,
+              month // Inclui o mês aqui
+            }))
+        );
+        
+
+        console.log("agendamentosPorServico:", agendamentosPorServico);
+        setAgendamentosPorServico(dadosGrafico);
       } catch (error) {
         console.error("Error fetching bookings:", error);
       }
@@ -256,6 +293,14 @@ const GraficosBarbeariaPage = () => {
 
           <GraficoLucroPorProfissional
             lucroMesProfissional={lucroMesProfissional}
+          />
+        </div>
+      </div>
+
+      <div className=" px-5 py-5 flex flex-col md:flex-row">
+        <div className="w-full grid grid-cols-1  xl:grid-cols-2 gap-3">
+          <GraficoDeServicoAgendadoMes
+            agendamentosPorServico={agendamentosPorServico}
           />
         </div>
       </div>
