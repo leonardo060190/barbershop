@@ -7,6 +7,7 @@ import { ptBR } from "date-fns/locale";
 import GraficoLucroPorMes from "./components/GraficoLucroPorMes";
 import GraficoLucroPorProfissional from "./components/GraficoLucroPorProfissional";
 import GraficoDeServicoAgendadoMes from "./components/GraficoDeServicoAgendadoMes";
+import { GerarRelatorioPDF } from "../gerarRelatorioPDF/GerarRelatorioPDF";
 
 interface Servico {
   id: string;
@@ -65,6 +66,13 @@ interface BookingBarbershop {
   cliente: Cliente;
   endereco?: Endereco;
   status: "Confirmado" | "Finalizado";
+}
+
+interface RelatorioCompleto {
+  month: string;
+  lucro: number;
+  servicoNome: string;
+  barbeariaNome: string;
 }
 
 interface bookingsBarbershopServices extends BookingBarbershop {
@@ -283,6 +291,15 @@ const GraficosBarbeariaPage = () => {
       </div>
     );
   }
+
+  const relatorioCompleto: RelatorioCompleto[] = lucroMes.map(mes => ({
+    month: mes.month,
+    lucro: mes.lucro,
+    servicoNome: "Nome do Serviço", // Substitua por uma lógica para obter o nome do serviço correspondente
+    barbeariaNome: user?.barbearia?.nome || "Nome da Barbearia", // Utilize o nome da barbearia
+  }));
+
+
   return (
     <>
       <Header />
@@ -304,6 +321,15 @@ const GraficosBarbeariaPage = () => {
           />
         </div>
       </div>
+
+      <div className="px-5 py-5">
+      <button
+        onClick={() => GerarRelatorioPDF(relatorioCompleto)}
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+      >
+        Gerar PDF do Lucro por Mês
+      </button>
+    </div>
     </>
   );
 };
