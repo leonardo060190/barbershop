@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { Edit, X } from "lucide-react";
-import FormEditService from "../forms/FormEditService";
+import FormEditService from "../servicos/FormEditService";
 import { api } from "../../../../../config/ConfigAxios";
 import { useState } from "react";
 import { toast } from "sonner";
