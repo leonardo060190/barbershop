@@ -83,7 +83,7 @@ const FormLogin: React.FC<FormLoginProps> = ({ onLoginSuccess }) => {
               id="email"
               type="text"
               className="col-span-3"
-              placeholder="Digite se E-mail"
+              placeholder="Digite seu E-mail"
               {...register("email", { required: "O e-mail é requerido!" })}
             />
           </div>
